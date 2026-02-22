@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import useGameStore from '../stores/useGameStore';
 import useStatsStore from '../stores/useStatsStore';
 import useSkillStore from '../stores/useSkillStore';
@@ -17,13 +17,23 @@ function GameScreen() {
     const resetLastKeyTime = useStatsStore(s => s.resetLastKeyTime);
 
     const tickRef = useRef(null);
+    const letterStatsRef = useRef(letterStats);
+    const levelRef = useRef(getCurrentLevel());
+
+    // Keep refs in sync with latest values
+    useEffect(() => {
+        letterStatsRef.current = letterStats;
+    }, [letterStats]);
+
+    useEffect(() => {
+        levelRef.current = getCurrentLevel();
+    }, [getCurrentLevel]);
 
     useEffect(() => {
         resetLastKeyTime();
-        const level = getCurrentLevel();
 
         tickRef.current = setInterval(() => {
-            tick(letterStats, level);
+            tick(letterStatsRef.current, levelRef.current);
         }, 50); // 20 fps
 
         return () => {

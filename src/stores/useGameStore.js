@@ -161,7 +161,12 @@ const useGameStore = create((set, get) => ({
             // Find next active monster index
             let activeIdx = s.activeMonsterIndex;
             if (activeIdx < monsters.length && (monsters[activeIdx].defeated || monsters[activeIdx].reachedCastle)) {
-                const nextIdx = monsters.findIndex((m, i) => i >= activeIdx && !m.defeated && !m.reachedCastle && m.spawned);
+                // First try to find a spawned monster
+                let nextIdx = monsters.findIndex((m, i) => i >= activeIdx && !m.defeated && !m.reachedCastle && m.spawned);
+                // If no spawned monster, find next undefeated (even if not spawned yet)
+                if (nextIdx < 0) {
+                    nextIdx = monsters.findIndex((m, i) => i >= activeIdx && !m.defeated && !m.reachedCastle);
+                }
                 if (nextIdx >= 0) activeIdx = nextIdx;
             }
 
