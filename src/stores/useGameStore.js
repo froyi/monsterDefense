@@ -25,6 +25,25 @@ function createMonster(id, word, waveNum) {
     };
 }
 
+// Find the alive monster closest to the castle (lowest position)
+function findFrontmostMonsterIndex(monsters) {
+    let bestIdx = -1;
+    let bestPos = Infinity;
+    for (let i = 0; i < monsters.length; i++) {
+        const m = monsters[i];
+        if (m.defeated || m.reachedCastle || !m.spawned) continue;
+        if (m.position < bestPos) {
+            bestPos = m.position;
+            bestIdx = i;
+        }
+    }
+    // If no spawned monster, fall back to first undefeated
+    if (bestIdx < 0) {
+        bestIdx = monsters.findIndex(m => !m.defeated && !m.reachedCastle);
+    }
+    return bestIdx;
+}
+
 const useGameStore = create((set, get) => ({
     // Screens: 'menu' | 'playing' | 'results' | 'skillmap' | 'shop' | 'stats'
     phase: 'menu',
@@ -158,17 +177,8 @@ const useGameStore = create((set, get) => ({
                 wave = nextWave;
             }
 
-            // Find next active monster index
-            let activeIdx = s.activeMonsterIndex;
-            if (activeIdx < monsters.length && (monsters[activeIdx].defeated || monsters[activeIdx].reachedCastle)) {
-                // First try to find a spawned monster
-                let nextIdx = monsters.findIndex((m, i) => i >= activeIdx && !m.defeated && !m.reachedCastle && m.spawned);
-                // If no spawned monster, find next undefeated (even if not spawned yet)
-                if (nextIdx < 0) {
-                    nextIdx = monsters.findIndex((m, i) => i >= activeIdx && !m.defeated && !m.reachedCastle);
-                }
-                if (nextIdx >= 0) activeIdx = nextIdx;
-            }
+            // Always target the frontmost (closest to castle) spawned monster
+            const activeIdx = findFrontmostMonsterIndex(monsters);
 
             // Game over conditions
             const allDone = monsters.every(m => m.defeated || m.reachedCastle);
@@ -227,11 +237,8 @@ const useGameStore = create((set, get) => ({
                         newCombo
                     );
 
-                    // Find next active monster
-                    let nextIdx = s.activeMonsterIndex + 1;
-                    while (nextIdx < monsters.length && (monsters[nextIdx].defeated || monsters[nextIdx].reachedCastle || !monsters[nextIdx].spawned)) {
-                        nextIdx++;
-                    }
+                    // Find frontmost alive monster as next target
+                    const nextIdx = findFrontmostMonsterIndex(monsters);
 
                     return {
                         monsters,
@@ -243,7 +250,7 @@ const useGameStore = create((set, get) => ({
                         totalErrors: newTotalErrors,
                         score: s.score + wordScore,
                         wordsCompleted: s.wordsCompleted + 1,
-                        activeMonsterIndex: nextIdx < monsters.length ? nextIdx : s.activeMonsterIndex,
+                        activeMonsterIndex: nextIdx >= 0 ? nextIdx : s.activeMonsterIndex,
                     };
                 }
             }
