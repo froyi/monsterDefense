@@ -1,13 +1,13 @@
-// Statistics store - per-letter stats and round history
+// Statistics store – per-letter stats and round history (Supabase backend)
 import { create } from 'zustand';
-import { loadLetterStats, saveLetterStats, loadHistory, saveHistory } from '../utils/storage';
+import { loadLetterStats, saveLetterStats, loadHistory, saveRoundResult } from '../utils/storage';
 
 const useStatsStore = create((set, get) => ({
     // Per-letter statistics: { [char]: { count, errors, avgReactionMs, streak } }
-    letterStats: loadLetterStats(),
+    letterStats: {},
 
     // Round history: [{ date, wpm, accuracy, highestCombo, topErrors, score, wave }]
-    history: loadHistory(),
+    history: [],
 
     // Track reaction time for current character
     lastKeyTime: null,
@@ -44,6 +44,7 @@ const useStatsStore = create((set, get) => ({
             }
 
             stats[lowerChar] = entry;
+            // Fire-and-forget save to Supabase
             saveLetterStats(stats);
 
             return { letterStats: stats, lastKeyTime: now };
@@ -52,11 +53,13 @@ const useStatsStore = create((set, get) => ({
 
     addRoundResult: (result) => {
         set(s => {
-            const history = [...s.history, {
+            const historyEntry = {
                 date: new Date().toISOString(),
                 ...result,
-            }];
-            saveHistory(history);
+            };
+            const history = [...s.history, historyEntry];
+            // Fire-and-forget save to Supabase
+            saveRoundResult(result);
             return { history };
         });
     },
@@ -91,11 +94,17 @@ const useStatsStore = create((set, get) => ({
 
     resetLastKeyTime: () => set({ lastKeyTime: null }),
 
-    reload: () => set({
-        letterStats: loadLetterStats(),
-        history: loadHistory(),
-        lastKeyTime: null,
-    }),
+    reload: async () => {
+        const [letterStats, history] = await Promise.all([
+            loadLetterStats(),
+            loadHistory(),
+        ]);
+        set({
+            letterStats: letterStats || {},
+            history: history || [],
+            lastKeyTime: null,
+        });
+    },
 }));
 
 export default useStatsStore;

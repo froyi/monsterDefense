@@ -1,46 +1,114 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useProfileStore from '../stores/useProfileStore';
 
 function ProfileScreen() {
-    const profiles = useProfileStore(s => s.profiles);
-    const avatars = useProfileStore(s => s.avatars);
-    const createProfile = useProfileStore(s => s.createProfile);
-    const selectProfile = useProfileStore(s => s.selectProfile);
-    const deleteProfile = useProfileStore(s => s.deleteProfile);
+    const {
+        profiles, avatars, loading, error,
+        fetchProfiles, createProfile, loginProfile, deleteProfile, clearError,
+    } = useProfileStore();
 
-    const [mode, setMode] = useState('select'); // 'select' | 'create'
-    const [newName, setNewName] = useState('');
+    const [mode, setMode] = useState('select'); // 'select' | 'create' | 'pin'
     const [selectedAvatar, setSelectedAvatar] = useState('🧒');
+    const [name, setName] = useState('');
+    const [pin, setPin] = useState('');
+    const [targetProfile, setTargetProfile] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState(null);
 
-    const handleCreate = () => {
-        if (!newName.trim()) return;
-        const id = createProfile(newName, selectedAvatar);
-        selectProfile(id);
+    useEffect(() => {
+        fetchProfiles();
+    }, []);
+
+    // Auto-switch to create if no profiles
+    useEffect(() => {
+        if (!loading && profiles.length === 0 && mode === 'select') {
+            setMode('create');
+        }
+    }, [profiles, loading, mode]);
+
+    const handleCreate = async () => {
+        if (!name.trim() || pin.length !== 4) return;
+        const profileId = await createProfile(name, selectedAvatar, pin);
+        if (profileId) {
+            // Auto-login after creation
+            await loginProfile(profileId, pin);
+        }
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter') handleCreate();
+    const handleSelectProfile = (profile) => {
+        setTargetProfile(profile);
+        setPin('');
+        clearError();
+        setMode('pin');
     };
 
-    const handleDelete = (id) => {
-        deleteProfile(id);
+    const handleLogin = async () => {
+        if (pin.length !== 4 || !targetProfile) return;
+        await loginProfile(targetProfile.id, pin);
+    };
+
+    const handleDelete = async (id) => {
+        await deleteProfile(id);
         setConfirmDelete(null);
     };
 
+    // PIN input screen
+    if (mode === 'pin' && targetProfile) {
+        return (
+            <div className="profile-screen">
+                <div className="profile-card">
+                    <h2 className="profile-title">Willkommen zurück!</h2>
+                    <div className="avatar-preview">{targetProfile.avatar}</div>
+                    <p className="profile-subtitle">{targetProfile.name}, gib deinen PIN ein</p>
+
+                    <input
+                        className="profile-input"
+                        type="password"
+                        inputMode="numeric"
+                        maxLength={4}
+                        placeholder="4-stelliger PIN"
+                        value={pin}
+                        onChange={e => {
+                            const val = e.target.value.replace(/\D/g, '').slice(0, 4);
+                            setPin(val);
+                            clearError();
+                        }}
+                        onKeyDown={e => e.key === 'Enter' && handleLogin()}
+                        autoFocus
+                    />
+
+                    {error && <p style={{ color: 'var(--color-red-soft)', marginBottom: 'var(--space-md)', fontWeight: 600 }}>{error}</p>}
+
+                    <div className="profile-actions">
+                        <button
+                            className="btn-primary"
+                            onClick={handleLogin}
+                            disabled={pin.length !== 4 || loading}
+                            style={{ opacity: pin.length !== 4 ? 0.5 : 1 }}
+                        >
+                            {loading ? '⏳ ...' : '🔓 Einloggen'}
+                        </button>
+                        <button className="btn-secondary" onClick={() => { setMode('select'); setPin(''); clearError(); }}>
+                            ← Zurück
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Create profile screen
     if (mode === 'create') {
         return (
             <div className="profile-screen">
-                <div className="profile-card create-card">
-                    <h1 className="profile-title">Neues Profil erstellen</h1>
-
+                <div className="profile-card">
+                    <h2 className="profile-title">Neues Profil erstellen</h2>
                     <div className="avatar-preview">{selectedAvatar}</div>
 
                     <div className="avatar-grid">
                         {avatars.map(a => (
                             <button
                                 key={a}
-                                className={`avatar-btn ${selectedAvatar === a ? 'selected' : ''}`}
+                                className={`avatar-btn${selectedAvatar === a ? ' selected' : ''}`}
                                 onClick={() => setSelectedAvatar(a)}
                             >
                                 {a}
@@ -51,85 +119,89 @@ function ProfileScreen() {
                     <input
                         className="profile-input"
                         type="text"
+                        maxLength={12}
                         placeholder="Dein Name..."
-                        value={newName}
-                        onChange={e => setNewName(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        maxLength={20}
+                        value={name}
+                        onChange={e => setName(e.target.value)}
                         autoFocus
                     />
+
+                    <input
+                        className="profile-input"
+                        type="password"
+                        inputMode="numeric"
+                        maxLength={4}
+                        placeholder="4-stelliger PIN"
+                        value={pin}
+                        onChange={e => {
+                            const val = e.target.value.replace(/\D/g, '').slice(0, 4);
+                            setPin(val);
+                        }}
+                    />
+
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: 'var(--space-md)' }}>
+                        Merke dir deinen PIN – damit loggst du dich ein!
+                    </p>
+
+                    {error && <p style={{ color: 'var(--color-red-soft)', marginBottom: 'var(--space-md)', fontWeight: 600 }}>{error}</p>}
 
                     <div className="profile-actions">
                         <button
                             className="btn-primary"
                             onClick={handleCreate}
-                            disabled={!newName.trim()}
-                            style={{ fontSize: '20px', opacity: newName.trim() ? 1 : 0.4 }}
+                            disabled={!name.trim() || pin.length !== 4 || loading}
+                            style={{ opacity: (!name.trim() || pin.length !== 4) ? 0.5 : 1 }}
                         >
-                            ✨ Los geht's!
+                            {loading ? '⏳ ...' : '✨ Los geht\'s!'}
                         </button>
-                        <button className="btn-secondary" onClick={() => setMode('select')}>
-                            ← Zurück
-                        </button>
+                        {profiles.length > 0 && (
+                            <button className="btn-secondary" onClick={() => setMode('select')}>
+                                ← Zurück
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
         );
     }
 
+    // Select profile screen
     return (
         <div className="profile-screen">
             <div className="profile-card">
-                <h1 className="profile-title">Wer spielt heute?</h1>
+                <h2 className="profile-title">Wer spielt heute?</h2>
                 <p className="profile-subtitle">Wähle dein Profil oder erstelle ein neues</p>
 
-                {profiles.length > 0 && (
-                    <div className="profile-list">
-                        {profiles.map(p => (
-                            <div key={p.id} className="profile-item">
-                                <button
-                                    className="profile-select-btn"
-                                    onClick={() => selectProfile(p.id)}
-                                >
-                                    <span className="profile-avatar">{p.avatar}</span>
-                                    <span className="profile-name">{p.name}</span>
-                                </button>
-                                {confirmDelete === p.id ? (
-                                    <div className="profile-delete-confirm">
-                                        <span style={{ fontSize: '13px', color: 'var(--color-orange)' }}>Wirklich?</span>
-                                        <button
-                                            className="profile-delete-yes"
-                                            onClick={() => handleDelete(p.id)}
-                                        >
-                                            Ja
-                                        </button>
-                                        <button
-                                            className="profile-delete-no"
-                                            onClick={() => setConfirmDelete(null)}
-                                        >
-                                            Nein
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <button
-                                        className="profile-delete-btn"
-                                        onClick={() => setConfirmDelete(p.id)}
-                                        title="Profil löschen"
-                                    >
-                                        ✕
-                                    </button>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                )}
+                {loading && <p style={{ color: 'var(--text-muted)' }}>Lade Profile... ⏳</p>}
+
+                <div className="profile-list">
+                    {profiles.map(p => (
+                        <div key={p.id} className="profile-item">
+                            <button
+                                className="profile-select-btn"
+                                onClick={() => handleSelectProfile(p)}
+                            >
+                                <span className="profile-avatar">{p.avatar}</span>
+                                <span className="profile-name">{p.name}</span>
+                            </button>
+                            {confirmDelete === p.id ? (
+                                <div className="profile-delete-confirm">
+                                    <button className="profile-delete-yes" onClick={() => handleDelete(p.id)}>Ja</button>
+                                    <button className="profile-delete-no" onClick={() => setConfirmDelete(null)}>Nein</button>
+                                </div>
+                            ) : (
+                                <button className="profile-delete-btn" onClick={() => setConfirmDelete(p.id)}>🗑️</button>
+                            )}
+                        </div>
+                    ))}
+                </div>
 
                 <button
                     className="btn-primary"
-                    onClick={() => setMode('create')}
-                    style={{ fontSize: '20px', marginTop: profiles.length > 0 ? '16px' : '32px' }}
+                    onClick={() => { setMode('create'); setName(''); setPin(''); setSelectedAvatar('🧒'); clearError(); }}
+                    style={{ marginTop: 'var(--space-md)' }}
                 >
-                    ➕ Neues Profil
+                    + Neues Profil
                 </button>
             </div>
         </div>

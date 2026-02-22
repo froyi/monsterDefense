@@ -1,4 +1,4 @@
-// Reward system store - coins, skins, daily chest, streaks
+// Reward system store – coins, skins, daily chest, streaks (Supabase backend)
 import { create } from 'zustand';
 import { loadRewards, saveRewards } from '../utils/storage';
 
@@ -27,7 +27,7 @@ const DEFAULT_REWARDS = {
     activeCastleSkin: null,
     activeEffect: null,
     activeBackground: null,
-    lastDailyChest: null, // ISO date string
+    lastDailyChest: null,
     streak: 0,
     lastPlayDate: null,
 };
@@ -53,7 +53,6 @@ function isYesterday(dateStr) {
 
 const useRewardStore = create((set, get) => ({
     ...DEFAULT_REWARDS,
-    ...(loadRewards() || {}),
     shopItems: SHOP_ITEMS,
 
     addCoins: (amount) => {
@@ -64,7 +63,6 @@ const useRewardStore = create((set, get) => ({
                 lastPlayDate: new Date().toISOString(),
             };
 
-            // Update streak
             if (s.lastPlayDate) {
                 if (isYesterday(s.lastPlayDate)) {
                     updated.streak = s.streak + 1;
@@ -147,10 +145,13 @@ const useRewardStore = create((set, get) => ({
 
     getStreak: () => get().streak,
 
-    reload: () => set({
-        ...DEFAULT_REWARDS,
-        ...(loadRewards() || {}),
-    }),
+    reload: async () => {
+        const data = await loadRewards();
+        set({
+            ...DEFAULT_REWARDS,
+            ...(data || {}),
+        });
+    },
 }));
 
 export default useRewardStore;

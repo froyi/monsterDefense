@@ -1,4 +1,4 @@
-// Skill progression store
+// Skill progression store (Supabase backend)
 import { create } from 'zustand';
 import { loadSkills, saveSkills } from '../utils/storage';
 
@@ -7,7 +7,7 @@ const DEFAULT_SKILLS = {
         name: 'Grundreihe',
         description: 'a s d f g h j k l ö',
         chars: 'asdfghjklö',
-        unlocked: true, // Always unlocked as starting point
+        unlocked: true,
         roundsCompleted: 3,
         requiredRounds: 3,
         level: 1,
@@ -75,8 +75,21 @@ const DEFAULT_SKILLS = {
     },
 };
 
+// Merge DB data into defaults (DB only stores unlocked + roundsCompleted)
+function mergeSkills(dbData) {
+    const merged = {};
+    for (const [key, def] of Object.entries(DEFAULT_SKILLS)) {
+        merged[key] = { ...def };
+        if (dbData && dbData[key]) {
+            merged[key].unlocked = dbData[key].unlocked;
+            merged[key].roundsCompleted = dbData[key].roundsCompleted;
+        }
+    }
+    return merged;
+}
+
 const useSkillStore = create((set, get) => ({
-    skills: loadSkills() || { ...DEFAULT_SKILLS },
+    skills: { ...DEFAULT_SKILLS },
 
     getCurrentLevel: () => {
         const skills = get().skills;
@@ -86,7 +99,6 @@ const useSkillStore = create((set, get) => ({
                 maxLevel = skill.level;
             }
         }
-        // Return level for word generation (capped at 5 since we only have 5 word levels)
         return Math.min(5, maxLevel);
     },
 
@@ -96,7 +108,7 @@ const useSkillStore = create((set, get) => ({
         for (const [key, skill] of entries) {
             if (!skill.unlocked) return { key, ...skill };
         }
-        return null; // All unlocked
+        return null;
     },
 
     checkAndUnlock: (accuracy, wpm, averageWpm, letterStats) => {
@@ -104,18 +116,14 @@ const useSkillStore = create((set, get) => ({
             const skills = { ...s.skills };
             let changed = false;
 
-            // Find the next locked skill
             const entries = Object.entries(skills);
             for (const [key, skill] of entries) {
                 if (skill.unlocked) continue;
 
-                // Check previous skill is unlocked
                 const prevEntry = entries.find(([, sk]) => sk.level === skill.level - 1);
                 if (prevEntry && !prevEntry[1].unlocked) break;
 
-                // Check unlock conditions
                 if (accuracy >= 92 && wpm >= averageWpm) {
-                    // Check error rate for this skill's characters
                     const chars = skill.chars.split('');
                     let highErrorRate = false;
                     for (const c of chars) {
@@ -135,10 +143,11 @@ const useSkillStore = create((set, get) => ({
                         }
                     }
                 }
-                break; // Only check the next skill in line
+                break;
             }
 
             if (changed || skills !== s.skills) {
+                // Fire-and-forget save
                 saveSkills(skills);
             }
 
@@ -152,9 +161,10 @@ const useSkillStore = create((set, get) => ({
         set({ skills: fresh });
     },
 
-    reload: () => set({
-        skills: loadSkills() || { ...DEFAULT_SKILLS },
-    }),
+    reload: async () => {
+        const dbData = await loadSkills();
+        set({ skills: mergeSkills(dbData) });
+    },
 }));
 
 export default useSkillStore;
