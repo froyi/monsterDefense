@@ -1,7 +1,15 @@
 // Adaptive word generator
 // 70% normal words for current level, 30% targeting weak characters
 
-import { getWordsForLevel, allWords } from './germanWords';
+import * as germanWords from './germanWords';
+import * as englishWords from './englishWords';
+import useRewardStore from '../stores/useRewardStore';
+
+function getWordModule() {
+    const layout = useRewardStore.getState().keyboardLayout || 'de';
+    return layout === 'en' ? englishWords : germanWords;
+}
+
 
 /**
  * Calculate weakness weight for a character
@@ -49,7 +57,8 @@ function scoreWordForWeakness(word, weakChars) {
  */
 export function generateWord(letterStats, skillLevel) {
     const level = Math.max(1, Math.min(5, skillLevel));
-    const availableWords = getWordsForLevel(level);
+    const wordModule = getWordModule();
+    const availableWords = wordModule.getWordsForLevel(level);
 
     if (!availableWords.length) return 'test';
 

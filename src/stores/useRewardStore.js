@@ -30,6 +30,7 @@ const DEFAULT_REWARDS = {
     lastDailyChest: null,
     streak: 0,
     lastPlayDate: null,
+    keyboardLayout: 'de', // 'de' = German QWERTZ, 'en' = English QWERTY
 };
 
 function isSameDay(d1, d2) {
@@ -109,6 +110,15 @@ const useRewardStore = create((set, get) => ({
             if (item.category === 'effect') updated.activeEffect = itemId;
             if (item.category === 'background') updated.activeBackground = itemId;
 
+            const newState = { ...s, ...updated };
+            saveRewards(newState);
+            return updated;
+        });
+    },
+
+    setKeyboardLayout: (layout) => {
+        set(s => {
+            const updated = { keyboardLayout: layout };
             const newState = { ...s, ...updated };
             saveRewards(newState);
             return updated;

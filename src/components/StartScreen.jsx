@@ -8,6 +8,7 @@ import useAchievementStore from '../stores/useAchievementStore';
 import useDailyChallengeStore from '../stores/useDailyChallengeStore';
 import DailyChest from './DailyChest';
 import DailyChallengePanel from './DailyChallengePanel';
+import SettingsPanel from './SettingsPanel';
 
 const MONSTER_EMOJIS = ['👾', '👹', '🐉', '🦇', '👻', '🧟', '🐺', '🦑'];
 
@@ -25,8 +26,10 @@ function StartScreen() {
 
     const [showChest, setShowChest] = useState(false);
     const [showChallenge, setShowChallenge] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
     const unlockedCount = useAchievementStore(s => s.getUnlockedCount);
     const totalCount = useAchievementStore(s => s.getTotalCount);
+    const keyboardLayout = useRewardStore(s => s.keyboardLayout);
     const dailyChallenge = useDailyChallengeStore(s => s.challenge);
     const dailyCompleted = useDailyChallengeStore(s => s.completed);
     const dailyRewardClaimed = useDailyChallengeStore(s => s.rewardClaimed);
@@ -101,6 +104,11 @@ function StartScreen() {
                         {dailyCanClaim() && <span className="dc-reward-badge">🎁</span>}
                     </button>
                 )}
+                <button className="btn-nav" onClick={() => setShowSettings(true)} id="settings-btn">
+                    <span className="nav-icon">⚙️</span>
+                    Einstellungen
+                    <span className="layout-badge">{keyboardLayout === 'en' ? '🇬🇧' : '🇩🇪'}</span>
+                </button>
             </div>
 
             {/* Floating monster decoration */}
@@ -129,6 +137,7 @@ function StartScreen() {
 
             {showChest && <DailyChest onClose={() => setShowChest(false)} />}
             {showChallenge && <DailyChallengePanel onClose={() => setShowChallenge(false)} />}
+            {showSettings && <SettingsPanel onClose={() => setShowSettings(false)} />}
         </div>
     );
 }
