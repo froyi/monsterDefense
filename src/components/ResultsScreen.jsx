@@ -4,6 +4,7 @@ import useStatsStore from '../stores/useStatsStore';
 import useSkillStore from '../stores/useSkillStore';
 import useRewardStore from '../stores/useRewardStore';
 import useAchievementStore from '../stores/useAchievementStore';
+import useDailyChallengeStore from '../stores/useDailyChallengeStore';
 import { calculateCoins } from '../utils/scoring';
 
 function getMotivationalMessage(accuracy, wpm) {
@@ -119,9 +120,22 @@ function ResultsScreen() {
             roundsNoCastleDamage: noCastleDmgRounds,
             consecutivePerfectRounds: consecutivePerfect,
             totalDailyChests: streak || 0, // Approximate: streak correlates with chest claims
+            dailyChallengesCompleted: useDailyChallengeStore.getState().totalCompleted + (useDailyChallengeStore.getState().completed ? 1 : 0),
         };
 
         checkAchievements(achievementStats);
+
+        // ------ Update daily challenge progress ------
+        useDailyChallengeStore.getState().updateProgress({
+            wordsCompleted,
+            accuracy,
+            wpm,
+            maxCombo,
+            score,
+            castleHp,
+            wave,
+            averageWPM: avgWPM,
+        });
     }, []); // Run once on mount
 
     const nextSkill = getNextSkill();

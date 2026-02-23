@@ -89,6 +89,27 @@ export const ACHIEVEMENTS = {
         icon: '🖐️',
         check: (stats) => stats.unlockedSkills >= 7,
     },
+    daily_challenge_1: {
+        category: 'milestones',
+        name: 'Herausforderer',
+        description: 'Erste Tagesherausforderung gemeistert',
+        icon: '📋',
+        check: (stats) => stats.dailyChallengesCompleted >= 1,
+    },
+    daily_challenge_5: {
+        category: 'milestones',
+        name: 'Aufgaben-Held',
+        description: '5 Tagesherausforderungen gemeistert',
+        icon: '📝',
+        check: (stats) => stats.dailyChallengesCompleted >= 5,
+    },
+    daily_challenge_10: {
+        category: 'milestones',
+        name: 'Tagesmeister',
+        description: '10 Tagesherausforderungen gemeistert',
+        icon: '🗓️',
+        check: (stats) => stats.dailyChallengesCompleted >= 10,
+    },
 
     // ===================== GESCHWINDIGKEIT =====================
     wpm_15: {

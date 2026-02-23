@@ -274,3 +274,55 @@ export async function unlockAchievement(achievementKey) {
     if (error) console.warn('Failed to unlock achievement:', error);
 }
 
+// ==========================================
+// Daily Challenges (Supabase)
+// ==========================================
+
+export async function loadDailyChallenge(dateStr) {
+    if (!_profileId) return null;
+    const { data, error } = await supabase
+        .from('daily_challenges')
+        .select('*')
+        .eq('profile_id', _profileId)
+        .eq('challenge_date', dateStr)
+        .maybeSingle();
+    if (error) {
+        console.warn('Failed to load daily challenge:', error);
+        return null;
+    }
+    return data;
+}
+
+export async function saveDailyChallenge(dateStr, challengeKey, progress, target, completed, rewardClaimed) {
+    if (!_profileId) return;
+    const { error } = await supabase
+        .from('daily_challenges')
+        .upsert(
+            {
+                profile_id: _profileId,
+                challenge_date: dateStr,
+                challenge_key: challengeKey,
+                progress: Math.min(progress, target),
+                target,
+                completed,
+                reward_claimed: rewardClaimed,
+            },
+            { onConflict: 'profile_id,challenge_date' }
+        );
+    if (error) console.warn('Failed to save daily challenge:', error);
+}
+
+export async function countCompletedChallenges() {
+    if (!_profileId) return 0;
+    const { count, error } = await supabase
+        .from('daily_challenges')
+        .select('*', { count: 'exact', head: true })
+        .eq('profile_id', _profileId)
+        .eq('completed', true);
+    if (error) {
+        console.warn('Failed to count challenges:', error);
+        return 0;
+    }
+    return count || 0;
+}
+

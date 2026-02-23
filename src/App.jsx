@@ -5,6 +5,7 @@ import useStatsStore from './stores/useStatsStore';
 import useSkillStore from './stores/useSkillStore';
 import useRewardStore from './stores/useRewardStore';
 import useAchievementStore from './stores/useAchievementStore';
+import useDailyChallengeStore from './stores/useDailyChallengeStore';
 import ProfileScreen from './components/ProfileScreen';
 import StartScreen from './components/StartScreen';
 import GameScreen from './components/GameScreen';
@@ -57,6 +58,7 @@ function App() {
     const reloadSkills = useSkillStore(s => s.reload);
     const reloadRewards = useRewardStore(s => s.reload);
     const reloadAchievements = useAchievementStore(s => s.reload);
+    const reloadDailyChallenge = useDailyChallengeStore(s => s.reload);
 
     // Reload all stores when profile changes
     useEffect(() => {
@@ -65,6 +67,7 @@ function App() {
             reloadSkills();
             reloadRewards();
             reloadAchievements();
+            reloadDailyChallenge();
             useGameStore.getState().setPhase('menu');
         }
     }, [activeProfileId]);

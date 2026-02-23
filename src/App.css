@@ -1714,3 +1714,218 @@
         transform: scale(1);
     }
 }
+
+/* ==============================
+   Daily Challenge Panel
+   ============================== */
+.daily-challenge-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.daily-challenge-panel {
+    background: linear-gradient(145deg, rgba(20, 15, 45, 0.98), rgba(30, 20, 65, 0.98));
+    border: 2px solid rgba(255, 215, 0, 0.25);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    max-width: 440px;
+    width: 90%;
+    position: relative;
+    animation: scaleIn 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.08);
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.daily-challenge-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.daily-challenge-close:hover {
+    color: var(--text-primary);
+}
+
+.daily-challenge-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--space-md);
+}
+
+.daily-challenge-icon {
+    font-size: 28px;
+}
+
+.daily-challenge-title {
+    font-size: var(--font-size-xl);
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+}
+
+.daily-challenge-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
+}
+
+.dc-challenge-icon {
+    font-size: 36px;
+    flex-shrink: 0;
+}
+
+.dc-challenge-name {
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.dc-challenge-desc {
+    font-size: var(--font-size-md);
+    color: var(--text-muted);
+}
+
+/* Progress */
+.dc-progress-section {
+    margin-bottom: var(--space-md);
+}
+
+.dc-progress-bar {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.dc-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-purple));
+    border-radius: 6px;
+    transition: width 0.5s ease;
+}
+
+.dc-progress-fill.completed {
+    background: linear-gradient(90deg, var(--color-gold), #ffaa00);
+}
+
+.dc-progress-text {
+    text-align: center;
+    font-size: var(--font-size-md);
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.dc-complete {
+    color: var(--color-gold);
+    font-weight: 700;
+}
+
+/* Reward */
+.dc-reward-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(255, 215, 0, 0.06);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
+}
+
+.dc-reward-label {
+    color: var(--text-muted);
+    font-size: var(--font-size-md);
+}
+
+.dc-reward-value {
+    color: var(--color-gold);
+    font-weight: 700;
+    font-size: var(--font-size-lg);
+}
+
+.dc-claim-btn {
+    width: 100%;
+    margin-bottom: var(--space-sm);
+    font-size: var(--font-size-lg);
+    animation: pulseGlow 2s infinite;
+}
+
+.dc-claimed-message {
+    text-align: center;
+    font-size: var(--font-size-lg);
+    color: var(--color-gold);
+    font-weight: 700;
+    padding: var(--space-sm);
+    animation: scaleIn 0.4s ease;
+}
+
+.dc-already-claimed {
+    text-align: center;
+    font-size: var(--font-size-md);
+    color: var(--text-muted);
+    padding: var(--space-sm);
+}
+
+.dc-hint {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    font-style: italic;
+    padding: var(--space-sm) 0;
+}
+
+.dc-stats {
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    padding-top: var(--space-sm);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    margin-top: var(--space-sm);
+}
+
+/* Nav button badges */
+.dc-done-badge,
+.dc-reward-badge {
+    margin-left: 4px;
+    font-size: 14px;
+}
+
+.dc-glow {
+    border-color: var(--color-gold-dim) !important;
+}

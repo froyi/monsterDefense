@@ -5,7 +5,9 @@ import useSkillStore from '../stores/useSkillStore';
 import useRewardStore from '../stores/useRewardStore';
 import useProfileStore from '../stores/useProfileStore';
 import useAchievementStore from '../stores/useAchievementStore';
+import useDailyChallengeStore from '../stores/useDailyChallengeStore';
 import DailyChest from './DailyChest';
+import DailyChallengePanel from './DailyChallengePanel';
 
 const MONSTER_EMOJIS = ['👾', '👹', '🐉', '🦇', '👻', '🧟', '🐺', '🦑'];
 
@@ -22,8 +24,13 @@ function StartScreen() {
     const activeProfile = profileData();
 
     const [showChest, setShowChest] = useState(false);
+    const [showChallenge, setShowChallenge] = useState(false);
     const unlockedCount = useAchievementStore(s => s.getUnlockedCount);
     const totalCount = useAchievementStore(s => s.getTotalCount);
+    const dailyChallenge = useDailyChallengeStore(s => s.challenge);
+    const dailyCompleted = useDailyChallengeStore(s => s.completed);
+    const dailyRewardClaimed = useDailyChallengeStore(s => s.rewardClaimed);
+    const dailyCanClaim = useDailyChallengeStore(s => s.canClaimReward);
 
     const handleStart = () => {
         const level = getCurrentLevel();
@@ -81,6 +88,19 @@ function StartScreen() {
                         Tägliche Truhe
                     </button>
                 )}
+                {dailyChallenge && (
+                    <button
+                        className={`btn-nav${dailyCanClaim() ? ' dc-glow' : ''}`}
+                        onClick={() => setShowChallenge(true)}
+                        id="daily-challenge-btn"
+                        style={dailyCanClaim() ? { borderColor: 'var(--color-gold-dim)', animation: 'pulseGlow 2s infinite' } : {}}
+                    >
+                        <span className="nav-icon">📋</span>
+                        Tagesaufgabe
+                        {dailyCompleted && dailyRewardClaimed && <span className="dc-done-badge">✅</span>}
+                        {dailyCanClaim() && <span className="dc-reward-badge">🎁</span>}
+                    </button>
+                )}
             </div>
 
             {/* Floating monster decoration */}
@@ -108,6 +128,7 @@ function StartScreen() {
             </div>
 
             {showChest && <DailyChest onClose={() => setShowChest(false)} />}
+            {showChallenge && <DailyChallengePanel onClose={() => setShowChallenge(false)} />}
         </div>
     );
 }
