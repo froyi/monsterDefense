@@ -14,6 +14,7 @@ vi.mock('../src/utils/storage', () => ({
 }));
 
 import useRewardStore from '../src/stores/useRewardStore';
+import { saveRewards } from '../src/utils/storage';
 
 describe('useRewardStore', () => {
     beforeEach(() => {
@@ -122,6 +123,31 @@ describe('useRewardStore', () => {
         it('tracks total coins earned', () => {
             useRewardStore.getState().addCoins(100);
             expect(useRewardStore.getState().totalCoinsEarned).toBe(600);
+        });
+    });
+
+    describe('keyboardLayout', () => {
+        it('defaults to "de" (German)', () => {
+            expect(useRewardStore.getState().keyboardLayout).toBe('de');
+        });
+
+        it('can switch to "en" (English)', () => {
+            useRewardStore.getState().setKeyboardLayout('en');
+            expect(useRewardStore.getState().keyboardLayout).toBe('en');
+        });
+
+        it('can switch back to "de"', () => {
+            useRewardStore.getState().setKeyboardLayout('en');
+            useRewardStore.getState().setKeyboardLayout('de');
+            expect(useRewardStore.getState().keyboardLayout).toBe('de');
+        });
+
+        it('persists the layout change', () => {
+            saveRewards.mockClear();
+            useRewardStore.getState().setKeyboardLayout('en');
+            expect(saveRewards).toHaveBeenCalled();
+            const savedState = saveRewards.mock.calls[0][0];
+            expect(savedState.keyboardLayout).toBe('en');
         });
     });
 });

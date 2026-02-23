@@ -10,8 +10,9 @@ function SettingsPanel({ onClose }) {
     const setKeyboardLayout = useRewardStore(s => s.setKeyboardLayout);
 
     return (
-        <div className="overlay" onClick={onClose}>
-            <div className="settings-panel" onClick={e => e.stopPropagation()}>
+        <div className="settings-overlay" onClick={onClose}>
+            <div className="settings-modal" onClick={e => e.stopPropagation()}>
+                <button className="settings-close" onClick={onClose} aria-label="Schließen">✕</button>
                 <h2 className="settings-title">⚙️ Einstellungen</h2>
 
                 <div className="settings-section">
@@ -27,8 +28,10 @@ function SettingsPanel({ onClose }) {
                                 onClick={() => setKeyboardLayout(layout.id)}
                             >
                                 <span className="layout-flag">{layout.flag}</span>
-                                <span className="layout-name">{layout.name}</span>
-                                <span className="layout-desc">{layout.desc}</span>
+                                <div className="layout-info">
+                                    <span className="layout-name">{layout.name}</span>
+                                    <span className="layout-desc">{layout.desc}</span>
+                                </div>
                                 {keyboardLayout === layout.id && (
                                     <span className="layout-check">✓</span>
                                 )}
@@ -37,7 +40,7 @@ function SettingsPanel({ onClose }) {
                     </div>
                 </div>
 
-                <button className="btn-secondary" onClick={onClose} style={{ marginTop: 'var(--space-lg)' }}>
+                <button className="settings-back-btn" onClick={onClose}>
                     ← Zurück
                 </button>
             </div>
