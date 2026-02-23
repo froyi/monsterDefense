@@ -1,155 +1,164 @@
 // German words organized by difficulty level for typing practice
-// Level 1: Home row only (a s d f g h j k l ö)
-// Level 2: + Upper row (q w e r t z u i o p)
-// Level 3: + Lower row (y x c v b n m)
-// Level 4: + Umlauts (ä ö ü ß)
+// Level 1: Home row only (a s d f g h j k l ö)         → lowercase only
+// Level 2: + Upper row (q w e r t z u i o p)            → lowercase only
+// Level 3: + Lower row (y x c v b n m)                  → lowercase only
+// Level 4: + Umlauts (ä ö ü ß)                          → lowercase only
 // Level 5: + Capitalization, punctuation, full sentences
 
 export const wordsByLevel = {
-    // Level 1: ONLY uses home row chars: a s d f g h j k l ö
+    // ═════════════════════════════════════════════════════════
+    // Level 1: ONLY home row chars: a s d f g h j k l ö
+    // All lowercase. No: e,r,t,z,u,i,o,p,q,w,y,x,c,v,b,n,m
+    // ═════════════════════════════════════════════════════════
     1: [
-        // 3-letter
-        'das', 'als', 'had', 'lag', 'lad', 'gal', 'das', 'aal', 'ahs',
-        'alk', 'all', 'aas', 'gag', 'gas', 'hag', 'jak', 'sad',
-        // 4-letter
-        'fall', 'half', 'hall', 'lass', 'glas', 'kahl', 'fahl', 'gala',
-        'jagd', 'fass', 'haff', 'kaff', 'saal', 'saga', 'falk',
-        'flag', 'glad', 'alga', 'alfa', 'jfds', 'haff', 'lass',
-        'soll', 'jaja', 'doof', 'lash',
-        // 5-letter
-        'falls', 'salsa', 'kafka', 'kogda', 'sahsa', 'glasl',
-        'flash', 'lakhs', 'salah', 'galas', 'halag', 'falks',
-        'goals', 'fjäll', 'skala', 'kloss', 'dass', 'hals',
-        // 6-letter
-        'schall', 'lässig', 'hallsg', 'saaldg',
-        // Übungskombinationen (einfache Muster zum Üben)
-        'asdf', 'fdsa', 'jklö', 'ghjk', 'dfgh', 'lkjh',
-        'asdfjklö', 'fghj', 'dfjk', 'slkd', 'ghsl',
-        'ajsl', 'dkfö', 'ghal', 'jfds', 'klsa',
-        'asjl', 'dkfh', 'glsa', 'jödk', 'fhal',
-        'sdlk', 'fghd', 'jkal', 'salg', 'dakl',
-        'lasd', 'kadl', 'fölk', 'kjhg', 'dsaf',
-        'ölkj', 'gfds', 'hjkl', 'asda', 'löka',
-        'gladd', 'kalds', 'falld', 'hallf', 'jfdk',
-        'lahgs', 'falgs', 'akdls', 'gjhds', 'lökaf',
+        // Real German words (lowercase only, home row only)
+        'das', 'als', 'lag', 'gal', 'aal', 'aas', 'gas',
+        'fall', 'half', 'hall', 'lass', 'glas', 'kahl', 'fahl',
+        'jagd', 'fass', 'saal', 'saga', 'falk', 'hals',
+        'salsa', 'falls', 'lass', 'dass',
+        'flag', 'glad', 'alfa',
+        // Typing drills — home row patterns
+        'asdf', 'fdsa', 'ghjk', 'dfgh', 'lkjh', 'jklö',
+        'fghj', 'dfjk', 'slkd', 'ghsl', 'ajsl', 'ghal',
+        'jfds', 'klsa', 'asjl', 'dkfh', 'glsa', 'fhal',
+        'sdlk', 'fghd', 'jkal', 'salg', 'dakl', 'lasd',
+        'kadl', 'kjhg', 'dsaf', 'gfds', 'hjkl', 'asda',
+        'halsg', 'falgs', 'akdls', 'gjhds', 'saflk', 'dalhg',
+        'lahgs', 'jfalk', 'ghasd', 'kdsla', 'sfgla', 'dkhla',
+        'fjdks', 'slahg', 'ghfad', 'dhfka', 'jlsak', 'flaks',
+        'khalsg', 'sldhfg', 'fjkalg', 'dslakh',
     ],
+    // ═════════════════════════════════════════════════════════
     // Level 2: Home row + upper row (adds: q w e r t z u i o p)
+    // All lowercase. No capitals! No: y,x,c,v,b,n,m,ä,ü,ß
+    // ═════════════════════════════════════════════════════════
     2: [
-        // Tiere
-        'Tier', 'Reiher', 'Wolf', 'Pferd', 'Eule', 'Ziege', 'Tiger',
-        'Otter', 'Ratte', 'Igel', 'Stier', 'Geier', 'Kreuz',
-        // Natur
-        'Wolke', 'Wiese', 'Sturz', 'Regen', 'Teich', 'Stein', 'Holz',
-        'Erde', 'Wald', 'Luft', 'Welt', 'Frost', 'Reif', 'Quelle',
-        'Gras', 'Strauch',
-        // Essen
-        'Torte', 'Reis', 'Wurst', 'Topf', 'Suppe', 'Salat', 'Pilz',
-        'Soße', 'Zucker', 'Quark', 'Sahne', 'Frucht', 'Kruste',
-        'Tropfen', 'Gurke', 'Lauge',
-        // Haus & Dinge
-        'Turm', 'Dach', 'Rohr', 'Tisch', 'Stuhl', 'Tasse', 'Kiste',
-        'Leiter', 'Polster', 'Schale', 'Poster', 'Koffer', 'Puppe',
-        'Eimer', 'Spiegel', 'Uhr', 'Truhe', 'Kerze', 'Gitter',
-        // Adjektive
-        'leise', 'stolz', 'wild', 'froh', 'super', 'plus', 'frei',
-        'zart', 'still', 'weit', 'tief', 'grau', 'klug', 'roh',
-        'spitz', 'steif', 'locker', 'sicher', 'ehrlich',
-        // Verben
-        'laufe', 'steige', 'rufe', 'teile', 'rette', 'spiele',
-        'schreie', 'zeige', 'drehe', 'suche', 'frage', 'reise',
-        'treffe', 'werfe', 'pflege', 'lausche',
-        // abstrakt
-        'Zeit', 'Ziel', 'Kraft', 'Recht', 'Gleis', 'Preis', 'Platz',
-        'Punkt', 'Kreis', 'Stolz', 'Pflicht', 'Schutz', 'Feier',
-        'Quote', 'Route', 'Power', 'Sport', 'Quiz',
-        // Weitere
-        'Ritter', 'Wetter', 'Dieter', 'Peter', 'Ruder', 'Zeiger',
-        'Speise', 'Kleid', 'Feder', 'Lupe', 'Litze', 'List',
-        'Poet', 'Trick', 'Strip', 'Drift', 'Frost', 'Geist',
-        'Durst', 'Flucht', 'Furcht', 'Frucht', 'Rest', 'Test',
-        'Fest', 'Gericht', 'Spur', 'Eifer', 'Filter', 'Stoff',
+        // Simple words (all lowercase, no y/x/c/v/b/n/m/ä/ü/ß)
+        'art', 'kuh', 'irre', 'uhr', 'tor', 'los', 'rot', 'gut',
+        'das', 'der', 'die', 'ist', 'aus', 'weg', 'alt',
+        'reh', 'koi', 'eis', 'see', 'hai',
+        'wut', 'tod', 'lied', 'reis', 'risi', 'sold',
+        'treue', 'ideal', 'kleid', 'platz', 'wasser',
+        // Nature
+        'wald', 'erde', 'luft', 'frost', 'teig', 'heit',
+        'rost', 'staude', 'topf', 'gras', 'sturz', 'rad',
+        // Food
+        'reis', 'torte', 'salat', 'sosse', 'tee', 'sirup',
+        'quark', 'pilz', 'saft', 'wurst', 'lauge',
+        // Objects
+        'rohr', 'rad', 'hut', 'gold', 'teil', 'kiste',
+        'leiter', 'polster', 'poster', 'koffer', 'uhr',
+        'truhe', 'gitter', 'eifer', 'filter', 'stoff',
+        // Adjectives
+        'leise', 'stolz', 'wild', 'froh', 'still', 'weit',
+        'tief', 'grau', 'klug', 'roh', 'steif',
+        'frei', 'super', 'positir', 'plus', 'platt',
+        // Verbs (no b/n/m/c/v/x/y)
+        'laufe', 'steige', 'rufe', 'teile', 'rette',
+        'spielte', 'zeige', 'drehe', 'sugrade', 'frage',
+        'reise', 'leiste', 'wiege', 'weiss', 'sattle',
+        'spitze', 'stolpere', 'sitze', 'liege', 'ziehe',
+        'stehe', 'sitze', 'deute', 'greife', 'foehlte',
+        // Abstract
+        'zeit', 'ziel', 'kraft', 'eid', 'gleis', 'preis',
+        'kreis', 'pflug', 'quote', 'route', 'sport', 'quiz',
+        // More
+        'ritter', 'wetter', 'dieter', 'peter', 'ruder', 'zeiger',
+        'speise', 'kleid', 'feder', 'lupe', 'list',
+        'poet', 'geist', 'rest', 'test', 'festig',
+        'spur', 'stiefel', 'durst', 'herde',
     ],
-    // Level 3: Alle Buchstaben (adds: y x c v b n m)
+    // ═════════════════════════════════════════════════════════
+    // Level 3: All basic letters (adds: y x c v b n m)
+    // All lowercase. No: ä ü ß, no capitals
+    // ═════════════════════════════════════════════════════════
     3: [
-        // Tiere
-        'Biene', 'Vogel', 'Fuchs', 'Schwan', 'Chamäleon', 'Marder',
-        'Biber', 'Falke', 'Möwe', 'Dachs', 'Luchs', 'Barsch',
-        'Muschel', 'Spinne', 'Mücke', 'Bremse', 'Libelle',
-        // Natur
-        'Blume', 'Nebel', 'Sonne', 'Mond', 'Nacht', 'Morgen',
-        'Abend', 'Blitz', 'Donner', 'Sommer', 'Herbst', 'Schnee',
-        'Flocke', 'Strand', 'Vulkan', 'Gebirge', 'Berge', 'Insel',
-        'Bucht', 'Schlamm', 'Moos', 'Blatt', 'Stamm', 'Rinde',
-        // Essen & Trinken
-        'Banane', 'Mango', 'Melone', 'Birne', 'Mandel', 'Butter',
-        'Braten', 'Bonbon', 'Schinken', 'Kuchen', 'Creme', 'Milch',
-        'Vanille', 'Brezel', 'Marmelade', 'Nudel', 'Becher',
-        // Menschen & Berufe
-        'Mutter', 'Vater', 'Bruder', 'Nachbar', 'Bauer', 'Clown',
-        'Maler', 'Bäcker', 'Mechanik', 'Magier', 'Boxer', 'Vampir',
-        'Monster', 'Krieger', 'Ritter', 'Bürger',
-        // Dinge
-        'Mantel', 'Fenster', 'Bunker', 'Decke', 'Lampe', 'Münze',
-        'Kammer', 'Bombe', 'Messer', 'Anker', 'Balken', 'Bank',
-        'Brücke', 'Schirm', 'Maske', 'Becken', 'Flamme', 'Kabel',
-        // Adjektive & Verben
-        'mutig', 'brav', 'nett', 'clever', 'böse', 'schmal',
+        // Animals
+        'biene', 'vogel', 'fuchs', 'schwan', 'marder',
+        'biber', 'falke', 'dachs', 'luchs', 'barsch',
+        'muschel', 'spinne', 'bremse', 'libelle',
+        // Nature
+        'blume', 'nebel', 'sonne', 'mond', 'nacht', 'morgen',
+        'abend', 'blitz', 'donner', 'sommer', 'herbst', 'schnee',
+        'flocke', 'strand', 'vulkan', 'berge', 'insel',
+        'bucht', 'schlamm', 'moos', 'blatt', 'stamm', 'rinde',
+        // Food
+        'banane', 'mango', 'melone', 'birne', 'mandel', 'butter',
+        'braten', 'bonbon', 'schinken', 'kuchen', 'creme', 'milch',
+        'vanille', 'brezel', 'marmelade', 'nudel', 'becher',
+        // People
+        'mutter', 'vater', 'bruder', 'nachbar', 'bauer', 'clown',
+        'maler', 'mechanik', 'magier', 'boxer', 'vampir',
+        'monster', 'krieger', 'ritter',
+        // Objects
+        'mantel', 'fenster', 'bunker', 'decke', 'lampe',
+        'kammer', 'bombe', 'messer', 'anker', 'balken', 'bank',
+        'schirm', 'maske', 'becken', 'flamme', 'kabel',
+        // Adjectives
+        'mutig', 'brav', 'nett', 'clever', 'schmal',
         'blank', 'bunt', 'dumm', 'sanft', 'gemein', 'nackt',
+        // Verbs
         'mixen', 'boxen', 'campen', 'binden', 'finden', 'nennen',
-        'rennen', 'kennen', 'können', 'messen', 'denken', 'merken',
-        // Abstrakt
-        'Nummer', 'Examen', 'Chance', 'Bonus', 'Comic', 'Bild',
-        'Nutzen', 'Menge', 'Cent', 'Bronze', 'Methode', 'Moment',
-        'Verb', 'Symbol', 'Syntax', 'System', 'Maxime', 'Manöver',
+        'rennen', 'kennen', 'messen', 'denken', 'merken',
+        'schwimmen', 'springen', 'klettern', 'wandern',
+        // Abstract
+        'nummer', 'examen', 'chance', 'bonus', 'comic', 'bild',
+        'nutzen', 'menge', 'cent', 'bronze', 'methode', 'moment',
+        'verb', 'symbol', 'syntax', 'system', 'maxime',
         // Fantasy
-        'Drachen', 'Hexe', 'Nixe', 'Zwerg', 'Burg', 'Schwert',
-        'Magie', 'Zaubern', 'Kobold', 'Schild', 'Verlies', 'Macht',
-        'Kristall', 'Amulett', 'Elixier', 'Feuerball', 'Schatten',
+        'drachen', 'hexe', 'nixe', 'zwerg', 'burg', 'schwert',
+        'magie', 'zaubern', 'kobold', 'schild', 'verlies', 'macht',
+        'kristall', 'amulett', 'elixier', 'feuerball', 'schatten',
     ],
-    // Level 4: + Umlauts (ä ö ü ß)
+    // ═════════════════════════════════════════════════════════
+    // Level 4: + Umlauts (ä ö ü ß) — still all lowercase
+    // ═════════════════════════════════════════════════════════
     4: [
-        // ü-Wörter
-        'über', 'müde', 'kühl', 'Glück', 'Stück', 'Brücke', 'Hütte',
-        'hübsch', 'Würfel', 'Flüsse', 'Schlüssel', 'Füße', 'Tür',
-        'Hügel', 'Büffel', 'Küste', 'Wüste', 'Düne', 'Lücke',
-        'Mühle', 'Gürtel', 'Blüte', 'Übung', 'Rücken', 'Kürbis',
-        'Münster', 'Schüler', 'Bücher', 'Küche', 'Gemüse', 'Grüße',
+        // ü-words
+        'über', 'müde', 'kühl', 'glück', 'stück', 'brücke', 'hütte',
+        'hübsch', 'würfel', 'flüsse', 'schlüssel', 'füße', 'tür',
+        'hügel', 'büffel', 'küste', 'wüste', 'düne', 'lücke',
+        'mühle', 'gürtel', 'blüte', 'übung', 'rücken', 'kürbis',
+        'münster', 'schüler', 'bücher', 'küche', 'gemüse', 'grüße',
         'fühlen', 'prüfen', 'spülen', 'würzen', 'schütteln',
         'flüstern', 'überlegen', 'wünschen',
-        // ä-Wörter
-        'Bär', 'Käse', 'Säge', 'Träne', 'Ärger', 'Äpfel', 'Kälte',
-        'Bäcker', 'Gärten', 'Hände', 'Kräfte', 'Mäuse', 'Räder',
-        'Stärke', 'Wärme', 'Bänke', 'Fächer', 'Gläser', 'Blätter',
-        'Mädchen', 'Nähe', 'Zähne', 'Fähre', 'Krähen', 'Stätte',
-        'Gewässer', 'Schädel', 'Wäsche', 'Knäuel', 'Käfig',
+        // ä-words
+        'bär', 'käse', 'säge', 'träne', 'ärger', 'äpfel', 'kälte',
+        'bäcker', 'gärten', 'hände', 'kräfte', 'mäuse', 'räder',
+        'stärke', 'wärme', 'bänke', 'fächer', 'gläser', 'blätter',
+        'mädchen', 'nähe', 'zähne', 'fähre', 'krähen', 'stätte',
+        'gewässer', 'schädel', 'wäsche', 'knäuel', 'käfig',
         'wählen', 'erzählen', 'kämpfen', 'jäten', 'blättern',
-        // ö-Wörter
-        'Öl', 'böse', 'Größe', 'Hörner', 'Löffel', 'Möhre',
-        'Öffnung', 'Löwe', 'Höhle', 'Vögel', 'Könige', 'Flöte',
-        'Böden', 'Wörter', 'Nöte', 'Töne', 'Größen', 'Höhen',
-        'Söhne', 'Knöpfe', 'Schöpfer', 'Stöcke', 'Blöcke',
+        // ö-words
+        'öl', 'böse', 'größe', 'hörner', 'löffel', 'möhre',
+        'öffnung', 'löwe', 'höhle', 'vögel', 'könige', 'flöte',
+        'böden', 'wörter', 'nöte', 'töne', 'größen', 'höhen',
+        'söhne', 'knöpfe', 'schöpfer', 'stöcke', 'blöcke',
         'mögen', 'hören', 'stören', 'zögern', 'fördern',
-        // ß-Wörter
-        'Straße', 'Fußball', 'Maße', 'Spaß', 'Grüße', 'Fuß',
-        'Gruß', 'Floß', 'Stoß', 'Soße', 'groß', 'weiß', 'heiß',
+        // ß-words
+        'straße', 'fußball', 'maße', 'spaß', 'grüße', 'fuß',
+        'gruß', 'floß', 'stoß', 'soße', 'groß', 'weiß', 'heiß',
         'süß', 'fleißig', 'draußen', 'außen', 'mäßig',
         'reißen', 'beißen', 'genießen', 'schließen', 'gießen',
-        // Kombinations-Wörter
-        'Frühstück', 'Ausrüstung', 'Gemütlich', 'Vergnügen',
-        'Überraschung', 'Verständnis', 'Erklärung', 'Äußerung',
-        'Veränderung', 'Geräusch', 'Eigentümer',
+        // Combined
+        'frühstück', 'ausrüstung', 'gemütlich', 'vergnügen',
+        'überraschung', 'verständnis', 'erklärung', 'äußerung',
+        'veränderung', 'geräusch', 'eigentümer',
     ],
-    // Level 5: + Großschreibung + Satzzeichen + ganze Sätze
+    // ═════════════════════════════════════════════════════════
+    // Level 5: + Capitalization + punctuation + full sentences
+    // This is the ONLY level where uppercase letters appear
+    // ═════════════════════════════════════════════════════════
     5: [
-        // Kurze Ausrufe
+        // Short exclamations
         'Hallo!', 'Hilfe!', 'Stopp!', 'Super!', 'Jawohl!', 'Bravo!',
         'Hurra!', 'Achtung!', 'Feuer!', 'Weiter!', 'Fertig!',
-        // Fragen
+        // Questions
         'Wie geht es dir?', 'Was ist das?', 'Wer war das?',
         'Wo bist du?', 'Warum nicht?', 'Wie heißt du?',
         'Wann fängt es an?', 'Welches Tier?', 'Wie viel?',
         'Kannst du das?', 'Hast du Zeit?', 'Spielst du mit?',
-        // Aussagen
+        // Statements
         'Das ist toll!', 'Ich bin bereit.', 'Los geht es!',
         'Alles klar.', 'Danke schön!', 'Bitte sehr.',
         'Auf Wiedersehen!', 'Viel Erfolg!', 'Gute Nacht!',
@@ -158,7 +167,7 @@ export const wordsByLevel = {
         'Heute ist Montag.', 'Morgen wird besser.', 'Nicht aufgeben!',
         'Ich übe fleißig.', 'Die Burg ist sicher.', 'Monster besiegt!',
         'Schnell tippen!', 'Genau richtig.', 'Prima Leistung!',
-        // Mittellange Sätze
+        // Medium sentences
         'Der Ritter kämpft mutig.', 'Die Burg steht fest.',
         'Ein Drache fliegt vorbei.', 'Der Held rettet das Land.',
         'Das Schwert leuchtet hell.', 'Die Hexe braut Tränke.',
@@ -166,7 +175,7 @@ export const wordsByLevel = {
         'Die Mauer hält stand.', 'Der Turm wackelt stark.',
         'Feuer und Flamme!', 'Blitz und Donner!',
         'Mut und Tapferkeit.', 'Stärke und Ausdauer.',
-        // Längere Sätze
+        // Longer sentences
         'Jeder Tag wird besser als der letzte.',
         'Übung macht den Meister, glaub mir!',
         'Der schnelle Fuchs springt hoch.',
@@ -200,3 +209,14 @@ export const levelCharacters = {
     4: 'äöüß'.split(''),
     5: '.,!?:;-ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ'.split(''),
 };
+
+// All allowed characters up to (and including) a given level
+export function getAllowedCharsForLevel(maxLevel) {
+    const chars = new Set();
+    for (let i = 1; i <= Math.min(maxLevel, 5); i++) {
+        for (const c of levelCharacters[i]) {
+            chars.add(c);
+        }
+    }
+    return chars;
+}
