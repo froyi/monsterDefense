@@ -1,8 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
+import useRewardStore from '../stores/useRewardStore';
 
-const MONSTER_EMOJIS = ['👾', '👹', '🐉', '🦇', '👻', '🧟', '🐺', '🦑', '🐙', '🦖'];
+const DEFAULT_EMOJIS = ['👾', '👹', '🐉', '🦇', '👻', '🧟', '🐺', '🦑', '🐙', '🦖'];
+
+// Skin-specific emoji sets for variety
+const SKIN_EMOJIS = {
+    monster_ice: ['🧊', '❄️', '🥶', '⛄', '🌨️', '💎', '🐧', '🦣'],
+    monster_fire: ['🔥', '🌋', '☄️', '🐲', '🦎', '👹', '💀', '😈'],
+    monster_shadow: ['👤', '👥', '🌑', '🦇', '🕷️', '🫥', '👻', '🌚'],
+};
 
 function Monster({ monster, isActive, index }) {
+    const activeSkin = useRewardStore(s => s.activeMonsterSkin);
     const [isHit, setIsHit] = useState(false);
     const prevTyped = useRef(monster.typed);
 
@@ -17,7 +26,8 @@ function Monster({ monster, isActive, index }) {
 
     if (!monster.spawned && !monster.defeated) return null;
 
-    const emoji = MONSTER_EMOJIS[monster.id % MONSTER_EMOJIS.length];
+    const emojiSet = activeSkin && SKIN_EMOJIS[activeSkin] ? SKIN_EMOJIS[activeSkin] : DEFAULT_EMOJIS;
+    const emoji = emojiSet[monster.id % emojiSet.length];
     const hpPercent = (monster.hp / monster.maxHp) * 100;
 
     // Position: distribute vertically based on index
