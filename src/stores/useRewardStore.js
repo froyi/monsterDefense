@@ -4,19 +4,19 @@ import { loadRewards, saveRewards } from '../utils/storage';
 
 const SHOP_ITEMS = [
     // Monster Skins
-    { id: 'monster_ice', name: 'Eis-Monster', category: 'monster', price: 50, emoji: '🧊' },
-    { id: 'monster_fire', name: 'Feuer-Monster', category: 'monster', price: 80, emoji: '🔥' },
-    { id: 'monster_shadow', name: 'Schatten-Monster', category: 'monster', price: 120, emoji: '👤' },
+    { id: 'monster_ice', name: 'Eis-Monster', category: 'monster', price: 150, emoji: '🧊' },
+    { id: 'monster_fire', name: 'Feuer-Monster', category: 'monster', price: 250, emoji: '🔥' },
+    { id: 'monster_shadow', name: 'Schatten-Monster', category: 'monster', price: 400, emoji: '👤' },
     // Castle Skins
-    { id: 'castle_crystal', name: 'Kristallburg', category: 'castle', price: 100, emoji: '💎' },
-    { id: 'castle_volcano', name: 'Vulkanburg', category: 'castle', price: 150, emoji: '🌋' },
+    { id: 'castle_crystal', name: 'Kristallburg', category: 'castle', price: 300, emoji: '💎' },
+    { id: 'castle_volcano', name: 'Vulkanburg', category: 'castle', price: 500, emoji: '🌋' },
     // Effects
-    { id: 'effect_lightning', name: 'Blitz-Effekt', category: 'effect', price: 60, emoji: '⚡' },
-    { id: 'effect_stars', name: 'Sternenstaub', category: 'effect', price: 70, emoji: '✨' },
+    { id: 'effect_lightning', name: 'Blitz-Effekt', category: 'effect', price: 175, emoji: '⚡' },
+    { id: 'effect_stars', name: 'Sternenstaub', category: 'effect', price: 200, emoji: '✨' },
     // Backgrounds
-    { id: 'bg_forest', name: 'Zauberwald', category: 'background', price: 90, emoji: '🌲' },
-    { id: 'bg_space', name: 'Weltraum', category: 'background', price: 110, emoji: '🚀' },
-    { id: 'bg_underwater', name: 'Unterwasser', category: 'background', price: 130, emoji: '🌊' },
+    { id: 'bg_forest', name: 'Zauberwald', category: 'background', price: 250, emoji: '🌲' },
+    { id: 'bg_space', name: 'Weltraum', category: 'background', price: 350, emoji: '🚀' },
+    { id: 'bg_underwater', name: 'Unterwasser', category: 'background', price: 450, emoji: '🌊' },
 ];
 
 const DEFAULT_REWARDS = {
@@ -135,8 +135,8 @@ const useRewardStore = create((set, get) => ({
         const state = get();
         if (!state.canClaimDailyChest()) return 0;
 
-        const baseReward = 15;
-        const streakBonus = Math.min(state.streak * 3, 30);
+        const baseReward = 10;
+        const streakBonus = Math.min(state.streak * 2, 20);
         const reward = baseReward + streakBonus;
 
         set(s => {

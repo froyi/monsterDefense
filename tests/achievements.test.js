@@ -31,8 +31,8 @@ describe('ACHIEVEMENT_CATEGORIES', () => {
 });
 
 describe('ACHIEVEMENTS', () => {
-    it('has at least 40 achievements', () => {
-        expect(Object.keys(ACHIEVEMENTS).length).toBeGreaterThanOrEqual(40);
+    it('has at least 35 achievements', () => {
+        expect(Object.keys(ACHIEVEMENTS).length).toBeGreaterThanOrEqual(35);
     });
 
     it('TOTAL_ACHIEVEMENTS matches actual count', () => {
@@ -67,17 +67,32 @@ describe('ACHIEVEMENTS', () => {
 });
 
 // ============================================================
-// Achievement Check Functions
+// Achievement Check Functions (with rebalanced thresholds)
 // ============================================================
 describe('Achievement check functions', () => {
-    it('words_10 unlocks at 10 words', () => {
-        expect(ACHIEVEMENTS.words_10.check({ totalWordsDefeated: 9 })).toBe(false);
-        expect(ACHIEVEMENTS.words_10.check({ totalWordsDefeated: 10 })).toBe(true);
+    it('words_25 unlocks at 25 words', () => {
+        expect(ACHIEVEMENTS.words_25.check({ totalWordsDefeated: 24 })).toBe(false);
+        expect(ACHIEVEMENTS.words_25.check({ totalWordsDefeated: 25 })).toBe(true);
     });
 
-    it('wpm_25 unlocks at 25 WPM', () => {
-        expect(ACHIEVEMENTS.wpm_25.check({ bestWPM: 24 })).toBe(false);
-        expect(ACHIEVEMENTS.wpm_25.check({ bestWPM: 25 })).toBe(true);
+    it('words_1000 unlocks at 1000 words', () => {
+        expect(ACHIEVEMENTS.words_1000.check({ totalWordsDefeated: 999 })).toBe(false);
+        expect(ACHIEVEMENTS.words_1000.check({ totalWordsDefeated: 1000 })).toBe(true);
+    });
+
+    it('rounds_10 unlocks at 10 rounds', () => {
+        expect(ACHIEVEMENTS.rounds_10.check({ totalRounds: 9 })).toBe(false);
+        expect(ACHIEVEMENTS.rounds_10.check({ totalRounds: 10 })).toBe(true);
+    });
+
+    it('wpm_30 unlocks at 30 WPM', () => {
+        expect(ACHIEVEMENTS.wpm_30.check({ bestWPM: 29 })).toBe(false);
+        expect(ACHIEVEMENTS.wpm_30.check({ bestWPM: 30 })).toBe(true);
+    });
+
+    it('wpm_80 unlocks at 80 WPM', () => {
+        expect(ACHIEVEMENTS.wpm_80.check({ bestWPM: 79 })).toBe(false);
+        expect(ACHIEVEMENTS.wpm_80.check({ bestWPM: 80 })).toBe(true);
     });
 
     it('accuracy_100 unlocks at 100%', () => {
@@ -90,9 +105,9 @@ describe('Achievement check functions', () => {
         expect(ACHIEVEMENTS.streak_7.check({ currentStreak: 7 })).toBe(true);
     });
 
-    it('combo_50 unlocks at 50 combo', () => {
-        expect(ACHIEVEMENTS.combo_50.check({ bestCombo: 49 })).toBe(false);
-        expect(ACHIEVEMENTS.combo_50.check({ bestCombo: 50 })).toBe(true);
+    it('combo_60 unlocks at 60 combo', () => {
+        expect(ACHIEVEMENTS.combo_60.check({ bestCombo: 59 })).toBe(false);
+        expect(ACHIEVEMENTS.combo_60.check({ bestCombo: 60 })).toBe(true);
     });
 
     it('night_owl unlocks when played late', () => {
@@ -105,9 +120,14 @@ describe('Achievement check functions', () => {
         expect(ACHIEVEMENTS.first_game.check({ totalRounds: 1 })).toBe(true);
     });
 
-    it('daily_challenge_1 unlocks after 1 completed challenge', () => {
-        expect(ACHIEVEMENTS.daily_challenge_1.check({ dailyChallengesCompleted: 0 })).toBe(false);
-        expect(ACHIEVEMENTS.daily_challenge_1.check({ dailyChallengesCompleted: 1 })).toBe(true);
+    it('daily_challenge_3 unlocks after 3 completed challenges', () => {
+        expect(ACHIEVEMENTS.daily_challenge_3.check({ dailyChallengesCompleted: 2 })).toBe(false);
+        expect(ACHIEVEMENTS.daily_challenge_3.check({ dailyChallengesCompleted: 3 })).toBe(true);
+    });
+
+    it('coins_500 unlocks at 500 total coins', () => {
+        expect(ACHIEVEMENTS.coins_500.check({ totalCoinsEarned: 499 })).toBe(false);
+        expect(ACHIEVEMENTS.coins_500.check({ totalCoinsEarned: 500 })).toBe(true);
     });
 
     it('skills_all unlocks with 7 skills', () => {

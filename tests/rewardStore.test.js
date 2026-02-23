@@ -19,8 +19,8 @@ import { saveRewards } from '../src/utils/storage';
 describe('useRewardStore', () => {
     beforeEach(() => {
         useRewardStore.setState({
-            coins: 500,
-            totalCoinsEarned: 500,
+            coins: 1000,
+            totalCoinsEarned: 1000,
             ownedItems: [],
             activeMonsterSkin: null,
             activeCastleSkin: null,
@@ -34,8 +34,8 @@ describe('useRewardStore', () => {
 
     describe('buyItem', () => {
         it('deducts coins on purchase', () => {
-            useRewardStore.getState().buyItem('monster_ice'); // 50 coins
-            expect(useRewardStore.getState().coins).toBe(450);
+            useRewardStore.getState().buyItem('monster_ice'); // 150 coins
+            expect(useRewardStore.getState().coins).toBe(850);
         });
 
         it('adds item to ownedItems', () => {
@@ -47,12 +47,12 @@ describe('useRewardStore', () => {
             useRewardStore.getState().buyItem('monster_ice');
             const result = useRewardStore.getState().buyItem('monster_ice');
             expect(result).toBe(false);
-            expect(useRewardStore.getState().coins).toBe(450); // no double charge
+            expect(useRewardStore.getState().coins).toBe(850); // no double charge
         });
 
         it('prevents buying when insufficient coins', () => {
             useRewardStore.setState({ coins: 10 });
-            const result = useRewardStore.getState().buyItem('monster_ice'); // costs 50
+            const result = useRewardStore.getState().buyItem('monster_ice'); // costs 150
             expect(result).toBe(false);
         });
 
@@ -117,12 +117,12 @@ describe('useRewardStore', () => {
     describe('addCoins', () => {
         it('adds coins to balance', () => {
             useRewardStore.getState().addCoins(100);
-            expect(useRewardStore.getState().coins).toBe(600);
+            expect(useRewardStore.getState().coins).toBe(1100);
         });
 
         it('tracks total coins earned', () => {
             useRewardStore.getState().addCoins(100);
-            expect(useRewardStore.getState().totalCoinsEarned).toBe(600);
+            expect(useRewardStore.getState().totalCoinsEarned).toBe(1100);
         });
     });
 

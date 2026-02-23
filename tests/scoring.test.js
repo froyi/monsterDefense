@@ -82,22 +82,22 @@ describe('calculateWordScore', () => {
 // calculateCoins
 // ============================================================
 describe('calculateCoins', () => {
-    it('gives base coins (score / 50) + accuracy bonus', () => {
-        // 500 / 50 = 10 base + 5 accuracy bonus (>= 95)
-        expect(calculateCoins(500, 95)).toBe(15);
+    it('gives base coins (score / 100) + accuracy bonus', () => {
+        // 500 / 100 = 5 base + 3 accuracy bonus (>= 95)
+        expect(calculateCoins(500, 95)).toBe(8);
     });
 
     it('gives lower bonus for 90-94% accuracy', () => {
-        expect(calculateCoins(500, 90)).toBe(13); // 10 + 3
-        expect(calculateCoins(500, 94)).toBe(13);
+        expect(calculateCoins(500, 90)).toBe(7); // 5 + 2
+        expect(calculateCoins(500, 94)).toBe(7);
     });
 
-    it('gives minimal bonus for < 90% accuracy', () => {
-        expect(calculateCoins(500, 89)).toBe(11); // 10 + 1
+    it('gives no bonus for < 90% accuracy', () => {
+        expect(calculateCoins(500, 89)).toBe(5); // 5 + 0
     });
 
     it('handles 0 score', () => {
-        expect(calculateCoins(0, 100)).toBe(5); // 0 + 5
+        expect(calculateCoins(0, 100)).toBe(3); // 0 + 3
     });
 });
 

@@ -12,75 +12,75 @@ export const ACHIEVEMENT_CATEGORIES = {
 
 export const ACHIEVEMENTS = {
     // ===================== MEILENSTEINE =====================
-    words_10: {
+    words_25: {
         category: 'milestones',
         name: 'Erste Schritte',
-        description: '10 Wörter besiegt',
+        description: '25 Wörter besiegt',
         icon: '📝',
-        check: (stats) => stats.totalWordsDefeated >= 10,
-    },
-    words_50: {
-        category: 'milestones',
-        name: 'Wort-Lehrling',
-        description: '50 Wörter besiegt',
-        icon: '📖',
-        check: (stats) => stats.totalWordsDefeated >= 50,
+        check: (stats) => stats.totalWordsDefeated >= 25,
     },
     words_100: {
         category: 'milestones',
-        name: 'Wort-Geselle',
+        name: 'Wort-Lehrling',
         description: '100 Wörter besiegt',
-        icon: '📚',
+        icon: '📖',
         check: (stats) => stats.totalWordsDefeated >= 100,
     },
-    words_500: {
+    words_250: {
         category: 'milestones',
-        name: 'Wort-Meister',
-        description: '500 Wörter besiegt',
-        icon: '🏅',
-        check: (stats) => stats.totalWordsDefeated >= 500,
+        name: 'Wort-Geselle',
+        description: '250 Wörter besiegt',
+        icon: '📚',
+        check: (stats) => stats.totalWordsDefeated >= 250,
     },
     words_1000: {
         category: 'milestones',
-        name: 'Wort-Legende',
+        name: 'Wort-Meister',
         description: '1000 Wörter besiegt',
-        icon: '👑',
+        icon: '🏅',
         check: (stats) => stats.totalWordsDefeated >= 1000,
     },
-    rounds_5: {
+    words_2500: {
+        category: 'milestones',
+        name: 'Wort-Legende',
+        description: '2500 Wörter besiegt',
+        icon: '👑',
+        check: (stats) => stats.totalWordsDefeated >= 2500,
+    },
+    rounds_10: {
         category: 'milestones',
         name: 'Verteidiger',
-        description: '5 Runden gespielt',
+        description: '10 Runden gespielt',
         icon: '🛡️',
-        check: (stats) => stats.totalRounds >= 5,
+        check: (stats) => stats.totalRounds >= 10,
     },
-    rounds_25: {
+    rounds_50: {
         category: 'milestones',
         name: 'Burgwächter',
-        description: '25 Runden gespielt',
+        description: '50 Runden gespielt',
         icon: '⚔️',
-        check: (stats) => stats.totalRounds >= 25,
+        check: (stats) => stats.totalRounds >= 50,
     },
-    rounds_100: {
+    rounds_200: {
         category: 'milestones',
         name: 'Kriegsherr',
-        description: '100 Runden gespielt',
+        description: '200 Runden gespielt',
         icon: '🏰',
-        check: (stats) => stats.totalRounds >= 100,
+        check: (stats) => stats.totalRounds >= 200,
     },
-    coins_100: {
+    coins_500: {
         category: 'milestones',
         name: 'Sparschwein',
-        description: '100 Münzen gesammelt (gesamt)',
+        description: '500 Münzen gesammelt (gesamt)',
         icon: '🐷',
-        check: (stats) => stats.totalCoinsEarned >= 100,
+        check: (stats) => stats.totalCoinsEarned >= 500,
     },
-    coins_1000: {
+    coins_3000: {
         category: 'milestones',
         name: 'Schatzkammer',
-        description: '1000 Münzen gesammelt (gesamt)',
+        description: '3000 Münzen gesammelt (gesamt)',
         icon: '💰',
-        check: (stats) => stats.totalCoinsEarned >= 1000,
+        check: (stats) => stats.totalCoinsEarned >= 3000,
     },
     skills_all: {
         category: 'milestones',
@@ -89,77 +89,77 @@ export const ACHIEVEMENTS = {
         icon: '🖐️',
         check: (stats) => stats.unlockedSkills >= 7,
     },
-    daily_challenge_1: {
+    daily_challenge_3: {
         category: 'milestones',
         name: 'Herausforderer',
-        description: 'Erste Tagesherausforderung gemeistert',
+        description: '3 Tagesherausforderungen gemeistert',
         icon: '📋',
-        check: (stats) => stats.dailyChallengesCompleted >= 1,
-    },
-    daily_challenge_5: {
-        category: 'milestones',
-        name: 'Aufgaben-Held',
-        description: '5 Tagesherausforderungen gemeistert',
-        icon: '📝',
-        check: (stats) => stats.dailyChallengesCompleted >= 5,
+        check: (stats) => stats.dailyChallengesCompleted >= 3,
     },
     daily_challenge_10: {
         category: 'milestones',
-        name: 'Tagesmeister',
+        name: 'Aufgaben-Held',
         description: '10 Tagesherausforderungen gemeistert',
-        icon: '🗓️',
+        icon: '📝',
         check: (stats) => stats.dailyChallengesCompleted >= 10,
+    },
+    daily_challenge_25: {
+        category: 'milestones',
+        name: 'Tagesmeister',
+        description: '25 Tagesherausforderungen gemeistert',
+        icon: '🗓️',
+        check: (stats) => stats.dailyChallengesCompleted >= 25,
     },
 
     // ===================== GESCHWINDIGKEIT =====================
-    wpm_15: {
+    wpm_20: {
         category: 'speed',
         name: 'Flotte Finger',
-        description: '15 WPM in einer Runde',
+        description: '20 WPM in einer Runde',
         icon: '🐢',
-        check: (stats) => stats.bestWPM >= 15,
+        check: (stats) => stats.bestWPM >= 20,
     },
-    wpm_25: {
+    wpm_30: {
         category: 'speed',
         name: 'Schnelltipper',
-        description: '25 WPM in einer Runde',
+        description: '30 WPM in einer Runde',
         icon: '🐇',
-        check: (stats) => stats.bestWPM >= 25,
+        check: (stats) => stats.bestWPM >= 30,
     },
-    wpm_35: {
+    wpm_45: {
         category: 'speed',
         name: 'Blitzfinger',
-        description: '35 WPM in einer Runde',
+        description: '45 WPM in einer Runde',
         icon: '⚡',
-        check: (stats) => stats.bestWPM >= 35,
+        check: (stats) => stats.bestWPM >= 45,
     },
-    wpm_50: {
+    wpm_60: {
         category: 'speed',
         name: 'Tipp-Turbo',
-        description: '50 WPM in einer Runde',
+        description: '60 WPM in einer Runde',
         icon: '🚀',
-        check: (stats) => stats.bestWPM >= 50,
+        check: (stats) => stats.bestWPM >= 60,
     },
-    wpm_75: {
+    wpm_80: {
         category: 'speed',
         name: 'Tastatur-Legende',
-        description: '75 WPM in einer Runde',
+        description: '80 WPM in einer Runde',
         icon: '🌟',
-        check: (stats) => stats.bestWPM >= 75,
-    },
-    score_500: {
-        category: 'speed',
-        name: 'Punktejäger',
-        description: '500 Punkte in einer Runde',
-        icon: '💎',
-        check: (stats) => stats.bestScore >= 500,
+        check: (stats) => stats.bestWPM >= 80,
     },
     score_1000: {
         category: 'speed',
-        name: 'Punkte-König',
+        name: 'Punktejäger',
         description: '1000 Punkte in einer Runde',
-        icon: '👑',
+        icon: '💎',
         check: (stats) => stats.bestScore >= 1000,
+    },
+    score_2500: {
+        category: 'speed',
+        name: 'Punkte-König',
+        description: '2500 Punkte in einer Runde',
+        icon: '👑',
+        check: (stats) => stats.bestScore >= 2500,
     },
 
     // ===================== GENAUIGKEIT =====================
@@ -177,19 +177,19 @@ export const ACHIEVEMENTS = {
         icon: '💯',
         check: (stats) => stats.bestAccuracy >= 100,
     },
-    perfect_3: {
+    perfect_5: {
         category: 'accuracy',
-        name: 'Dreifach perfekt',
-        description: '3 Runden mit 100% Genauigkeit',
+        name: 'Fünffach perfekt',
+        description: '5 Runden mit 100% Genauigkeit',
         icon: '✨',
-        check: (stats) => stats.perfectRounds >= 3,
+        check: (stats) => stats.perfectRounds >= 5,
     },
-    perfect_10: {
+    perfect_20: {
         category: 'accuracy',
         name: 'Makellos',
-        description: '10 Runden mit 100% Genauigkeit',
+        description: '20 Runden mit 100% Genauigkeit',
         icon: '🔥',
-        check: (stats) => stats.perfectRounds >= 10,
+        check: (stats) => stats.perfectRounds >= 20,
     },
     no_castle_dmg: {
         category: 'accuracy',
@@ -198,12 +198,12 @@ export const ACHIEVEMENTS = {
         icon: '🏰',
         check: (stats) => stats.roundsNoCastleDamage >= 1,
     },
-    no_castle_dmg_5: {
+    no_castle_dmg_10: {
         category: 'accuracy',
         name: 'Eiserne Mauer',
-        description: '5 Runden ohne Burgschaden',
+        description: '10 Runden ohne Burgschaden',
         icon: '🧱',
-        check: (stats) => stats.roundsNoCastleDamage >= 5,
+        check: (stats) => stats.roundsNoCastleDamage >= 10,
     },
 
     // ===================== AUSDAUER (STREAK) =====================
@@ -242,35 +242,35 @@ export const ACHIEVEMENTS = {
         icon: '💪',
         check: (stats) => stats.currentStreak >= 100,
     },
-    daily_chest_7: {
+    daily_chest_14: {
         category: 'streak',
         name: 'Truhensammler',
-        description: '7 tägliche Truhen geöffnet',
+        description: '14 tägliche Truhen geöffnet',
         icon: '🎁',
-        check: (stats) => stats.totalDailyChests >= 7,
+        check: (stats) => stats.totalDailyChests >= 14,
     },
 
     // ===================== COMBOS =====================
-    combo_10: {
+    combo_15: {
         category: 'combo',
         name: 'Combo-Starter',
-        description: '10er Combo erreicht',
+        description: '15er Combo erreicht',
         icon: '🔗',
-        check: (stats) => stats.bestCombo >= 10,
+        check: (stats) => stats.bestCombo >= 15,
     },
-    combo_25: {
+    combo_30: {
         category: 'combo',
         name: 'Combo-Künstler',
-        description: '25er Combo erreicht',
+        description: '30er Combo erreicht',
         icon: '⛓️',
-        check: (stats) => stats.bestCombo >= 25,
+        check: (stats) => stats.bestCombo >= 30,
     },
-    combo_50: {
+    combo_60: {
         category: 'combo',
         name: 'Combo-Meister',
-        description: '50er Combo erreicht',
+        description: '60er Combo erreicht',
         icon: '🔥',
-        check: (stats) => stats.bestCombo >= 50,
+        check: (stats) => stats.bestCombo >= 60,
     },
     combo_100: {
         category: 'combo',

@@ -34,8 +34,8 @@ export function calculateWordScore(wordLength, accuracy, comboCount) {
  * Calculate coins earned from a round
  */
 export function calculateCoins(totalScore, accuracy) {
-    const base = Math.floor(totalScore / 50);
-    const accuracyBonus = accuracy >= 95 ? 5 : accuracy >= 90 ? 3 : 1;
+    const base = Math.floor(totalScore / 100);
+    const accuracyBonus = accuracy >= 95 ? 3 : accuracy >= 90 ? 2 : 0;
     return base + accuracyBonus;
 }
 
