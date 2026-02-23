@@ -89,17 +89,21 @@ export function generateWord(letterStats, skillLevel) {
 
 /**
  * Generate words for an entire wave of monsters
+ * @param {number} count - Number of words to generate
+ * @param {Object} letterStats - Per-character statistics
+ * @param {number} skillLevel - Current max skill level
+ * @param {Set} [excludeWords] - Words already used (cross-wave dedup)
  */
-export function generateWaveWords(count, letterStats, skillLevel) {
+export function generateWaveWords(count, letterStats, skillLevel, excludeWords) {
     const words = [];
-    const used = new Set();
+    const used = new Set(excludeWords || []);
     for (let i = 0; i < count; i++) {
         let word;
         let attempts = 0;
         do {
             word = generateWord(letterStats, skillLevel);
             attempts++;
-        } while (used.has(word) && attempts < 20);
+        } while (used.has(word) && attempts < 50);
         used.add(word);
         words.push(word);
     }

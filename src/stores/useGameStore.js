@@ -25,7 +25,8 @@ function createMonster(id, word, waveNum) {
     };
 }
 
-// Find the alive monster closest to the castle (lowest position)
+// Find the alive, SPAWNED monster closest to the castle (lowest position)
+// Never returns unspawned monsters — they can't be targeted
 function findFrontmostMonsterIndex(monsters) {
     let bestIdx = -1;
     let bestPos = Infinity;
@@ -36,10 +37,6 @@ function findFrontmostMonsterIndex(monsters) {
             bestPos = m.position;
             bestIdx = i;
         }
-    }
-    // If no spawned monster, fall back to first undefeated
-    if (bestIdx < 0) {
-        bestIdx = monsters.findIndex(m => !m.defeated && !m.reachedCastle);
     }
     return bestIdx;
 }
@@ -56,6 +53,7 @@ const useGameStore = create((set, get) => ({
     elapsed: 0,
     castleHp: CASTLE_MAX_HP,
     gameTickInterval: null,
+    usedWords: new Set(), // Track ALL words used across the entire round
 
     // Scoring
     score: 0,
@@ -85,6 +83,7 @@ const useGameStore = create((set, get) => ({
         const monstersPerWave = 5 + Math.floor(Math.random() * 4); // 5-8
         const words = generateWaveWords(monstersPerWave, letterStats, skillLevel);
         const monsters = words.map((word, i) => createMonster(i, word, 1));
+        const usedWords = new Set(words);
 
         set({
             phase: 'playing',
@@ -102,6 +101,7 @@ const useGameStore = create((set, get) => ({
             errorChars: 0,
             totalErrors: [],
             wordsCompleted: 0,
+            usedWords,
         });
     },
 
@@ -111,15 +111,20 @@ const useGameStore = create((set, get) => ({
         if (newWave > WAVES_PER_ROUND) return false;
 
         const monstersPerWave = 5 + Math.floor(Math.random() * 4);
-        const words = generateWaveWords(monstersPerWave, letterStats, skillLevel);
+        const words = generateWaveWords(monstersPerWave, letterStats, skillLevel, state.usedWords);
         const startId = state.monsters.length;
         const newMonsters = words.map((word, i) =>
             createMonster(startId + i, word, newWave)
         );
 
+        // Track new words
+        const updatedUsedWords = new Set(state.usedWords);
+        words.forEach(w => updatedUsedWords.add(w));
+
         set(s => ({
             wave: newWave,
             monsters: [...s.monsters, ...newMonsters],
+            usedWords: updatedUsedWords,
             activeMonsterIndex: s.monsters.findIndex(m => !m.defeated && !m.reachedCastle) >= 0
                 ? s.activeMonsterIndex
                 : s.monsters.length, // point to first new monster
@@ -163,22 +168,37 @@ const useGameStore = create((set, get) => ({
 
             let wave = s.wave;
             let monsters = newMonsters;
+            let usedWords = s.usedWords;
 
             // Auto-spawn next wave if current is cleared
             if (activeInWave.length === 0 && s.wave < WAVES_PER_ROUND && newTimer > 10) {
                 const nextWave = s.wave + 1;
                 const monstersPerWave = 5 + Math.floor(Math.random() * 4);
-                const words = generateWaveWords(monstersPerWave, letterStats, skillLevel);
+                const words = generateWaveWords(monstersPerWave, letterStats, skillLevel, usedWords);
                 const startId = newMonsters.length;
                 const waveMonsters = words.map((word, i) =>
                     createMonster(startId + i, word, nextWave)
                 );
                 monsters = [...newMonsters, ...waveMonsters];
                 wave = nextWave;
+
+                // Track new words
+                usedWords = new Set(usedWords);
+                words.forEach(w => usedWords.add(w));
             }
 
-            // Always target the frontmost (closest to castle) spawned monster
-            const activeIdx = findFrontmostMonsterIndex(monsters);
+            // TARGET LOGIC: Don't switch away from a partially-typed, alive, spawned monster
+            let activeIdx = s.activeMonsterIndex;
+            const currentTarget = monsters[activeIdx];
+            const currentTargetValid = currentTarget
+                && !currentTarget.defeated
+                && !currentTarget.reachedCastle
+                && currentTarget.spawned;
+
+            // Only re-target if current target is invalid (dead, reached castle, or not yet spawned)
+            if (!currentTargetValid) {
+                activeIdx = findFrontmostMonsterIndex(monsters);
+            }
 
             // Game over conditions
             const allDone = monsters.every(m => m.defeated || m.reachedCastle);
@@ -191,6 +211,7 @@ const useGameStore = create((set, get) => ({
                 monsters,
                 castleHp: newCastleHp,
                 wave,
+                usedWords,
                 activeMonsterIndex: activeIdx,
                 phase: gameOver ? 'results' : 'playing',
             };
@@ -214,7 +235,8 @@ const useGameStore = create((set, get) => ({
             const monsters = [...s.monsters];
             const activeMonster = monsters[s.activeMonsterIndex];
 
-            if (!activeMonster || activeMonster.defeated || activeMonster.reachedCastle) return {};
+            // Block typing if monster is not spawned, already defeated, or reached castle
+            if (!activeMonster || activeMonster.defeated || activeMonster.reachedCastle || !activeMonster.spawned) return {};
 
             if (isCorrect) {
                 const newTyped = activeMonster.typed + 1;
