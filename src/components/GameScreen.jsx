@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import useGameStore from '../stores/useGameStore';
 import useStatsStore from '../stores/useStatsStore';
 import useSkillStore from '../stores/useSkillStore';
+import useRewardStore from '../stores/useRewardStore';
 import HUD from './HUD';
 import Castle from './Castle';
 import Monster from './Monster';
@@ -15,6 +16,7 @@ function GameScreen() {
     const letterStats = useStatsStore(s => s.letterStats);
     const getCurrentLevel = useSkillStore(s => s.getCurrentLevel);
     const resetLastKeyTime = useStatsStore(s => s.resetLastKeyTime);
+    const activeBackground = useRewardStore(s => s.activeBackground);
 
     const tickRef = useRef(null);
     const letterStatsRef = useRef(letterStats);
@@ -51,9 +53,10 @@ function GameScreen() {
 
     // Filter visible monsters (spawned, not yet fully defeated animation)
     const visibleMonsters = monsters.filter(m => m.spawned || m.position < 100);
+    const bgClass = activeBackground ? `bg-${activeBackground.replace('bg_', '')}` : '';
 
     return (
-        <div className="game-screen">
+        <div className={`game-screen ${bgClass}`.trim()}>
             <HUD />
             <div className="battlefield">
                 <Castle />

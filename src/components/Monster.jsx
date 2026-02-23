@@ -12,17 +12,37 @@ const SKIN_EMOJIS = {
 
 function Monster({ monster, isActive, index }) {
     const activeSkin = useRewardStore(s => s.activeMonsterSkin);
+    const activeEffect = useRewardStore(s => s.activeEffect);
     const [isHit, setIsHit] = useState(false);
+    const [hitParticles, setHitParticles] = useState([]);
     const prevTyped = useRef(monster.typed);
+    const particleId = useRef(0);
 
     // Detect new character typed (hit effect)
     useEffect(() => {
         if (monster.typed > prevTyped.current && !monster.defeated) {
             setIsHit(true);
             setTimeout(() => setIsHit(false), 300);
+
+            // Spawn hit particles if an effect is active
+            if (activeEffect) {
+                const effectEmoji = activeEffect === 'effect_lightning' ? '⚡' : activeEffect === 'effect_stars' ? '✨' : null;
+                if (effectEmoji) {
+                    const newParticles = Array.from({ length: 3 }, () => ({
+                        id: particleId.current++,
+                        emoji: effectEmoji,
+                        x: (Math.random() - 0.5) * 60,
+                        y: (Math.random() - 0.5) * 40 - 20,
+                    }));
+                    setHitParticles(prev => [...prev, ...newParticles]);
+                    setTimeout(() => {
+                        setHitParticles(prev => prev.filter(p => !newParticles.includes(p)));
+                    }, 600);
+                }
+            }
         }
         prevTyped.current = monster.typed;
-    }, [monster.typed, monster.defeated]);
+    }, [monster.typed, monster.defeated, activeEffect]);
 
     if (!monster.spawned && !monster.defeated) return null;
 
@@ -76,6 +96,19 @@ function Monster({ monster, isActive, index }) {
                     />
                 </div>
             )}
+            {/* Hit effect particles */}
+            {hitParticles.map(p => (
+                <span
+                    key={p.id}
+                    className="hit-particle"
+                    style={{
+                        '--px': `${p.x}px`,
+                        '--py': `${p.y}px`,
+                    }}
+                >
+                    {p.emoji}
+                </span>
+            ))}
         </div>
     );
 }

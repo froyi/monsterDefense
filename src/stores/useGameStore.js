@@ -219,12 +219,15 @@ const useGameStore = create((set, get) => ({
             if (isCorrect) {
                 const newTyped = activeMonster.typed + 1;
                 const accuracy = (newCorrect / newTotalChars) * 100;
-                const dmg = 10 * getComboMultiplier(newCombo) * getAccuracyMultiplier(accuracy);
+
+                // Proportional HP: each char removes exactly (maxHp / wordLength) HP
+                const dmgPerChar = activeMonster.maxHp / activeMonster.word.length;
+                const newHp = Math.max(0, activeMonster.maxHp - newTyped * dmgPerChar);
 
                 monsters[s.activeMonsterIndex] = {
                     ...activeMonster,
                     typed: newTyped,
-                    hp: Math.max(0, activeMonster.hp - dmg),
+                    hp: newHp,
                 };
 
                 // Check if word complete
