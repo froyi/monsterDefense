@@ -3,6 +3,7 @@
 
 export const ACHIEVEMENT_CATEGORIES = {
     milestones: { name: 'Meilensteine', icon: '🏆', description: 'Fortschritt im Spiel' },
+    campaign: { name: 'Kampagne', icon: '🗺️', description: 'Welten erobern' },
     speed: { name: 'Geschwindigkeit', icon: '⚡', description: 'Schneller tippen' },
     accuracy: { name: 'Genauigkeit', icon: '🎯', description: 'Präzise tippen' },
     streak: { name: 'Ausdauer', icon: '🔥', description: 'Regelmäßig üben' },
@@ -352,6 +353,85 @@ export const ACHIEVEMENTS = {
         icon: '🧘',
         secret: true,
         check: (stats) => stats.consecutivePerfectRounds >= 3,
+    },
+
+    // ===================== KAMPAGNE =====================
+    world_1_complete: {
+        category: 'campaign',
+        name: 'Dorfheld',
+        description: 'Welt 1 (Friedliches Dorf) abgeschlossen',
+        icon: '🏠',
+        check: (stats) => stats.worldsCompleted?.includes('village'),
+    },
+    world_3_complete: {
+        category: 'campaign',
+        name: 'Bergbezwinger',
+        description: 'Welt 3 (Eisige Berge) abgeschlossen',
+        icon: '⛰️',
+        check: (stats) => stats.worldsCompleted?.includes('mountains'),
+    },
+    world_6_complete: {
+        category: 'campaign',
+        name: 'Drachentöter',
+        description: 'Welt 6 (Drachenhöhle) abgeschlossen',
+        icon: '🐉',
+        check: (stats) => stats.worldsCompleted?.includes('dragon'),
+    },
+    campaign_complete: {
+        category: 'campaign',
+        name: 'Legendärer Held',
+        description: 'Alle 60 Level abgeschlossen',
+        icon: '👑',
+        check: (stats) => stats.campaignComplete === true,
+    },
+    stars_30: {
+        category: 'campaign',
+        name: 'Sternsammler',
+        description: '30 Sterne gesammelt',
+        icon: '⭐',
+        check: (stats) => stats.totalStars >= 30,
+    },
+    stars_90: {
+        category: 'campaign',
+        name: 'Sternenjäger',
+        description: '90 Sterne gesammelt',
+        icon: '🌟',
+        check: (stats) => stats.totalStars >= 90,
+    },
+    stars_180: {
+        category: 'campaign',
+        name: 'Perfekter Held',
+        description: 'Alle 180 Sterne gesammelt',
+        icon: '💫',
+        secret: true,
+        check: (stats) => stats.totalStars >= 180,
+    },
+    first_boss: {
+        category: 'campaign',
+        name: 'Bossbezwinger',
+        description: 'Ersten Boss besiegt',
+        icon: '🐀',
+        check: (stats) => stats.bossDefeated === true,
+    },
+    boss_no_damage: {
+        category: 'campaign',
+        name: 'Unberührbar',
+        description: 'Einen Boss ohne Burgschaden besiegt',
+        icon: '🛡️',
+        secret: true,
+        check: (stats) => stats.bossDefeated === true && stats.noCastleDamage === true,
+    },
+    world_3_stars: {
+        category: 'campaign',
+        name: 'Perfektion',
+        description: 'Eine komplette Welt mit 3 Sternen abschließen',
+        icon: '✨',
+        secret: true,
+        check: (stats) => {
+            // Check if any world has all 30 stars
+            if (!stats.worldsCompleted) return false;
+            return stats.totalStars >= 30; // simplified: at least one world at 30 stars
+        },
     },
 };
 

@@ -2,19 +2,21 @@ import { useMemo, useEffect } from 'react';
 import useGameStore from './stores/useGameStore';
 import useProfileStore from './stores/useProfileStore';
 import useStatsStore from './stores/useStatsStore';
-import useSkillStore from './stores/useSkillStore';
 import useRewardStore from './stores/useRewardStore';
 import useAchievementStore from './stores/useAchievementStore';
 import useDailyChallengeStore from './stores/useDailyChallengeStore';
+import useCampaignStore from './stores/useCampaignStore';
 import ProfileScreen from './components/ProfileScreen';
-import StartScreen from './components/StartScreen';
+import WorldMap from './components/WorldMap';
 import GameScreen from './components/GameScreen';
 import StatsScreen from './components/StatsScreen';
-import SkillMap from './components/SkillMap';
 import Shop from './components/Shop';
 import ResultsScreen from './components/ResultsScreen';
 import AchievementWall from './components/AchievementWall';
 import AchievementToast from './components/AchievementToast';
+import SettingsPanel from './components/SettingsPanel';
+import DailyChallengePanel from './components/DailyChallengePanel';
+import DailyChest from './components/DailyChest';
 import './App.css';
 
 // Generate background stars
@@ -53,21 +55,23 @@ function BackgroundStars() {
 function App() {
     const phase = useGameStore(s => s.phase);
     const setPhase = useGameStore(s => s.setPhase);
+    const startLevel = useGameStore(s => s.startLevel);
     const activeProfileId = useProfileStore(s => s.activeProfileId);
     const reloadStats = useStatsStore(s => s.reload);
-    const reloadSkills = useSkillStore(s => s.reload);
     const reloadRewards = useRewardStore(s => s.reload);
     const reloadAchievements = useAchievementStore(s => s.reload);
     const reloadDailyChallenge = useDailyChallengeStore(s => s.reload);
+    const loadCampaignProgress = useCampaignStore(s => s.loadProgress);
+    const keyboardLayout = useRewardStore(s => s.keyboardLayout);
 
     // Reload all stores when profile changes
     useEffect(() => {
         if (activeProfileId) {
             reloadStats();
-            reloadSkills();
             reloadRewards();
             reloadAchievements();
             reloadDailyChallenge();
+            loadCampaignProgress();
             useGameStore.getState().setPhase('menu');
         }
     }, [activeProfileId]);
@@ -82,24 +86,44 @@ function App() {
         );
     }
 
+    const handleStartLevel = (worldId, level) => {
+        startLevel(worldId, level, keyboardLayout);
+    };
+
     const renderScreen = () => {
         switch (phase) {
             case 'menu':
-                return <StartScreen />;
+                return (
+                    <WorldMap
+                        onStartLevel={handleStartLevel}
+                        onOpenShop={() => setPhase('shop')}
+                        onOpenStats={() => setPhase('stats')}
+                        onOpenAchievements={() => setPhase('achievements')}
+                        onOpenSettings={() => setPhase('settings')}
+                    />
+                );
             case 'playing':
                 return <GameScreen />;
             case 'results':
                 return <ResultsScreen />;
-            case 'skillmap':
-                return <SkillMap />;
             case 'shop':
                 return <Shop />;
             case 'stats':
                 return <StatsScreen />;
             case 'achievements':
                 return <AchievementWall onClose={() => setPhase('menu')} />;
+            case 'settings':
+                return <SettingsPanel onClose={() => setPhase('menu')} />;
             default:
-                return <StartScreen />;
+                return (
+                    <WorldMap
+                        onStartLevel={handleStartLevel}
+                        onOpenShop={() => setPhase('shop')}
+                        onOpenStats={() => setPhase('stats')}
+                        onOpenAchievements={() => setPhase('achievements')}
+                        onOpenSettings={() => setPhase('settings')}
+                    />
+                );
         }
     };
 

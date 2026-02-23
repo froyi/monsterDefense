@@ -1,15 +1,17 @@
 import useGameStore from '../stores/useGameStore';
+import { getWorld } from '../utils/campaignData';
 
 function HUD() {
     const score = useGameStore(s => s.score);
     const combo = useGameStore(s => s.combo);
     const timer = useGameStore(s => s.timer);
-    const wave = useGameStore(s => s.wave);
-    const correctChars = useGameStore(s => s.correctChars);
-    const errorChars = useGameStore(s => s.errorChars);
-    const elapsed = useGameStore(s => s.elapsed);
+    const worldId = useGameStore(s => s.worldId);
+    const levelNum = useGameStore(s => s.levelNum);
+    const levelConfig = useGameStore(s => s.levelConfig);
     const getWPM = useGameStore(s => s.getWPM);
     const getAccuracy = useGameStore(s => s.getAccuracy);
+
+    const world = getWorld(worldId);
 
     const minutes = Math.floor(timer / 60);
     const seconds = Math.floor(timer % 60);
@@ -35,7 +37,10 @@ function HUD() {
 
             <div className="hud-center">
                 <span className={`timer-display ${isLow ? 'low' : ''}`}>{timeStr}</span>
-                <span className="wave-indicator">Welle {wave} / 3</span>
+                <span className="wave-indicator">
+                    {world?.emoji} Level {levelNum}
+                    {levelConfig?.isBoss && ' 🐉 BOSS'}
+                </span>
             </div>
 
             <div className="hud-right">

@@ -10,12 +10,12 @@ import {
 // Achievement Definitions
 // ============================================================
 describe('ACHIEVEMENT_CATEGORIES', () => {
-    it('has 6 categories', () => {
-        expect(Object.keys(ACHIEVEMENT_CATEGORIES)).toHaveLength(6);
+    it('has 7 categories', () => {
+        expect(Object.keys(ACHIEVEMENT_CATEGORIES)).toHaveLength(7);
     });
 
     it('includes all expected categories', () => {
-        const expected = ['milestones', 'speed', 'accuracy', 'streak', 'combo', 'secret'];
+        const expected = ['milestones', 'campaign', 'speed', 'accuracy', 'streak', 'combo', 'secret'];
         for (const cat of expected) {
             expect(ACHIEVEMENT_CATEGORIES[cat]).toBeDefined();
         }
@@ -31,8 +31,8 @@ describe('ACHIEVEMENT_CATEGORIES', () => {
 });
 
 describe('ACHIEVEMENTS', () => {
-    it('has at least 35 achievements', () => {
-        expect(Object.keys(ACHIEVEMENTS).length).toBeGreaterThanOrEqual(35);
+    it('has at least 45 achievements', () => {
+        expect(Object.keys(ACHIEVEMENTS).length).toBeGreaterThanOrEqual(45);
     });
 
     it('TOTAL_ACHIEVEMENTS matches actual count', () => {
@@ -148,7 +148,7 @@ describe('Achievement check functions', () => {
 describe('getAchievementsByCategory', () => {
     it('returns all categories', () => {
         const grouped = getAchievementsByCategory();
-        expect(Object.keys(grouped)).toHaveLength(6);
+        expect(Object.keys(grouped)).toHaveLength(7);
     });
 
     it('every achievement appears in exactly one category', () => {
