@@ -245,3 +245,32 @@ export async function saveRoundResult(result) {
         });
     if (error) console.warn('Failed to save round result:', error);
 }
+
+// ==========================================
+// Achievements (Supabase)
+// ==========================================
+
+export async function loadAchievements() {
+    if (!_profileId) return [];
+    const { data, error } = await supabase
+        .from('achievements')
+        .select('achievement_key, unlocked_at')
+        .eq('profile_id', _profileId);
+    if (error) {
+        console.warn('Failed to load achievements:', error);
+        return [];
+    }
+    return data || [];
+}
+
+export async function unlockAchievement(achievementKey) {
+    if (!_profileId) return;
+    const { error } = await supabase
+        .from('achievements')
+        .upsert(
+            { profile_id: _profileId, achievement_key: achievementKey },
+            { onConflict: 'profile_id,achievement_key' }
+        );
+    if (error) console.warn('Failed to unlock achievement:', error);
+}
+

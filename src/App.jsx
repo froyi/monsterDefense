@@ -4,6 +4,7 @@ import useProfileStore from './stores/useProfileStore';
 import useStatsStore from './stores/useStatsStore';
 import useSkillStore from './stores/useSkillStore';
 import useRewardStore from './stores/useRewardStore';
+import useAchievementStore from './stores/useAchievementStore';
 import ProfileScreen from './components/ProfileScreen';
 import StartScreen from './components/StartScreen';
 import GameScreen from './components/GameScreen';
@@ -11,6 +12,8 @@ import StatsScreen from './components/StatsScreen';
 import SkillMap from './components/SkillMap';
 import Shop from './components/Shop';
 import ResultsScreen from './components/ResultsScreen';
+import AchievementWall from './components/AchievementWall';
+import AchievementToast from './components/AchievementToast';
 import './App.css';
 
 // Generate background stars
@@ -48,10 +51,12 @@ function BackgroundStars() {
 
 function App() {
     const phase = useGameStore(s => s.phase);
+    const setPhase = useGameStore(s => s.setPhase);
     const activeProfileId = useProfileStore(s => s.activeProfileId);
     const reloadStats = useStatsStore(s => s.reload);
     const reloadSkills = useSkillStore(s => s.reload);
     const reloadRewards = useRewardStore(s => s.reload);
+    const reloadAchievements = useAchievementStore(s => s.reload);
 
     // Reload all stores when profile changes
     useEffect(() => {
@@ -59,6 +64,7 @@ function App() {
             reloadStats();
             reloadSkills();
             reloadRewards();
+            reloadAchievements();
             useGameStore.getState().setPhase('menu');
         }
     }, [activeProfileId]);
@@ -87,6 +93,8 @@ function App() {
                 return <Shop />;
             case 'stats':
                 return <StatsScreen />;
+            case 'achievements':
+                return <AchievementWall onClose={() => setPhase('menu')} />;
             default:
                 return <StartScreen />;
         }
@@ -96,6 +104,7 @@ function App() {
         <div className="app">
             <BackgroundStars />
             {renderScreen()}
+            <AchievementToast />
         </div>
     );
 }

@@ -4,6 +4,7 @@ import useStatsStore from '../stores/useStatsStore';
 import useSkillStore from '../stores/useSkillStore';
 import useRewardStore from '../stores/useRewardStore';
 import useProfileStore from '../stores/useProfileStore';
+import useAchievementStore from '../stores/useAchievementStore';
 import DailyChest from './DailyChest';
 
 const MONSTER_EMOJIS = ['👾', '👹', '🐉', '🦇', '👻', '🧟', '🐺', '🦑'];
@@ -21,6 +22,8 @@ function StartScreen() {
     const activeProfile = profileData();
 
     const [showChest, setShowChest] = useState(false);
+    const unlockedCount = useAchievementStore(s => s.getUnlockedCount);
+    const totalCount = useAchievementStore(s => s.getTotalCount);
 
     const handleStart = () => {
         const level = getCurrentLevel();
@@ -65,6 +68,11 @@ function StartScreen() {
                 <button className="btn-nav" onClick={() => setPhase('stats')} id="stats-btn">
                     <span className="nav-icon">📊</span>
                     Statistik
+                </button>
+                <button className="btn-nav" onClick={() => setPhase('achievements')} id="achievements-btn">
+                    <span className="nav-icon">🏆</span>
+                    Abzeichen
+                    <span className="achievement-badge-count">{unlockedCount()}/{totalCount()}</span>
                 </button>
                 {canClaimDaily() && (
                     <button className="btn-nav" onClick={() => setShowChest(true)} id="chest-btn"
