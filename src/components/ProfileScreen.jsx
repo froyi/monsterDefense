@@ -13,17 +13,18 @@ function ProfileScreen() {
     const [pin, setPin] = useState('');
     const [targetProfile, setTargetProfile] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState(null);
+    const [fetched, setFetched] = useState(false);
 
     useEffect(() => {
-        fetchProfiles();
+        fetchProfiles().then(() => setFetched(true));
     }, []);
 
-    // Auto-switch to create if no profiles
+    // Auto-switch to create only if DB returned 0 profiles
     useEffect(() => {
-        if (!loading && profiles.length === 0 && mode === 'select') {
+        if (fetched && !loading && profiles.length === 0 && mode === 'select') {
             setMode('create');
         }
-    }, [profiles, loading, mode]);
+    }, [profiles, loading, mode, fetched]);
 
     const handleCreate = async () => {
         if (!name.trim() || pin.length !== 4) return;
