@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import useRewardStore from '../stores/useRewardStore';
 
 const DEFAULT_EMOJIS = ['👾', '👹', '🐉', '🦇', '👻', '🧟', '🐺', '🦑', '🐙', '🦖'];
@@ -18,6 +18,37 @@ function Monster({ monster, isActive, index }) {
     const [hitParticles, setHitParticles] = useState([]);
     const prevTyped = useRef(monster.typed);
     const particleId = useRef(0);
+
+    // Boss attacks: generate stable dimmed indices (which letters are dimmed)
+    const dimmedIndices = useMemo(() => {
+        if (!monster.isBoss) return new Set();
+        const indices = new Set();
+        const word = monster.word;
+        // Dim ~40% of characters randomly (but deterministically per word)
+        let seed = 0;
+        for (let i = 0; i < word.length; i++) seed += word.charCodeAt(i) * (i + 1);
+        for (let i = 0; i < word.length; i++) {
+            const pseudo = ((seed * (i + 7)) % 100);
+            if (pseudo < 40) indices.add(i);
+        }
+        return indices;
+    }, [monster.isBoss, monster.word]);
+
+    // Boss enrage attack: generate visual scramble map for untyped chars
+    const scrambleMap = useMemo(() => {
+        if (!monster.isBoss) return null;
+        const word = monster.word;
+        const chars = word.split('');
+        // Create a shuffled version of untyped characters
+        const shuffled = [...chars];
+        let seed = 0;
+        for (let i = 0; i < word.length; i++) seed += word.charCodeAt(i) * (i + 3);
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = ((seed * (i + 5)) % (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }, [monster.isBoss, monster.word]);
 
     // Detect new character typed (hit effect)
     useEffect(() => {
@@ -65,15 +96,27 @@ function Monster({ monster, isActive, index }) {
         monster.enraged ? 'boss-enraged' : '',
     ].filter(Boolean).join(' ');
 
-    // Render word characters
+    // Render word characters with boss attack effects
     const renderWord = () => {
         return monster.word.split('').map((char, i) => {
             let className = 'char-pending';
             if (i < monster.typed) className = 'char-correct';
             else if (i === monster.typed && isActive) className = 'char-current';
 
+            // Boss attack: dim certain untyped characters
+            const isDimmed = monster.isBoss && i > monster.typed && dimmedIndices.has(i);
+            if (isDimmed && className === 'char-pending') {
+                className += ' char-dimmed';
+            }
+
+            // Boss enrage attack: show scrambled character visually
+            let displayChar = char;
+            if (monster.isBoss && monster.enraged && i > monster.typed && scrambleMap) {
+                displayChar = scrambleMap[i];
+            }
+
             return (
-                <span key={i} className={className}>{char}</span>
+                <span key={i} className={className}>{displayChar}</span>
             );
         });
     };

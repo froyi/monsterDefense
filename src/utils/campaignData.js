@@ -120,7 +120,7 @@ function makeLevels(worldId) {
         { level: 7, mc: 7, sp: 0.18, wMin: 1, wMax: 2, isBoss: false },
         { level: 8, mc: 9, sp: 0.22, wMin: 1, wMax: 3, isBoss: false },
         { level: 9, mc: 12, sp: 0.26, wMin: 2, wMax: 3, isBoss: false },
-        { level: 10, mc: 6, sp: 0.15, wMin: 3, wMax: 6, isBoss: true },
+        { level: 10, mc: 10, sp: 0.20, wMin: 3, wMax: 6, isBoss: true },
     ];
 
     return templates.map(t => ({

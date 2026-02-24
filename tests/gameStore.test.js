@@ -82,14 +82,18 @@ describe('useGameStore – Campaign Mode', () => {
     describe('boss level', () => {
         it('gives boss monster 3x HP', () => {
             useGameStore.getState().startLevel('village', 10, 'de');
-            const boss = useGameStore.getState().monsters[0];
+            const monsters = useGameStore.getState().monsters;
+            const boss = monsters.find(m => m.isBoss);
+            expect(boss).toBeDefined();
             expect(boss.maxHp).toBe(300); // 3x normal
         });
 
-        it('boss spawns immediately (no delay)', () => {
+        it('boss spawns last (after all minions)', () => {
             useGameStore.getState().startLevel('village', 10, 'de');
-            const boss = useGameStore.getState().monsters[0];
-            expect(boss.spawnDelay).toBe(0);
+            const monsters = useGameStore.getState().monsters;
+            const boss = monsters.find(m => m.isBoss);
+            const lastMinion = monsters.filter(m => !m.isBoss).pop();
+            expect(boss.spawnDelay).toBeGreaterThan(lastMinion.spawnDelay);
         });
 
         it('level config has isBoss flag', () => {

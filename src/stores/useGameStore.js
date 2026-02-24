@@ -1,8 +1,8 @@
 // Main game state store – Campaign mode (level-based)
 import { create } from 'zustand';
-import { generateCampaignWords } from '../utils/wordGenerator';
+import { generateCampaignWords, generateBossWord } from '../utils/wordGenerator';
 import { calculateWordScore, calculateWPM, calculateCoins } from '../utils/scoring';
-import { getLevel, getWorld } from '../utils/campaignData';
+import { getLevel, getWorld, WORLDS } from '../utils/campaignData';
 
 const ROUND_DURATION = 180; // 3 minutes per level
 const MONSTER_BASE_HP = 100;
@@ -78,19 +78,37 @@ const useGameStore = create((set, get) => ({
         if (!levelConfig) return;
 
         const world = getWorld(worldId);
-        const monsterCount = levelConfig.monsterCount;
-        const words = generateCampaignWords(monsterCount, worldId, layout, levelConfig.wordLength);
+        const worldIndex = WORLDS.findIndex(w => w.id === worldId);
         const monsterSpeed = MONSTER_BASE_SPEED * levelConfig.speed;
-        const monsters = words.map((word, i) => createMonster(i, word, monsterSpeed));
-        const usedWords = new Set(words);
 
-        // Boss level: first monster gets extra HP and boss flag
-        if (levelConfig.isBoss && monsters.length > 0) {
-            monsters[0].hp = MONSTER_BASE_HP * 3;
-            monsters[0].maxHp = MONSTER_BASE_HP * 3;
-            monsters[0].spawnDelay = 0; // boss appears immediately
-            monsters[0].isBoss = true;
-            monsters[0].enraged = false;
+        let monsters;
+        let usedWords;
+
+        if (levelConfig.isBoss) {
+            // Boss level: minions first, boss spawns LAST
+            const minionCount = levelConfig.monsterCount; // minions only
+            const minionWords = generateCampaignWords(minionCount, worldId, layout, levelConfig.wordLength);
+            usedWords = new Set(minionWords);
+
+            // Create minion monsters with staggered spawns
+            monsters = minionWords.map((word, i) => createMonster(i, word, monsterSpeed));
+
+            // Generate a long boss word and create the boss as the LAST monster
+            const bossWord = generateBossWord(worldId, layout, worldIndex);
+            const bossId = monsters.length;
+            const lastMinionDelay = (minionCount - 1) * 2.0;
+            const bossMonster = createMonster(bossId, bossWord, monsterSpeed * 0.8); // boss slightly slower but tankier
+            bossMonster.hp = MONSTER_BASE_HP * 3;
+            bossMonster.maxHp = MONSTER_BASE_HP * 3;
+            bossMonster.spawnDelay = lastMinionDelay + 4; // 4s after last minion
+            bossMonster.isBoss = true;
+            bossMonster.enraged = false;
+            monsters.push(bossMonster);
+        } else {
+            // Normal level
+            const words = generateCampaignWords(levelConfig.monsterCount, worldId, layout, levelConfig.wordLength);
+            monsters = words.map((word, i) => createMonster(i, word, monsterSpeed));
+            usedWords = new Set(words);
         }
 
         set({
@@ -251,7 +269,7 @@ const useGameStore = create((set, get) => ({
     getAccuracy: () => {
         const s = get();
         const total = s.correctChars + s.errorChars;
-        if (total === 0) return 100;
+        if (total === 0) return 0;
         return Math.round((s.correctChars / total) * 1000) / 10;
     },
 
