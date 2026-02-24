@@ -5,6 +5,8 @@ import LevelSelect from './LevelSelect';
 
 function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, onOpenSettings }) {
     const [selectedWorld, setSelectedWorld] = useState(null);
+    // Subscribe to progress state directly so component re-renders when data loads
+    const progress = useCampaignStore(s => s.progress);
     const isWorldUnlocked = useCampaignStore(s => s.isWorldUnlocked);
     const getWorldStars = useCampaignStore(s => s.getWorldStars);
     const getTotalStars = useCampaignStore(s => s.getTotalStars);
