@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import useGameStore from '../stores/useGameStore';
 import useStatsStore from '../stores/useStatsStore';
 import useRewardStore from '../stores/useRewardStore';
@@ -97,18 +97,31 @@ function ResultsScreen() {
         });
     }, []);
 
-    const handleNextLevel = () => {
+    const handleNextLevel = useCallback(() => {
         const next = getNextLevel();
         if (next) {
             startLevel(next.worldId, next.level, keyboardLayout);
         } else {
             setPhase('menu');
         }
-    };
+    }, [getNextLevel, startLevel, keyboardLayout, setPhase]);
 
-    const handleRetry = () => {
+    const handleRetry = useCallback(() => {
         startLevel(worldId, levelNum, keyboardLayout);
-    };
+    }, [startLevel, worldId, levelNum, keyboardLayout]);
+
+    // Enter key triggers the primary action (next level or retry)
+    useEffect(() => {
+        const handler = (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (won) handleNextLevel();
+                else handleRetry();
+            }
+        };
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
+    }, [won, handleNextLevel, handleRetry]);
 
     return (
         <div className="results-screen">

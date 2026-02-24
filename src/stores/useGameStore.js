@@ -7,7 +7,7 @@ import { getLevel, getWorld } from '../utils/campaignData';
 const ROUND_DURATION = 180; // 3 minutes per level
 const MONSTER_BASE_HP = 100;
 const CASTLE_MAX_HP = 100;
-const MONSTER_BASE_SPEED = 0.15;
+const MONSTER_BASE_SPEED = 0.25;
 
 function createMonster(id, word, speed) {
     return {
