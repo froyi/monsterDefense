@@ -20,7 +20,8 @@ function getWordModule() {
  */
 export function generateCampaignWords(count, worldId, layout = 'de', wordLengthRange = [3, 8]) {
     const wordModule = layout === 'en' ? englishWords : germanWords;
-    const allowedChars = new Set(getWorldChars(worldId, layout).split(''));
+    const allowedCharsStr = getWorldChars(worldId, layout);
+    const allowedChars = new Set(allowedCharsStr.split(''));
     const [minLen, maxLen] = wordLengthRange;
 
     // Gather ALL words from all levels, then filter by allowed chars and length
@@ -33,17 +34,36 @@ export function generateCampaignWords(count, worldId, layout = 'de', wordLengthR
         return true;
     });
 
+    // Shuffle the filtered pool for better variety
+    const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+
     const words = [];
     const used = new Set();
 
     for (let i = 0; i < count; i++) {
-        let word;
-        let attempts = 0;
-        const pool = filtered.length > 0 ? filtered : allWordPool;
-        do {
-            word = pool[Math.floor(Math.random() * pool.length)];
-            attempts++;
-        } while (used.has(word) && attempts < 50);
+        // Try to pick from the shuffled pool first
+        let word = null;
+        for (const candidate of shuffled) {
+            if (!used.has(candidate)) {
+                word = candidate;
+                break;
+            }
+        }
+
+        // Pool exhausted — dynamically generate a unique word from allowed chars
+        if (!word) {
+            const chars = allowedCharsStr.replace(/\s/g, '').split('');
+            let attempts = 0;
+            do {
+                const len = minLen + Math.floor(Math.random() * (maxLen - minLen + 1));
+                word = '';
+                for (let c = 0; c < len; c++) {
+                    word += chars[Math.floor(Math.random() * chars.length)];
+                }
+                attempts++;
+            } while (used.has(word) && attempts < 100);
+        }
+
         used.add(word);
         words.push(word);
     }

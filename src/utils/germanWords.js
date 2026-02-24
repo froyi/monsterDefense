@@ -11,22 +11,37 @@ export const wordsByLevel = {
     // All lowercase. No: e,r,t,z,u,i,o,p,q,w,y,x,c,v,b,n,m
     // ═════════════════════════════════════════════════════════
     1: [
-        // Real German words (lowercase only, home row only)
-        'das', 'als', 'lag', 'gal', 'aal', 'aas', 'gas',
+        // Real German words (lowercase only, home row only: a s d f g h j k l ö)
+        'das', 'als', 'lag', 'gal', 'aal', 'aas', 'gas', 'all',
         'fall', 'half', 'hall', 'lass', 'glas', 'kahl', 'fahl',
         'jagd', 'fass', 'saal', 'saga', 'falk', 'hals',
-        'salsa', 'falls', 'lass', 'dass',
-        'flag', 'glad', 'alfa',
-        // Typing drills — home row patterns
-        'asdf', 'fdsa', 'ghjk', 'dfgh', 'lkjh', 'jklö',
-        'fghj', 'dfjk', 'slkd', 'ghsl', 'ajsl', 'ghal',
-        'jfds', 'klsa', 'asjl', 'dkfh', 'glsa', 'fhal',
-        'sdlk', 'fghd', 'jkal', 'salg', 'dakl', 'lasd',
-        'kadl', 'kjhg', 'dsaf', 'gfds', 'hjkl', 'asda',
+        'salsa', 'falls', 'dass', 'flag', 'glad', 'alfa',
+        // More home-row patterns (3 chars)
+        'adf', 'fhj', 'ghd', 'jkl', 'sdk', 'hjk', 'dfs', 'lkj',
+        'fgh', 'shd', 'adj', 'kfd', 'ghl', 'jds', 'slk', 'dhf',
+        'ksd', 'lhg', 'fjk', 'gds', 'hkl', 'jfg', 'dkl', 'sha',
+        // Home-row patterns (4 chars)
+        'asdf', 'fdsa', 'ghjk', 'dfgh', 'lkjh', 'jklö', 'jkds',
+        'fghj', 'dfjk', 'slkd', 'ghsl', 'ajsl', 'ghal', 'fjds',
+        'jfds', 'klsa', 'asjl', 'dkfh', 'glsa', 'fhal', 'dgsa',
+        'sdlk', 'fghd', 'jkal', 'salg', 'dakl', 'lasd', 'hfgd',
+        'kadl', 'kjhg', 'dsaf', 'gfds', 'hjkl', 'asda', 'jfkl',
+        'gsdl', 'fkdh', 'ljds', 'ahdf', 'sgkl', 'dfkj', 'hagl',
+        'kjfs', 'ldgh', 'sfaj', 'dhlk', 'ghak', 'jslf', 'kgdh',
+        'aghj', 'sdgh', 'flkj', 'djas', 'halk', 'gjsd', 'fldh',
+        // Home-row patterns (5 chars)
         'halsg', 'falgs', 'akdls', 'gjhds', 'saflk', 'dalhg',
         'lahgs', 'jfalk', 'ghasd', 'kdsla', 'sfgla', 'dkhla',
         'fjdks', 'slahg', 'ghfad', 'dhfka', 'jlsak', 'flaks',
-        'khalsg', 'sldhfg', 'fjkalg', 'dslakh',
+        'asjkl', 'dfghj', 'sdklh', 'fghjk', 'asdfl', 'ghjds',
+        'lkghd', 'jsdfa', 'hgfds', 'kljhg', 'dsfgh', 'hjklö',
+        'sdfhg', 'jklas', 'ghdsf', 'flghd', 'sdajk', 'hfkdl',
+        // Home-row patterns (6-7 chars)
+        'khalsg', 'sldhfg', 'fjkalg', 'dslakh', 'ghjkls', 'asdfjk',
+        'fghdsl', 'jklghd', 'sdafgh', 'lkjhgf', 'dfjkls', 'ghasdl',
+        'hgfdsa', 'jklöas', 'dfghjs', 'slkjhg', 'aghfds', 'kdsflg',
+        'jfghkl', 'sdlkhg', 'fjasdl', 'ghklad', 'djfkls', 'alsgfd',
+        'hfjdks', 'gkladf', 'sfdjkl', 'kjghds', 'dflkjh', 'asghfl',
     ],
     // ═════════════════════════════════════════════════════════
     // Level 2: Home row + upper row (adds: q w e r t z u i o p)
