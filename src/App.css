@@ -2272,9 +2272,16 @@
 }
 
 .world-card.unlocked:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(4px);
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-3px) scale(1.02);
     border-left-width: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3),
+        0 0 20px color-mix(in srgb, var(--world-color) 30%, transparent);
+}
+
+.world-card.unlocked:active {
+    transform: translateY(0) scale(0.98);
+    transition: transform 0.08s;
 }
 
 .world-card.locked {
@@ -2379,10 +2386,18 @@
     z-index: 1;
 }
 
+.level-select>.btn-back {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-bottom: 12px;
+}
+
 .level-select-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
     margin-bottom: 24px;
 }
 
@@ -2693,4 +2708,70 @@
 .results-actions .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.1);
     color: var(--text-primary);
+}
+
+/* ─── Boss Monster ─── */
+
+.monster.boss-monster {
+    z-index: 10;
+}
+
+.monster.boss-monster .monster-emoji {
+    font-size: 52px;
+    filter: drop-shadow(0 0 8px rgba(255, 100, 50, 0.4));
+}
+
+.monster.boss-monster .monster-word {
+    font-size: 18px;
+    font-weight: 800;
+    border: 2px solid rgba(255, 100, 50, 0.4);
+    background: rgba(20, 10, 30, 0.9);
+    padding: 4px 12px;
+}
+
+.monster.boss-monster .monster-hp-bar {
+    width: 60px;
+    height: 8px;
+}
+
+.boss-crown {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    animation: crownBob 1.5s ease-in-out infinite;
+    z-index: 2;
+}
+
+@keyframes crownBob {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(-4px);
+    }
+}
+
+/* Boss enrage – red pulsing glow */
+.monster.boss-enraged .monster-emoji {
+    animation: bossEnrage 0.5s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 12px rgba(255, 30, 30, 0.7));
+}
+
+.monster.boss-enraged .monster-hp-fill {
+    background: linear-gradient(90deg, #ef4444, #f97316) !important;
+}
+
+@keyframes bossEnrage {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.1);
+    }
 }

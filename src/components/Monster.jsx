@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import useRewardStore from '../stores/useRewardStore';
 
 const DEFAULT_EMOJIS = ['👾', '👹', '🐉', '🦇', '👻', '🧟', '🐺', '🦑', '🐙', '🦖'];
+const BOSS_EMOJIS = ['🐲', '👹', '🦖', '💀', '👿', '🧌'];
 
 // Skin-specific emoji sets for variety
 const SKIN_EMOJIS = {
@@ -46,7 +47,7 @@ function Monster({ monster, isActive, index }) {
 
     if (!monster.spawned && !monster.defeated) return null;
 
-    const emojiSet = activeSkin && SKIN_EMOJIS[activeSkin] ? SKIN_EMOJIS[activeSkin] : DEFAULT_EMOJIS;
+    const emojiSet = monster.isBoss ? BOSS_EMOJIS : (activeSkin && SKIN_EMOJIS[activeSkin] ? SKIN_EMOJIS[activeSkin] : DEFAULT_EMOJIS);
     const emoji = emojiSet[monster.id % emojiSet.length];
     const hpPercent = (monster.hp / monster.maxHp) * 100;
 
@@ -60,6 +61,8 @@ function Monster({ monster, isActive, index }) {
         isActive ? 'active' : '',
         isHit ? 'hit' : '',
         monster.defeated ? 'defeated' : '',
+        monster.isBoss ? 'boss-monster' : '',
+        monster.enraged ? 'boss-enraged' : '',
     ].filter(Boolean).join(' ');
 
     // Render word characters
@@ -87,7 +90,10 @@ function Monster({ monster, isActive, index }) {
             <div className="monster-word">
                 {renderWord()}
             </div>
-            <span className="monster-emoji">{emoji}</span>
+            <span className="monster-emoji">
+                {monster.isBoss && <span className="boss-crown">👑</span>}
+                {emoji}
+            </span>
             {!monster.defeated && (
                 <div className="monster-hp-bar">
                     <div

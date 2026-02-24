@@ -64,15 +64,28 @@ function App() {
     const loadCampaignProgress = useCampaignStore(s => s.loadProgress);
     const keyboardLayout = useRewardStore(s => s.keyboardLayout);
 
-    // Reload all stores when profile changes
+    // Reload all stores when profile changes, reset when logging out
     useEffect(() => {
         if (activeProfileId) {
+            // Profile selected — load all profile-specific data
             reloadStats();
             reloadRewards();
             reloadAchievements();
             reloadDailyChallenge();
             loadCampaignProgress();
             useGameStore.getState().setPhase('menu');
+        } else {
+            // Logged out — reset all in-memory stores to prevent data leaks
+            useCampaignStore.getState().resetState();
+            useStatsStore.setState({ letterStats: {}, history: [], lastKeyTime: null });
+            useRewardStore.setState({
+                coins: 0, totalCoinsEarned: 0, ownedItems: [],
+                activeMonsterSkin: null, activeCastleSkin: null,
+                activeEffect: null, activeBackground: null,
+                lastDailyChest: null, streak: 0, lastPlayDate: null,
+                keyboardLayout: 'de',
+            });
+            useAchievementStore.setState({ unlockedKeys: new Set(), recentUnlocks: [] });
         }
     }, [activeProfileId]);
 

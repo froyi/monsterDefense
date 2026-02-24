@@ -60,14 +60,14 @@ describe('useGameStore – Campaign Mode', () => {
 
         it('spawns correct number of monsters for level', () => {
             useGameStore.getState().startLevel('village', 1, 'de');
-            // Level 1 has 4 monsters
-            expect(useGameStore.getState().monsters).toHaveLength(4);
+            // Level 1 village: monsterBase(8) + mc(0) = 8 monsters
+            expect(useGameStore.getState().monsters).toHaveLength(8);
         });
 
         it('spawns more monsters at higher levels', () => {
             useGameStore.getState().startLevel('village', 9, 'de');
-            // Level 9 has 9 monsters
-            expect(useGameStore.getState().monsters).toHaveLength(9);
+            // Level 9 village: monsterBase(8) + mc(12) = 20 monsters
+            expect(useGameStore.getState().monsters).toHaveLength(20);
         });
 
         it('resets all scoring', () => {
@@ -213,6 +213,20 @@ describe('useGameStore – Campaign Mode', () => {
                 totalCharsTyped: 10,
             });
             expect(useGameStore.getState().getStars()).toBe(3);
+        });
+
+        it('returns 1 star for no castle damage but low accuracy (regression)', () => {
+            useGameStore.setState({
+                monsters: [
+                    { word: 'test', hp: 0, maxHp: 100, defeated: true, reachedCastle: false, spawned: true, typed: 4 },
+                ],
+                castleHp: 100, // no damage
+                correctChars: 7,
+                errorChars: 3, // 70% accuracy < 90%
+                totalCharsTyped: 10,
+            });
+            // Full HP but low accuracy = only 1 star (accuracy gate blocks 2 and 3)
+            expect(useGameStore.getState().getStars()).toBe(1);
         });
     });
 

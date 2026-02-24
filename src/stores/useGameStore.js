@@ -84,11 +84,13 @@ const useGameStore = create((set, get) => ({
         const monsters = words.map((word, i) => createMonster(i, word, monsterSpeed));
         const usedWords = new Set(words);
 
-        // Boss level: first monster gets extra HP
+        // Boss level: first monster gets extra HP and boss flag
         if (levelConfig.isBoss && monsters.length > 0) {
             monsters[0].hp = MONSTER_BASE_HP * 3;
             monsters[0].maxHp = MONSTER_BASE_HP * 3;
             monsters[0].spawnDelay = 0; // boss appears immediately
+            monsters[0].isBoss = true;
+            monsters[0].enraged = false;
         }
 
         set({
@@ -128,6 +130,12 @@ const useGameStore = create((set, get) => ({
                 if (newPos <= 5) {
                     return { ...m, position: 5, reachedCastle: true };
                 }
+
+                // Boss enrage: speed doubles when below 50% HP
+                if (m.isBoss && !m.enraged && m.hp <= m.maxHp * 0.5 && m.hp > 0) {
+                    return { ...m, position: newPos, speed: m.speed * 2, enraged: true };
+                }
+
                 return { ...m, position: newPos };
             });
 
@@ -260,6 +268,9 @@ const useGameStore = create((set, get) => ({
     },
 
     // Calculate stars earned for the current level
+    // ⭐ = all monsters defeated (survived)
+    // ⭐⭐ = survived + accuracy >= 90%
+    // ⭐⭐⭐ = survived + accuracy >= 90% + no castle damage
     getStars: () => {
         const s = get();
         const allDefeated = s.monsters.every(m => m.defeated);
@@ -267,8 +278,12 @@ const useGameStore = create((set, get) => ({
         if (!allDefeated || s.castleHp <= 0) return 0; // lost
 
         let stars = 1; // survived
-        if (accuracy >= 90) stars = 2;
-        if (s.castleHp >= CASTLE_MAX_HP) stars = 3; // no damage taken
+        if (accuracy >= 90) {
+            stars = 2; // good accuracy
+            if (s.castleHp >= CASTLE_MAX_HP) {
+                stars = 3; // perfect: high accuracy AND no damage
+            }
+        }
 
         return stars;
     },

@@ -13,8 +13,8 @@ function LevelSelect({ worldId, onBack, onStartLevel }) {
 
     return (
         <div className="level-select" style={{ '--world-color': world.color }}>
+            <button className="btn-back" onClick={onBack}>← Zurück</button>
             <div className="level-select-header">
-                <button className="btn-back" onClick={onBack}>← Zurück</button>
                 <div className="level-select-title">
                     <span className="level-world-emoji">{world.emoji}</span>
                     <h2>{world.name}</h2>

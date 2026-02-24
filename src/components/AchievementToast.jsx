@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import useAchievementStore from '../stores/useAchievementStore';
+import useGameStore from '../stores/useGameStore';
 import { ACHIEVEMENTS } from '../utils/achievements';
+import { playAchievementUnlock } from '../utils/soundEngine';
 
 function AchievementToast() {
     const recentUnlocks = useAchievementStore(s => s.recentUnlocks);
     const dismissRecent = useAchievementStore(s => s.dismissRecent);
+    const soundEnabled = useGameStore(s => s.soundEnabled);
     const [visible, setVisible] = useState([]);
 
     useEffect(() => {
@@ -13,6 +16,7 @@ function AchievementToast() {
             const key = recentUnlocks[0];
             if (!visible.includes(key)) {
                 setVisible(v => [...v, key]);
+                if (soundEnabled) playAchievementUnlock();
                 // Auto-dismiss after 4 seconds
                 setTimeout(() => {
                     setVisible(v => v.filter(k => k !== key));

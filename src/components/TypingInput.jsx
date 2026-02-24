@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import useGameStore from '../stores/useGameStore';
 import useStatsStore from '../stores/useStatsStore';
+import { playCorrectKey, playErrorKey, playComboMilestone, playMonsterDefeated } from '../utils/soundEngine';
 
 function TypingInput() {
     const inputRef = useRef(null);
@@ -10,7 +11,10 @@ function TypingInput() {
     const activeMonsterIndex = useGameStore(s => s.activeMonsterIndex);
     const phase = useGameStore(s => s.phase);
     const combo = useGameStore(s => s.combo);
+    const soundEnabled = useGameStore(s => s.soundEnabled);
+    const wordsCompleted = useGameStore(s => s.wordsCompleted);
     const recordKeypress = useStatsStore(s => s.recordKeypress);
+    const prevWordsRef = useRef(0);
 
     const [feedback, setFeedback] = useState({ text: '', type: '' });
     const feedbackTimeout = useRef(null);
@@ -62,18 +66,29 @@ function TypingInput() {
         typeChar(e.key, expectedChar);
 
         if (isCorrect) {
+            if (soundEnabled) playCorrectKey();
             if (combo > 0 && (combo + 1) % 10 === 0) {
                 showFeedback(`🔥 ${combo + 1}er Combo!`, 'hit');
+                if (soundEnabled) playComboMilestone();
             }
         } else {
+            if (soundEnabled) playErrorKey();
             showFeedback('Fast! Versuch\'s nochmal! 💪', 'miss');
         }
-    }, [getActiveMonster, combo, typeChar, recordKeypress, showFeedback]);
+    }, [getActiveMonster, combo, typeChar, recordKeypress, showFeedback, soundEnabled]);
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyDown]);
+
+    // Play sound when a monster is defeated (wordsCompleted increases)
+    useEffect(() => {
+        if (wordsCompleted > prevWordsRef.current && soundEnabled) {
+            playMonsterDefeated();
+        }
+        prevWordsRef.current = wordsCompleted;
+    }, [wordsCompleted, soundEnabled]);
 
     // Get active monster for display
     const activeMonster = monsters[activeMonsterIndex];

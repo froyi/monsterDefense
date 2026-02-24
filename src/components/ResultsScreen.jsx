@@ -5,6 +5,7 @@ import useRewardStore from '../stores/useRewardStore';
 import useAchievementStore from '../stores/useAchievementStore';
 import useCampaignStore from '../stores/useCampaignStore';
 import { getWorld, getLevel, WORLDS } from '../utils/campaignData';
+import { playLevelComplete, playLevelFail } from '../utils/soundEngine';
 
 function ResultsScreen() {
     const setPhase = useGameStore(s => s.setPhase);
@@ -16,6 +17,7 @@ function ResultsScreen() {
     const getWPM = useGameStore(s => s.getWPM);
     const getStars = useGameStore(s => s.getStars);
     const getCoinsEarned = useGameStore(s => s.getCoinsEarned);
+    const soundEnabled = useGameStore(s => s.soundEnabled);
     const castleHp = useGameStore(s => s.castleHp);
     const worldId = useGameStore(s => s.worldId);
     const levelNum = useGameStore(s => s.levelNum);
@@ -62,6 +64,12 @@ function ResultsScreen() {
         if (won) {
             completeLevel(worldId, levelNum, stars);
             saveCampaignProgress();
+        }
+
+        // Play sound
+        if (soundEnabled) {
+            if (won) playLevelComplete();
+            else playLevelFail();
         }
 
         // Check achievements

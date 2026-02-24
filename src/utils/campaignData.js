@@ -96,19 +96,41 @@ export const WORLD_CHARS = {
 // monsterCount: number of monsters in the level
 // wordLength: [min, max] characters
 // isBoss: boss level flag
+//
+// Difficulty scales with BOTH level number and world index:
+//   World 1 starts gentle, World 6 is intense.
+//   Within each world, levels 1→9 ramp up, level 10 = boss.
 function makeLevels(worldId) {
-    return [
-        { level: 1, monsterCount: 4, speed: 0.6, wordLength: [3, 4], isBoss: false },
-        { level: 2, monsterCount: 4, speed: 0.65, wordLength: [3, 4], isBoss: false },
-        { level: 3, monsterCount: 5, speed: 0.7, wordLength: [3, 5], isBoss: false },
-        { level: 4, monsterCount: 5, speed: 0.8, wordLength: [4, 5], isBoss: false },
-        { level: 5, monsterCount: 6, speed: 0.85, wordLength: [4, 6], isBoss: false },
-        { level: 6, monsterCount: 6, speed: 0.9, wordLength: [4, 6], isBoss: false },
-        { level: 7, monsterCount: 7, speed: 1.0, wordLength: [5, 7], isBoss: false },
-        { level: 8, monsterCount: 8, speed: 1.05, wordLength: [5, 8], isBoss: false },
-        { level: 9, monsterCount: 9, speed: 1.1, wordLength: [5, 8], isBoss: false },
-        { level: 10, monsterCount: 4, speed: 0.9, wordLength: [8, 15], isBoss: true },
-    ].map(l => ({ ...l, worldId }));
+    const wi = WORLDS.findIndex(w => w.id === worldId); // 0-5
+
+    // Per-world base offsets (stacks on top of level scaling)
+    const monsterBase = 8 + wi * 2;      // world 1: 8,  world 6: 18
+    const speedBase = 0.7 + wi * 0.12;   // world 1: 0.7, world 6: 1.30
+    const wordMinBase = 3 + Math.floor(wi * 0.5); // 3→5
+    const wordMaxBase = 5 + wi;                    // 5→10
+
+    // Per-level scaling within a world
+    const templates = [
+        { level: 1, mc: 0, sp: 0, wMin: 0, wMax: 0, isBoss: false },
+        { level: 2, mc: 1, sp: 0.03, wMin: 0, wMax: 0, isBoss: false },
+        { level: 3, mc: 2, sp: 0.06, wMin: 0, wMax: 1, isBoss: false },
+        { level: 4, mc: 3, sp: 0.09, wMin: 0, wMax: 1, isBoss: false },
+        { level: 5, mc: 4, sp: 0.12, wMin: 1, wMax: 1, isBoss: false },
+        { level: 6, mc: 5, sp: 0.15, wMin: 1, wMax: 2, isBoss: false },
+        { level: 7, mc: 7, sp: 0.18, wMin: 1, wMax: 2, isBoss: false },
+        { level: 8, mc: 9, sp: 0.22, wMin: 1, wMax: 3, isBoss: false },
+        { level: 9, mc: 12, sp: 0.26, wMin: 2, wMax: 3, isBoss: false },
+        { level: 10, mc: 6, sp: 0.15, wMin: 3, wMax: 6, isBoss: true },
+    ];
+
+    return templates.map(t => ({
+        level: t.level,
+        monsterCount: monsterBase + t.mc,
+        speed: Math.round((speedBase + t.sp) * 100) / 100,
+        wordLength: [wordMinBase + t.wMin, wordMaxBase + t.wMax],
+        isBoss: t.isBoss,
+        worldId,
+    }));
 }
 
 // Full level list: 60 levels

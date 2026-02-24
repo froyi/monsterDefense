@@ -1,6 +1,7 @@
 // Campaign progress store – tracks stars, world unlocks, current position
 import { create } from 'zustand';
 import { WORLDS, TOTAL_LEVELS, getWorldIndex } from '../utils/campaignData';
+import { getActiveProfile } from '../utils/storage';
 
 // Progress shape: { [worldId]: { [levelNum]: { stars: 0-3, completed: bool } } }
 function createEmptyProgress() {
@@ -126,18 +127,24 @@ const useCampaignStore = create((set, get) => ({
         return null; // campaign complete
     },
 
-    // Persistence
+    // Persistence – profile-scoped localStorage
     saveProgress: () => {
-        // Will be implemented with Supabase persistence
-        // For now, use localStorage as fallback
+        const profileId = getActiveProfile();
+        if (!profileId) return;
         try {
-            localStorage.setItem('campaign_progress', JSON.stringify(get().progress));
+            localStorage.setItem(`campaign_progress_${profileId}`, JSON.stringify(get().progress));
         } catch { /* ignore */ }
     },
 
     loadProgress: () => {
+        const profileId = getActiveProfile();
+        if (!profileId) {
+            // No profile – reset to empty
+            set({ progress: createEmptyProgress() });
+            return;
+        }
         try {
-            const saved = localStorage.getItem('campaign_progress');
+            const saved = localStorage.getItem(`campaign_progress_${profileId}`);
             if (saved) {
                 const parsed = JSON.parse(saved);
                 // Merge with empty progress to ensure all worlds/levels exist
@@ -152,16 +159,29 @@ const useCampaignStore = create((set, get) => ({
                     }
                 }
                 set({ progress: full });
+            } else {
+                // New profile with no saved progress
+                set({ progress: createEmptyProgress() });
             }
-        } catch { /* ignore */ }
+        } catch {
+            set({ progress: createEmptyProgress() });
+        }
     },
 
-    // Reset all progress
+    // Reset all progress (for settings or profile deletion)
     resetProgress: () => {
+        const profileId = getActiveProfile();
         set({ progress: createEmptyProgress(), currentWorldId: 'village', currentLevel: 1 });
-        try {
-            localStorage.removeItem('campaign_progress');
-        } catch { /* ignore */ }
+        if (profileId) {
+            try {
+                localStorage.removeItem(`campaign_progress_${profileId}`);
+            } catch { /* ignore */ }
+        }
+    },
+
+    // Reset in-memory state (used when logging out / switching profiles)
+    resetState: () => {
+        set({ progress: createEmptyProgress(), currentWorldId: 'village', currentLevel: 1 });
     },
 }));
 
