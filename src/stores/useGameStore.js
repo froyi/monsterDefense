@@ -113,7 +113,7 @@ const useGameStore = create((set, get) => ({
             const bossMonster = createMonster(bossId, bossWord, bSpeed);
             bossMonster.hp = MONSTER_BASE_HP * 3;
             bossMonster.maxHp = MONSTER_BASE_HP * 3;
-            bossMonster.spawnDelay = lastMinionDelay + 4; // 4s after last minion
+            bossMonster.spawnDelay = lastMinionDelay + 1; // spawns with last group, but boss-gate ensures fought last
             bossMonster.isBoss = true;
             bossMonster.enraged = false;
             monsters.push(bossMonster);

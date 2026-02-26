@@ -11,7 +11,8 @@ function getWordModule() {
 
 /**
  * Generate words for a campaign level.
- * Picks words that only use the allowed characters for the given world.
+ * Prioritizes words that USE the new characters for the given world,
+ * ensuring later worlds feel distinct from world 1.
  * @param {number} count - Number of words to generate
  * @param {string} worldId - World identifier (e.g. 'village', 'forest')
  * @param {string} layout - 'de' or 'en'
@@ -24,9 +25,19 @@ export function generateCampaignWords(count, worldId, layout = 'de', wordLengthR
     const allowedChars = new Set(allowedCharsStr.split(''));
     const [minLen, maxLen] = wordLengthRange;
 
-    // Gather ALL words from all levels, then filter by allowed chars and length
-    const allWordPool = wordModule.allWords || [];
-    const filtered = allWordPool.filter(word => {
+    // Map worlds to their primary word level (which level introduced their NEW keys)
+    const worldToLevel = {
+        village: 1,    // home row only
+        forest: 2,     // + upper row
+        mountains: 3,  // + lower row
+        volcano: 4,    // + umlauts
+        castle: 5,     // + capitals
+        dragon: 5,     // + punctuation/sentences
+    };
+    const primaryLevel = worldToLevel[worldId] || 1;
+
+    // Filter words by allowed chars and length
+    const filterWords = (wordList) => wordList.filter(word => {
         if (word.length < minLen || word.length > maxLen) return false;
         for (const char of word) {
             if (!allowedChars.has(char)) return false;
@@ -34,41 +45,56 @@ export function generateCampaignWords(count, worldId, layout = 'de', wordLengthR
         return true;
     });
 
-    // Shuffle the filtered pool for better variety
-    const shuffled = [...filtered].sort(() => Math.random() - 0.5);
+    // Get words from the PRIMARY level (the new characters for this world)
+    const primaryWords = filterWords(wordModule.wordsByLevel[primaryLevel] || []);
+
+    // Get words from ALL allowed levels (the general pool)
+    const allFiltered = filterWords(wordModule.allWords || []);
+
+    // Quota: 60% from primary level, 40% from general pool
+    const primaryQuota = Math.ceil(count * 0.6);
+    const generalQuota = count - primaryQuota;
+
+    const shuffledPrimary = [...primaryWords].sort(() => Math.random() - 0.5);
+    const shuffledGeneral = [...allFiltered].sort(() => Math.random() - 0.5);
 
     const words = [];
     const used = new Set();
 
-    for (let i = 0; i < count; i++) {
-        // Try to pick from the shuffled pool first
-        let word = null;
-        for (const candidate of shuffled) {
-            if (!used.has(candidate)) {
-                word = candidate;
-                break;
-            }
+    // Phase 1: Fill primary quota from the world's specific level
+    for (const candidate of shuffledPrimary) {
+        if (words.length >= primaryQuota) break;
+        if (!used.has(candidate)) {
+            used.add(candidate);
+            words.push(candidate);
         }
-
-        // Pool exhausted — dynamically generate a unique word from allowed chars
-        if (!word) {
-            const chars = allowedCharsStr.replace(/\s/g, '').split('');
-            let attempts = 0;
-            do {
-                const len = minLen + Math.floor(Math.random() * (maxLen - minLen + 1));
-                word = '';
-                for (let c = 0; c < len; c++) {
-                    word += chars[Math.floor(Math.random() * chars.length)];
-                }
-                attempts++;
-            } while (used.has(word) && attempts < 100);
-        }
-
-        used.add(word);
-        words.push(word);
     }
 
-    return words;
+    // Phase 2: Fill remaining from the general pool
+    for (const candidate of shuffledGeneral) {
+        if (words.length >= count) break;
+        if (!used.has(candidate)) {
+            used.add(candidate);
+            words.push(candidate);
+        }
+    }
+
+    // Phase 3: If still short, generate dynamic words
+    while (words.length < count) {
+        const chars = allowedCharsStr.replace(/\s/g, '').split('');
+        const len = minLen + Math.floor(Math.random() * (maxLen - minLen + 1));
+        let word = '';
+        for (let c = 0; c < len; c++) {
+            word += chars[Math.floor(Math.random() * chars.length)];
+        }
+        if (!used.has(word)) {
+            used.add(word);
+            words.push(word);
+        }
+    }
+
+    // Shuffle the final list so primary words aren't always first
+    return words.sort(() => Math.random() - 0.5);
 }
 
 /**
