@@ -3126,9 +3126,9 @@
 .collection-world-tabs {
     display: flex;
     gap: var(--space-sm);
-    overflow-x: auto;
     padding: var(--space-xs) 0;
     flex-wrap: wrap;
+    overflow: visible;
 }
 
 .collection-world-tab {
