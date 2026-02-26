@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { WORLDS } from '../utils/campaignData';
 import useCampaignStore from '../stores/useCampaignStore';
 import useProfileStore from '../stores/useProfileStore';
+import useRewardStore from '../stores/useRewardStore';
 import LevelSelect from './LevelSelect';
 
 function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, onOpenSettings, onOpenCards }) {
@@ -14,6 +15,7 @@ function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, o
     const getCompletionPercent = useCampaignStore(s => s.getCompletionPercent);
     const getNextLevel = useCampaignStore(s => s.getNextLevel);
     const logout = useProfileStore(s => s.logout);
+    const coins = useRewardStore(s => s.coins);
 
     const totalStars = getTotalStars();
     const completion = getCompletionPercent();
@@ -39,6 +41,7 @@ function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, o
                 <div className="world-map-stats">
                     <span className="stat-badge">⭐ {totalStars}</span>
                     <span className="stat-badge">{completion}%</span>
+                    <span className="stat-badge coin-badge">🪙 {coins}</span>
                 </div>
             </div>
 

@@ -285,6 +285,11 @@ const useGameStore = create((set, get) => ({
 
                     const nextIdx = findFrontmostMonsterIndex(monsters);
 
+                    // Only end the game if there are no more monsters to fight
+                    // (including unspawned ones still waiting in the queue)
+                    const hasUnspawnedMonsters = monsters.some(m => !m.spawned && !m.defeated && !m.reachedCastle);
+                    const gameOver = nextIdx === -1 && !hasUnspawnedMonsters;
+
                     return {
                         monsters,
                         combo: newCombo,
@@ -297,7 +302,7 @@ const useGameStore = create((set, get) => ({
                         activeMonsterIndex: nextIdx,
                         comboShields: nextComboShields,
                         errorShields: nextErrorShields,
-                        phase: nextIdx === -1 ? 'results' : 'playing',
+                        phase: gameOver ? 'results' : 'playing',
                         wordsCompleted: s.wordsCompleted + 1,
                     };
                 }

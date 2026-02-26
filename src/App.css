@@ -2258,6 +2258,12 @@
     backdrop-filter: blur(8px);
 }
 
+.stat-badge.coin-badge {
+    background: rgba(255, 200, 50, 0.12);
+    border-color: rgba(255, 200, 50, 0.25);
+    color: #ffd54f;
+}
+
 .btn-continue {
     width: 100%;
     padding: 16px;
