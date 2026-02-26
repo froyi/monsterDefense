@@ -9,10 +9,17 @@ export const RARITIES = {
 };
 
 // Returns random rarity based on weights
-export function rollRarity(boostRare = false) {
-    const weights = boostRare
-        ? { common: 0, rare: 75, epic: 20, legendary: 5 } // Guaranteed rare+ (e.g. for boosters)
-        : { common: 70, rare: 20, epic: 8, legendary: 2 };
+// boostRare = true → guaranteed rare+ (for guaranteed slots)
+// megaBoost = true → 2× epic/legendary odds (for Mega Pack)
+export function rollRarity(boostRare = false, megaBoost = false) {
+    let weights;
+    if (boostRare) {
+        weights = { common: 0, rare: 75, epic: 20, legendary: 5 }; // Guaranteed rare+
+    } else if (megaBoost) {
+        weights = { common: 54, rare: 20, epic: 16, legendary: 4 }; // 2× epic/legendary
+    } else {
+        weights = { common: 70, rare: 20, epic: 8, legendary: 2 }; // Normal odds
+    }
 
     const rand = Math.random() * 100;
     if (rand < weights.legendary) return 'legendary';
@@ -726,6 +733,20 @@ export function openBoosterPack() {
     // Card 2 & 3: Normal odds
     cards.push(rollCard(null, rollRarity(false)));
     cards.push(rollCard(null, rollRarity(false)));
+    return cards;
+}
+
+// Generates a Mega Pack of 4 cards.
+// At least one card is guaranteed to be 'rare' or better.
+// Epic and legendary odds are doubled (2×) for non-guaranteed cards.
+export function openMegaPack() {
+    const cards = [];
+    // Card 1: Guaranteed rare+
+    cards.push(rollCard(null, rollRarity(true)));
+    // Cards 2–4: 2× epic/legendary odds
+    cards.push(rollCard(null, rollRarity(false, true)));
+    cards.push(rollCard(null, rollRarity(false, true)));
+    cards.push(rollCard(null, rollRarity(false, true)));
     return cards;
 }
 

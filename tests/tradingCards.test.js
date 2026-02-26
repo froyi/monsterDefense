@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { CARDS, RARITIES, rollRarity, rollCard, openBoosterPack, getCardById, getCardsByWorld, getEffectDescription } from '../src/utils/tradingCards';
+import { CARDS, RARITIES, rollRarity, rollCard, openBoosterPack, openMegaPack, getCardById, getCardsByWorld, getEffectDescription } from '../src/utils/tradingCards';
 
 const WORLD_IDS = ['village', 'forest', 'mountains', 'volcano', 'castle', 'dragon'];
 
@@ -140,6 +140,60 @@ describe('tradingCards', () => {
                 pack.forEach(c => worlds.add(c.world));
             }
             expect(worlds.size).toBeGreaterThan(1);
+        });
+    });
+
+    describe('openMegaPack', () => {
+        it('should return exactly 4 cards', () => {
+            const pack = openMegaPack();
+            expect(pack.length).toBe(4);
+        });
+
+        it('the first card should be rare or better (guaranteed)', () => {
+            for (let i = 0; i < 30; i++) {
+                const pack = openMegaPack();
+                expect(['rare', 'epic', 'legendary']).toContain(pack[0].rarity);
+            }
+        });
+
+        it('all cards should be valid card objects', () => {
+            const pack = openMegaPack();
+            pack.forEach(card => {
+                expect(card.id).toBeTruthy();
+                expect(card.name).toBeTruthy();
+                expect(card.rarity).toBeTruthy();
+            });
+        });
+
+        it('mega pack can contain cards from different worlds', () => {
+            const worlds = new Set();
+            for (let i = 0; i < 100; i++) {
+                const pack = openMegaPack();
+                pack.forEach(c => worlds.add(c.world));
+            }
+            expect(worlds.size).toBeGreaterThan(1);
+        });
+
+        it('mega pack should produce more epic/legendary cards than normal (statistical)', () => {
+            let megaEpicLegendary = 0;
+            let normalEpicLegendary = 0;
+            const runs = 500;
+
+            for (let i = 0; i < runs; i++) {
+                const megaPack = openMegaPack();
+                megaPack.forEach(c => {
+                    if (c.rarity === 'epic' || c.rarity === 'legendary') megaEpicLegendary++;
+                });
+
+                const normalPack = openBoosterPack();
+                normalPack.forEach(c => {
+                    if (c.rarity === 'epic' || c.rarity === 'legendary') normalEpicLegendary++;
+                });
+            }
+
+            // Mega pack has 4 cards vs 3, and 2x epic/legendary odds on 3 of them
+            // So we expect significantly more epic/legendary from mega packs
+            expect(megaEpicLegendary).toBeGreaterThan(normalEpicLegendary);
         });
     });
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useGameStore from '../stores/useGameStore';
 import useRewardStore from '../stores/useRewardStore';
 import useCardStore from '../stores/useCardStore';
-import { openBoosterPack, rollCard, RARITIES } from '../utils/tradingCards';
+import { openBoosterPack, openMegaPack, rollCard, RARITIES } from '../utils/tradingCards';
 import Card from './Card';
 
 const CATEGORY_LABELS = {
@@ -16,6 +16,7 @@ const CATEGORY_LABELS = {
 const BOOSTER_PACKS = [
     { id: 'booster_basic', name: 'Basis-Pack', emoji: '📦', price: 100, description: '3 Karten (mind. 1 Seltene)', packType: 'basic' },
     { id: 'booster_premium', name: 'Premium-Pack', emoji: '🎁', price: 250, description: '3 Karten (mind. 1 Epische)', packType: 'premium' },
+    { id: 'booster_mega', name: 'Mega-Pack', emoji: '💎', price: 300, description: '4 Karten (mind. 1 Seltene, 2× Episch/Legendär)', packType: 'mega' },
 ];
 
 function Shop() {
@@ -57,7 +58,7 @@ function Shop() {
         spendCoins(pack.price);
 
         // Generate cards from the pack
-        const droppedCards = openBoosterPack();
+        const droppedCards = pack.packType === 'mega' ? openMegaPack() : openBoosterPack();
 
         // If premium pack, force first card to be epic+
         if (pack.packType === 'premium') {
