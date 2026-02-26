@@ -80,6 +80,16 @@ const useRewardStore = create((set, get) => ({
         });
     },
 
+    // Spend coins (e.g., for booster packs) — does NOT update streak/totalCoinsEarned
+    spendCoins: (amount) => {
+        set(s => {
+            const updated = { coins: Math.max(0, s.coins - amount) };
+            const newState = { ...s, ...updated };
+            saveRewards(newState);
+            return updated;
+        });
+    },
+
     buyItem: (itemId) => {
         const state = get();
         const item = SHOP_ITEMS.find(i => i.id === itemId);

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { WORLDS } from '../utils/campaignData';
 import useCampaignStore from '../stores/useCampaignStore';
+import useProfileStore from '../stores/useProfileStore';
 import LevelSelect from './LevelSelect';
 
-function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, onOpenSettings }) {
+function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, onOpenSettings, onOpenCards }) {
     const [selectedWorld, setSelectedWorld] = useState(null);
     // Subscribe to progress state directly so component re-renders when data loads
     const progress = useCampaignStore(s => s.progress);
@@ -12,6 +13,7 @@ function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, o
     const getTotalStars = useCampaignStore(s => s.getTotalStars);
     const getCompletionPercent = useCampaignStore(s => s.getCompletionPercent);
     const getNextLevel = useCampaignStore(s => s.getNextLevel);
+    const logout = useProfileStore(s => s.logout);
 
     const totalStars = getTotalStars();
     const completion = getCompletionPercent();
@@ -86,10 +88,12 @@ function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, o
             </div>
 
             <div className="world-map-nav">
+                <button className="btn-nav-sm" onClick={onOpenCards}>🃏 Karten</button>
                 <button className="btn-nav-sm" onClick={onOpenShop}>🛍️ Shop</button>
                 <button className="btn-nav-sm" onClick={onOpenStats}>📊 Statistik</button>
                 <button className="btn-nav-sm" onClick={onOpenAchievements}>🏆 Abzeichen</button>
                 <button className="btn-nav-sm" onClick={onOpenSettings}>⚙️</button>
+                <button className="btn-nav-sm" onClick={logout}>👤 Wechseln</button>
             </div>
         </div>
     );

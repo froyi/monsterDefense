@@ -1,8 +1,8 @@
-// Main game state store – Campaign mode (level-based)
 import { create } from 'zustand';
 import { generateCampaignWords, generateBossWord } from '../utils/wordGenerator';
 import { calculateWordScore, calculateWPM, calculateCoins } from '../utils/scoring';
 import { getLevel, getWorld, WORLDS } from '../utils/campaignData';
+import useCardStore from './useCardStore';
 
 const ROUND_DURATION = 180; // 3 minutes per level
 const MONSTER_BASE_HP = 100;
@@ -65,6 +65,8 @@ const useGameStore = create((set, get) => ({
     errorChars: 0,
     totalErrors: [],
     wordsCompleted: 0,
+    comboShields: 0,
+    errorShields: 0,
 
     // Settings
     soundEnabled: true,
@@ -81,6 +83,15 @@ const useGameStore = create((set, get) => ({
         const worldIndex = WORLDS.findIndex(w => w.id === worldId);
         const monsterSpeed = MONSTER_BASE_SPEED * levelConfig.speed;
 
+        // Evaluate Passive Card Effects
+        const cardStore = useCardStore.getState();
+        const baseHpFlat = cardStore.getEffectValue('castle_hp_flat');
+        const baseHpPercent = cardStore.getEffectValue('castle_hp_percent');
+        const finalMaxHp = (CASTLE_MAX_HP + baseHpFlat) * (1 + baseHpPercent / 100);
+
+        const monsterSlow = cardStore.getEffectValue('monster_slow');
+        const bossSlow = cardStore.getEffectValue('boss_slow');
+
         let monsters;
         let usedWords;
 
@@ -91,13 +102,15 @@ const useGameStore = create((set, get) => ({
             usedWords = new Set(minionWords);
 
             // Create minion monsters with staggered spawns
-            monsters = minionWords.map((word, i) => createMonster(i, word, monsterSpeed));
+            const currentSpeed = Math.max(0.01, monsterSpeed * (1 - monsterSlow / 100));
+            monsters = minionWords.map((word, i) => createMonster(i, word, currentSpeed));
 
             // Generate a long boss word and create the boss as the LAST monster
             const bossWord = generateBossWord(worldId, layout, worldIndex);
             const bossId = monsters.length;
             const lastMinionDelay = (minionCount - 1) * 2.0;
-            const bossMonster = createMonster(bossId, bossWord, monsterSpeed * 0.8); // boss slightly slower but tankier
+            const bSpeed = Math.max(0.01, monsterSpeed * 0.8 * (1 - bossSlow / 100)); // boss slightly slower but tankier
+            const bossMonster = createMonster(bossId, bossWord, bSpeed);
             bossMonster.hp = MONSTER_BASE_HP * 3;
             bossMonster.maxHp = MONSTER_BASE_HP * 3;
             bossMonster.spawnDelay = lastMinionDelay + 4; // 4s after last minion
@@ -107,7 +120,8 @@ const useGameStore = create((set, get) => ({
         } else {
             // Normal level
             const words = generateCampaignWords(levelConfig.monsterCount, worldId, layout, levelConfig.wordLength);
-            monsters = words.map((word, i) => createMonster(i, word, monsterSpeed));
+            const currentSpeed = Math.max(0.01, monsterSpeed * (1 - monsterSlow / 100));
+            monsters = words.map((word, i) => createMonster(i, word, currentSpeed));
             usedWords = new Set(words);
         }
 
@@ -120,7 +134,8 @@ const useGameStore = create((set, get) => ({
             activeMonsterIndex: 0,
             timer: ROUND_DURATION,
             elapsed: 0,
-            castleHp: CASTLE_MAX_HP,
+            castleHp: finalMaxHp, // Set to modified max HP
+            maxCastleHp: finalMaxHp, // Store max for UI bar percentage
             score: 0,
             combo: 0,
             maxCombo: 0,
@@ -130,6 +145,8 @@ const useGameStore = create((set, get) => ({
             totalErrors: [],
             wordsCompleted: 0,
             usedWords,
+            comboShields: cardStore.getEffectValue('combo_shield'),
+            errorShields: cardStore.getEffectValue('forgive_error'),
         });
     },
 
@@ -198,22 +215,51 @@ const useGameStore = create((set, get) => ({
     },
 
     typeChar: (char, expectedChar) => {
-        const isCorrect = char === expectedChar;
+        let isCorrect = char === expectedChar;
 
         set(s => {
             if (s.phase !== 'playing') return {};
-
-            const newTotalChars = s.totalCharsTyped + 1;
-            const newCorrect = isCorrect ? s.correctChars + 1 : s.correctChars;
-            const newErrors = isCorrect ? s.errorChars : s.errorChars + 1;
-            const newCombo = isCorrect ? s.combo + 1 : 0;
-            const newMaxCombo = Math.max(s.maxCombo, newCombo);
-            const newTotalErrors = isCorrect ? s.totalErrors : [...s.totalErrors, expectedChar];
 
             const monsters = [...s.monsters];
             const activeMonster = monsters[s.activeMonsterIndex];
 
             if (!activeMonster || activeMonster.defeated || activeMonster.reachedCastle || !activeMonster.spawned) return {};
+
+            // Handle Card Shields
+            let consumedErrorShield = false;
+            let consumedComboShield = false;
+
+            if (!isCorrect) {
+                if (s.errorShields > 0) {
+                    // Error Shield ignores the mistake entirely (treats as correct!)
+                    isCorrect = true;
+                    consumedErrorShield = true;
+                } else if (s.comboShields > 0) {
+                    // Combo Shield doesn't fix the letter, but it prevents the combo breaking.
+                    consumedComboShield = true;
+                }
+            }
+
+            const newTotalChars = s.totalCharsTyped + 1;
+            const newCorrect = isCorrect ? s.correctChars + 1 : s.correctChars;
+            const newErrors = isCorrect ? s.errorChars : s.errorChars + 1;
+
+            // Calculate new combo based on correctness and shields
+            let newCombo = 0;
+            if (isCorrect) {
+                newCombo = s.combo + 1;
+            } else if (consumedComboShield) {
+                newCombo = s.combo; // maintain combo
+            } else {
+                newCombo = 0; // break combo
+            }
+
+            const newMaxCombo = Math.max(s.maxCombo, newCombo);
+            const newTotalErrors = isCorrect ? s.totalErrors : [...s.totalErrors, expectedChar];
+
+            // Update Shields State
+            const nextErrorShields = consumedErrorShield ? s.errorShields - 1 : s.errorShields;
+            const nextComboShields = consumedComboShield ? s.comboShields - 1 : s.comboShields;
 
             if (isCorrect) {
                 const newTyped = activeMonster.typed + 1;
@@ -248,20 +294,35 @@ const useGameStore = create((set, get) => ({
                         errorChars: newErrors,
                         totalErrors: newTotalErrors,
                         score: s.score + wordScore,
+                        activeMonsterIndex: nextIdx,
+                        comboShields: nextComboShields,
+                        errorShields: nextErrorShields,
+                        phase: nextIdx === -1 ? 'results' : 'playing',
                         wordsCompleted: s.wordsCompleted + 1,
-                        activeMonsterIndex: nextIdx >= 0 ? nextIdx : s.activeMonsterIndex,
                     };
                 }
+
+                return {
+                    monsters,
+                    combo: newCombo,
+                    maxCombo: newMaxCombo,
+                    totalCharsTyped: newTotalChars,
+                    correctChars: newCorrect,
+                    errorChars: newErrors,
+                    totalErrors: newTotalErrors,
+                    comboShields: nextComboShields,
+                    errorShields: nextErrorShields,
+                };
             }
 
+            // Incorrect character typed (but not shielded by error shield)
             return {
-                monsters,
                 combo: newCombo,
-                maxCombo: newMaxCombo,
                 totalCharsTyped: newTotalChars,
-                correctChars: newCorrect,
                 errorChars: newErrors,
                 totalErrors: newTotalErrors,
+                comboShields: nextComboShields,
+                errorShields: nextErrorShields,
             };
         });
     },
@@ -288,7 +349,7 @@ const useGameStore = create((set, get) => ({
     // Calculate stars earned for the current level
     // ⭐ = all monsters defeated (survived)
     // ⭐⭐ = survived + accuracy >= 90%
-    // ⭐⭐⭐ = survived + accuracy >= 90% + no castle damage
+    // ⭐⭐⭐ = survived + accuracy >= 90% + no castle damage (respects max HP boost)
     getStars: () => {
         const s = get();
         const allDefeated = s.monsters.every(m => m.defeated);
@@ -298,7 +359,8 @@ const useGameStore = create((set, get) => ({
         let stars = 1; // survived
         if (accuracy >= 90) {
             stars = 2; // good accuracy
-            if (s.castleHp >= CASTLE_MAX_HP) {
+            // Check against dynamic max HP from card buffs
+            if (s.castleHp >= s.maxCastleHp) {
                 stars = 3; // perfect: high accuracy AND no damage
             }
         }
@@ -306,7 +368,7 @@ const useGameStore = create((set, get) => ({
         return stars;
     },
 
-    // Calculate coins earned
+    // Calculate coins earned (includes passive card bonuses)
     getCoinsEarned: () => {
         const s = get();
         const stars = get().getStars();
@@ -315,8 +377,15 @@ const useGameStore = create((set, get) => ({
         const baseCoins = calculateCoins(s.score, s.getAccuracy());
         const world = getWorld(s.worldId);
         const multiplier = world?.coinMultiplier || 1;
-        return Math.round(baseCoins * multiplier);
-    },
+
+        // Apply card bonus effects
+        const cardStore = useCardStore.getState();
+        const bonusCoins = cardStore.getEffectValue('bonus_coins');       // e.g. +10%
+        const bonusBoth = cardStore.getEffectValue('bonus_coins_xp');     // e.g. +20% on both
+
+        const totalBonus = 1 + (bonusCoins + bonusBoth) / 100;
+        return Math.round(baseCoins * multiplier * totalBonus);
+    }
 }));
 
 export default useGameStore;

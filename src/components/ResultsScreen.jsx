@@ -1,11 +1,14 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import useGameStore from '../stores/useGameStore';
 import useStatsStore from '../stores/useStatsStore';
 import useRewardStore from '../stores/useRewardStore';
 import useAchievementStore from '../stores/useAchievementStore';
 import useCampaignStore from '../stores/useCampaignStore';
+import useCardStore from '../stores/useCardStore';
 import { getWorld, getLevel, WORLDS } from '../utils/campaignData';
+import { rollCard } from '../utils/tradingCards';
 import { playLevelComplete, playLevelFail } from '../utils/soundEngine';
+import Card from './Card';
 
 function ResultsScreen() {
     const setPhase = useGameStore(s => s.setPhase);
@@ -32,6 +35,7 @@ function ResultsScreen() {
     const saveCampaignProgress = useCampaignStore(s => s.saveProgress);
     const getNextLevel = useCampaignStore(s => s.getNextLevel);
     const getTotalStars = useCampaignStore(s => s.getTotalStars);
+    const receiveCard = useCardStore(s => s.receiveCard);
 
     const world = getWorld(worldId);
     const wpm = getWPM();
@@ -41,6 +45,9 @@ function ResultsScreen() {
     const won = stars > 0;
 
     const savedRef = useRef(false);
+    const [droppedCard, setDroppedCard] = useState(null);
+    const [cardResult, setCardResult] = useState(null);
+    const [showCardDrop, setShowCardDrop] = useState(false);
 
     // Save results once
     useEffect(() => {
@@ -70,6 +77,27 @@ function ResultsScreen() {
         if (soundEnabled) {
             if (won) playLevelComplete();
             else playLevelFail();
+        }
+
+        // Card drop logic (only on win)
+        if (won) {
+            // Base drop chance: 15% + 5% per star + card_drop_chance passive
+            const cardDropBonus = useCardStore.getState().getEffectValue('card_drop_chance');
+            const dropChance = 15 + (stars * 5) + cardDropBonus; // 20-30% base + bonus
+            const roll = Math.random() * 100;
+
+            if (roll < dropChance) {
+                // Map worldId to the card world filter
+                const worldFilter = worldId; // e.g. 'village'
+                const card = rollCard(worldFilter);
+                if (card) {
+                    const result = receiveCard(card.id);
+                    setDroppedCard(card);
+                    setCardResult(result);
+                    // Show card reveal after a delay
+                    setTimeout(() => setShowCardDrop(true), 1200);
+                }
+            }
         }
 
         // Check achievements
@@ -178,6 +206,24 @@ function ResultsScreen() {
                         <span className="stat-value highlight">+{coins}</span>
                     </div>
                 </div>
+
+                {/* Card Drop Section */}
+                {showCardDrop && droppedCard && (
+                    <div className="card-drop-section">
+                        <div className="card-drop-label">🃏 Karten-Drop!</div>
+                        <div className="card-drop-container">
+                            <Card
+                                cardId={droppedCard}
+                                level={cardResult?.isNew ? 1 : (cardResult?.newLevel || 1)}
+                                duplicates={0}
+                                isNew={cardResult?.isNew}
+                            />
+                        </div>
+                        {cardResult?.upgraded && (
+                            <div className="card-drop-upgrade">⬆️ Level Up!</div>
+                        )}
+                    </div>
+                )}
 
                 {/* Buttons */}
                 <div className="results-actions">

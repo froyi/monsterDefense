@@ -206,6 +206,37 @@ export async function saveRewards(rewards) {
 }
 
 // ==========================================
+// Cards (Supabase)
+// ==========================================
+
+export async function loadCards() {
+    if (!_profileId) return null;
+    const { data, error } = await supabase
+        .from('cards')
+        .select('*')
+        .eq('profile_id', _profileId)
+        .single();
+    if (error || !data) return null;
+    return {
+        ownedCards: data.owned_cards || {},
+        equippedCards: data.equipped_cards || [null, null, null],
+    };
+}
+
+export async function saveCards(cardsData) {
+    if (!_profileId) return;
+    const { error } = await supabase
+        .from('cards')
+        .upsert({
+            profile_id: _profileId,
+            owned_cards: cardsData.ownedCards,
+            equipped_cards: cardsData.equippedCards,
+            updated_at: new Date().toISOString(),
+        }, { onConflict: 'profile_id' });
+    if (error) console.warn('Failed to save cards:', error);
+}
+
+// ==========================================
 // Round History (Supabase)
 // ==========================================
 

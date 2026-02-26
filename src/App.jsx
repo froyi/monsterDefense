@@ -6,6 +6,7 @@ import useRewardStore from './stores/useRewardStore';
 import useAchievementStore from './stores/useAchievementStore';
 import useDailyChallengeStore from './stores/useDailyChallengeStore';
 import useCampaignStore from './stores/useCampaignStore';
+import useCardStore from './stores/useCardStore';
 import ProfileScreen from './components/ProfileScreen';
 import WorldMap from './components/WorldMap';
 import GameScreen from './components/GameScreen';
@@ -17,6 +18,7 @@ import AchievementToast from './components/AchievementToast';
 import SettingsPanel from './components/SettingsPanel';
 import DailyChallengePanel from './components/DailyChallengePanel';
 import DailyChest from './components/DailyChest';
+import CardCollectionScreen from './components/CardCollectionScreen';
 import './App.css';
 
 // Generate background stars
@@ -62,6 +64,7 @@ function App() {
     const reloadAchievements = useAchievementStore(s => s.reload);
     const reloadDailyChallenge = useDailyChallengeStore(s => s.reload);
     const loadCampaignProgress = useCampaignStore(s => s.loadProgress);
+    const loadCards = useCardStore(s => s.loadCards);
     const keyboardLayout = useRewardStore(s => s.keyboardLayout);
 
     // Reload all stores when profile changes, reset when logging out
@@ -73,10 +76,12 @@ function App() {
             reloadAchievements();
             reloadDailyChallenge();
             loadCampaignProgress();
+            loadCards();
             useGameStore.getState().setPhase('menu');
         } else {
             // Logged out — reset all in-memory stores to prevent data leaks
             useCampaignStore.getState().resetState();
+            useCardStore.getState().resetState();
             useStatsStore.setState({ letterStats: {}, history: [], lastKeyTime: null });
             useRewardStore.setState({
                 coins: 0, totalCoinsEarned: 0, ownedItems: [],
@@ -113,6 +118,7 @@ function App() {
                         onOpenStats={() => setPhase('stats')}
                         onOpenAchievements={() => setPhase('achievements')}
                         onOpenSettings={() => setPhase('settings')}
+                        onOpenCards={() => setPhase('cards')}
                     />
                 );
             case 'playing':
@@ -121,6 +127,8 @@ function App() {
                 return <ResultsScreen />;
             case 'shop':
                 return <Shop />;
+            case 'cards':
+                return <CardCollectionScreen onBack={() => setPhase('menu')} />;
             case 'stats':
                 return <StatsScreen />;
             case 'achievements':
@@ -135,6 +143,7 @@ function App() {
                         onOpenStats={() => setPhase('stats')}
                         onOpenAchievements={() => setPhase('achievements')}
                         onOpenSettings={() => setPhase('settings')}
+                        onOpenCards={() => setPhase('cards')}
                     />
                 );
         }

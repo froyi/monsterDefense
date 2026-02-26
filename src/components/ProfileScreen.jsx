@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import useProfileStore from '../stores/useProfileStore';
+import { verifyPin } from '../utils/storage';
 
 function ProfileScreen() {
     const {
@@ -13,6 +14,8 @@ function ProfileScreen() {
     const [pin, setPin] = useState('');
     const [targetProfile, setTargetProfile] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState(null);
+    const [deletePin, setDeletePin] = useState('');
+    const [deleteError, setDeleteError] = useState('');
     const [fetched, setFetched] = useState(false);
 
     useEffect(() => {
@@ -48,8 +51,16 @@ function ProfileScreen() {
     };
 
     const handleDelete = async (id) => {
+        if (deletePin.length !== 4) return;
+        const valid = await verifyPin(id, deletePin);
+        if (!valid) {
+            setDeleteError('Falscher PIN!');
+            return;
+        }
         await deleteProfile(id);
         setConfirmDelete(null);
+        setDeletePin('');
+        setDeleteError('');
     };
 
     // PIN input screen
@@ -187,11 +198,30 @@ function ProfileScreen() {
                             </button>
                             {confirmDelete === p.id ? (
                                 <div className="profile-delete-confirm">
-                                    <button className="profile-delete-yes" onClick={() => handleDelete(p.id)}>Ja</button>
-                                    <button className="profile-delete-no" onClick={() => setConfirmDelete(null)}>Nein</button>
+                                    <input
+                                        className="profile-delete-pin"
+                                        type="password"
+                                        inputMode="numeric"
+                                        maxLength={4}
+                                        placeholder="PIN"
+                                        value={deletePin}
+                                        onChange={e => {
+                                            setDeletePin(e.target.value.replace(/\D/g, '').slice(0, 4));
+                                            setDeleteError('');
+                                        }}
+                                        onKeyDown={e => e.key === 'Enter' && handleDelete(p.id)}
+                                        autoFocus
+                                    />
+                                    <button
+                                        className="profile-delete-yes"
+                                        onClick={() => handleDelete(p.id)}
+                                        disabled={deletePin.length !== 4}
+                                    >🗑️</button>
+                                    <button className="profile-delete-no" onClick={() => { setConfirmDelete(null); setDeletePin(''); setDeleteError(''); }}>✕</button>
+                                    {deleteError && <span className="profile-delete-error">{deleteError}</span>}
                                 </div>
                             ) : (
-                                <button className="profile-delete-btn" onClick={() => setConfirmDelete(p.id)}>🗑️</button>
+                                <button className="profile-delete-btn" onClick={() => { setConfirmDelete(p.id); setDeletePin(''); setDeleteError(''); }}>🗑️</button>
                             )}
                         </div>
                     ))}
