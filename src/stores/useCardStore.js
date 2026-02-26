@@ -11,6 +11,7 @@ import { CARDS, RARITIES } from '../utils/tradingCards';
 const useCardStore = create((set, get) => ({
     ownedCards: {},
     equippedCards: [null, null, null], // Max 3 cards equipped
+    highlightedCardId: null,
     loading: false,
 
     // Add a single card to collection
@@ -147,6 +148,8 @@ const useCardStore = create((set, get) => ({
             set({ ownedCards: {}, equippedCards: [null, null, null], loading: false });
         }
     },
+
+    setHighlightedCardId: (id) => set({ highlightedCardId: id }),
 
     resetState: () => {
         set({ ownedCards: {}, equippedCards: [null, null, null] });

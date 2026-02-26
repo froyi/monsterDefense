@@ -5,8 +5,24 @@ import { WORLDS } from '../utils/campaignData';
 import Card from './Card';
 
 export default function CardCollectionScreen({ onBack }) {
-    const { ownedCards, equippedCards, equipCard, unequipCard } = useCardStore();
+    const { ownedCards, equippedCards, equipCard, unequipCard, highlightedCardId, setHighlightedCardId } = useCardStore();
     const [selectedWorld, setSelectedWorld] = useState('village');
+
+    // Handle automated world switching and highlight clearing
+    React.useEffect(() => {
+        if (highlightedCardId) {
+            const cardDef = CARDS.find(c => c.id === highlightedCardId);
+            if (cardDef && cardDef.world !== selectedWorld) {
+                setSelectedWorld(cardDef.world);
+            }
+
+            // Clear highlight after 3 seconds
+            const timer = setTimeout(() => {
+                setHighlightedCardId(null);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [highlightedCardId]);
 
     const world = WORLDS.find(w => w.id === selectedWorld);
 
@@ -130,6 +146,7 @@ export default function CardCollectionScreen({ onBack }) {
                                         duplicates={ownedData.duplicates}
                                         onClick={() => handleCardClick(cardDef.id)}
                                         className={isEquipped ? 'card-equipped-ring' : ''}
+                                        isHighlighted={highlightedCardId === cardDef.id}
                                     />
                                 ) : (
                                     /* Silhouette for unowned cards */

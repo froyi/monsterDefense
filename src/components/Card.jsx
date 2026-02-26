@@ -1,7 +1,7 @@
 import React from 'react';
 import { getEffectDescription, getCardById, RARITIES } from '../utils/tradingCards';
 
-export default function Card({ cardId, level = 1, duplicates = 0, isNew = false, onClick, className = '' }) {
+export default function Card({ cardId, level = 1, duplicates = 0, isNew = false, isHighlighted = false, onClick, className = '' }) {
     const isObject = typeof cardId === 'object';
     const cardDef = isObject ? cardId : getCardById(cardId);
 
@@ -13,7 +13,7 @@ export default function Card({ cardId, level = 1, duplicates = 0, isNew = false,
 
     return (
         <div
-            className={`card-item card-rarity-${cardDef.rarity} ${onClick ? 'card-clickable' : ''} ${className}`}
+            className={`card-item card-rarity-${cardDef.rarity} ${onClick ? 'card-clickable' : ''} ${isHighlighted ? 'card-highlight-glow' : ''} ${className}`}
             onClick={onClick}
         >
             {/* New Badge */}

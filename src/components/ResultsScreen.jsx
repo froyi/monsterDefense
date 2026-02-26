@@ -36,6 +36,8 @@ function ResultsScreen() {
     const getTotalStars = useCampaignStore(s => s.getTotalStars);
     const receiveCard = useCardStore(s => s.receiveCard);
 
+    const setHighlightedCardId = useCardStore(s => s.setHighlightedCardId);
+
     const world = getWorld(worldId);
     const wpm = getWPM();
     const accuracy = getAccuracy();
@@ -159,7 +161,10 @@ function ResultsScreen() {
                 <div
                     className="card-drop-toast"
                     style={{ '--rarity-color': rarityInfo?.color || '#94a3b8' }}
-                    onClick={() => setShowCardToast(false)}
+                    onClick={() => {
+                        setHighlightedCardId(cardDef.id);
+                        setPhase('collection');
+                    }}
                 >
                     <span className="card-drop-toast-emoji">{cardDef.emoji}</span>
                     <div className="card-drop-toast-info">
