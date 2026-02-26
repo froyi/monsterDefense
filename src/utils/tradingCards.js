@@ -133,6 +133,566 @@ export const CARDS = [
         id: 'w1_l2', world: 'village', rarity: 'legendary', name: 'Goldenes Hufeisen', emoji: '🧲',
         description: 'Ein Artefakt grenzenlosen Glücks.',
         effectType: 'card_drop_chance', effectValues: [5, 10, 15], effectText: '+{val}% Chance auf Karten-Drops.'
+    },
+
+    // ==========================================
+    // World 2: Zauberwald (20 Cards)
+    // ==========================================
+
+    // -- Common (10) --
+    {
+        id: 'w2_c1', world: 'forest', rarity: 'common', name: 'Glühwürmchen', emoji: '✨',
+        description: 'Tanzt im Mondlicht zwischen den Bäumen.',
+        effectType: 'bonus_coins', effectValues: [3, 5, 8], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w2_c2', world: 'forest', rarity: 'common', name: 'Waldpilz', emoji: '🍄',
+        description: 'Giftig oder heilsam? Wer weiß...',
+        effectType: 'bonus_xp', effectValues: [3, 5, 8], effectText: '+{val}% XP nach dem Level.'
+    },
+    {
+        id: 'w2_c3', world: 'forest', rarity: 'common', name: 'Moosgolem', emoji: '🌿',
+        description: 'Ein wandelnder Haufen Moos und Erde.',
+        effectType: 'boss_slow', effectValues: [1, 2, 4], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w2_c4', world: 'forest', rarity: 'common', name: 'Eichhörnchen', emoji: '🐿️',
+        description: 'Sammelt Nüsse für den Winter.',
+        effectType: 'bonus_coins', effectValues: [3, 5, 8], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w2_c5', world: 'forest', rarity: 'common', name: 'Baumgeist', emoji: '🌲',
+        description: 'Flüstert Geheimnisse im Wind.',
+        effectType: 'monster_slow', effectValues: [1, 3, 4], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w2_c6', world: 'forest', rarity: 'common', name: 'Feenstaub', emoji: '🧚',
+        description: 'Glitzert und kitzelt in der Nase.',
+        effectType: 'bonus_xp', effectValues: [3, 5, 8], effectText: '+{val}% XP nach dem Level.'
+    },
+    {
+        id: 'w2_c7', world: 'forest', rarity: 'common', name: 'Giftranke', emoji: '🕸️',
+        description: 'Eine Spinne hat ihr Netz gespannt.',
+        effectType: 'boss_slow', effectValues: [1, 2, 4], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w2_c8', world: 'forest', rarity: 'common', name: 'Waldfrosch', emoji: '🐸',
+        description: 'Quakt laut bei Vollmond.',
+        effectType: 'monster_slow', effectValues: [1, 3, 4], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w2_c9', world: 'forest', rarity: 'common', name: 'Magische Beere', emoji: '🫐',
+        description: 'Heilt kleine Wunden.',
+        effectType: 'castle_hp_flat', effectValues: [5, 10, 18], effectText: 'Burg hat +{val} HP.'
+    },
+    {
+        id: 'w2_c10', world: 'forest', rarity: 'common', name: 'Zauberrabe', emoji: '🐦‍⬛',
+        description: 'Beobachtet alles von oben.',
+        effectType: 'bonus_coins', effectValues: [3, 5, 8], effectText: '+{val}% Münzen nach dem Level.'
+    },
+
+    // -- Rare (5) --
+    {
+        id: 'w2_r1', world: 'forest', rarity: 'rare', name: 'Elfenkriegerin', emoji: '🧝‍♀️',
+        description: 'Beschützt den Wald mit ihrem Bogen.',
+        effectType: 'bonus_coins', effectValues: [12, 18, 24], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w2_r2', world: 'forest', rarity: 'rare', name: 'Rankenwächter', emoji: '🌱',
+        description: 'Hält Eindringlinge mit Dornen fest.',
+        effectType: 'monster_slow', effectValues: [5, 7, 10], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w2_r3', world: 'forest', rarity: 'rare', name: 'Irrlichter', emoji: '🔮',
+        description: 'Führen Wanderer in die Irre.',
+        effectType: 'boss_slow', effectValues: [4, 6, 9], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w2_r4', world: 'forest', rarity: 'rare', name: 'Pilzritter', emoji: '🛡️',
+        description: 'Ein tapferer Kämpfer aus Pilz und Moos.',
+        effectType: 'castle_hp_flat', effectValues: [20, 35, 50], effectText: 'Burg hat +{val} HP.'
+    },
+    {
+        id: 'w2_r5', world: 'forest', rarity: 'rare', name: 'Einhorn-Fohlen', emoji: '🦄',
+        description: 'Sein Horn leuchtet sanft im Dunkel.',
+        effectType: 'bonus_xp', effectValues: [12, 18, 24], effectText: '+{val}% XP nach dem Level.'
+    },
+
+    // -- Epic (3) --
+    {
+        id: 'w2_e1', world: 'forest', rarity: 'epic', name: 'Waldgeist', emoji: '👻',
+        description: 'Der uralte Hüter des Zauberwalds.',
+        effectType: 'forgive_error', effectValues: [1, 2, 3], effectText: 'Ignoriert {val} Tippfehler pro Level.'
+    },
+    {
+        id: 'w2_e2', world: 'forest', rarity: 'epic', name: 'Lebensbaumherz', emoji: '💚',
+        description: 'Das schlagende Herz des Waldes.',
+        effectType: 'castle_hp_percent', effectValues: [12, 22, 35], effectText: 'Burg hat +{val}% maximale HP.'
+    },
+    {
+        id: 'w2_e3', world: 'forest', rarity: 'epic', name: 'Trollschamane', emoji: '🧌',
+        description: 'Braut mächtige Tränke aus Wurzeln.',
+        effectType: 'combo_shield', effectValues: [1, 2, 3], effectText: 'Schützt deine Combo {val}-mal vor Abbruch.'
+    },
+
+    // -- Legendary (2) --
+    {
+        id: 'w2_l1', world: 'forest', rarity: 'legendary', name: 'Weltenesche', emoji: '🌳',
+        description: 'Der Baum, der alles verbindet. Uralt und mächtig.',
+        effectType: 'bonus_coins_xp', effectValues: [22, 38, 55], effectText: '+{val}% auf Münzen UND XP!'
+    },
+    {
+        id: 'w2_l2', world: 'forest', rarity: 'legendary', name: 'Smaragd-Phönix', emoji: '🦚',
+        description: 'Ein mythischer Vogel aus reiner Waldmagie.',
+        effectType: 'card_drop_chance', effectValues: [6, 12, 18], effectText: '+{val}% Chance auf Karten-Drops.'
+    },
+
+    // ==========================================
+    // World 3: Eisige Berge (20 Cards)
+    // ==========================================
+
+    // -- Common (10) --
+    {
+        id: 'w3_c1', world: 'mountains', rarity: 'common', name: 'Schneefuchs', emoji: '🦊',
+        description: 'Weißes Fell, scharfe Augen.',
+        effectType: 'bonus_coins', effectValues: [3, 6, 9], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w3_c2', world: 'mountains', rarity: 'common', name: 'Eiszapfen', emoji: '🧊',
+        description: 'Hängt überall an den Felswänden.',
+        effectType: 'boss_slow', effectValues: [2, 3, 4], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w3_c3', world: 'mountains', rarity: 'common', name: 'Schnee-Eule', emoji: '🦉',
+        description: 'Lautlos und weise.',
+        effectType: 'bonus_xp', effectValues: [3, 6, 9], effectText: '+{val}% XP nach dem Level.'
+    },
+    {
+        id: 'w3_c4', world: 'mountains', rarity: 'common', name: 'Gletscherkäfer', emoji: '🪲',
+        description: 'Lebt unter dem ewigen Eis.',
+        effectType: 'monster_slow', effectValues: [2, 3, 5], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w3_c5', world: 'mountains', rarity: 'common', name: 'Bergziege', emoji: '🐐',
+        description: 'Klettert mühelos die steilsten Hänge.',
+        effectType: 'bonus_coins', effectValues: [3, 6, 9], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w3_c6', world: 'mountains', rarity: 'common', name: 'Frostfledermaus', emoji: '🦇',
+        description: 'Jagt Insekten in eisigen Höhlen.',
+        effectType: 'bonus_xp', effectValues: [3, 6, 9], effectText: '+{val}% XP nach dem Level.'
+    },
+    {
+        id: 'w3_c7', world: 'mountains', rarity: 'common', name: 'Schneeball-Geist', emoji: '⛄',
+        description: 'Wirft Schneebälle auf Wanderer.',
+        effectType: 'boss_slow', effectValues: [2, 3, 4], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w3_c8', world: 'mountains', rarity: 'common', name: 'Eisblume', emoji: '❄️',
+        description: 'Wächst nur bei minus 30 Grad.',
+        effectType: 'castle_hp_flat', effectValues: [6, 12, 18], effectText: 'Burg hat +{val} HP.'
+    },
+    {
+        id: 'w3_c9', world: 'mountains', rarity: 'common', name: 'Schneewolf', emoji: '🐺',
+        description: 'Streift in Rudeln durch den Schneesturm.',
+        effectType: 'monster_slow', effectValues: [2, 3, 5], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w3_c10', world: 'mountains', rarity: 'common', name: 'Mammut-Baby', emoji: '🦣',
+        description: 'Klein, flauschig und extrem tapsig.',
+        effectType: 'bonus_coins', effectValues: [3, 6, 9], effectText: '+{val}% Münzen nach dem Level.'
+    },
+
+    // -- Rare (5) --
+    {
+        id: 'w3_r1', world: 'mountains', rarity: 'rare', name: 'Frosthexe', emoji: '🧙‍♀️',
+        description: 'Ihr Atem gefriert die Luft.',
+        effectType: 'monster_slow', effectValues: [5, 8, 12], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w3_r2', world: 'mountains', rarity: 'rare', name: 'Kristall-Golem', emoji: '💎',
+        description: 'Aus ewigem Eis und Bergkristall geformt.',
+        effectType: 'castle_hp_flat', effectValues: [25, 40, 55], effectText: 'Burg hat +{val} HP.'
+    },
+    {
+        id: 'w3_r3', world: 'mountains', rarity: 'rare', name: 'Lawinenläufer', emoji: '🏔️',
+        description: 'Reitet die Lawine wie eine Welle.',
+        effectType: 'bonus_coins', effectValues: [12, 18, 25], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w3_r4', world: 'mountains', rarity: 'rare', name: 'Polarfuchs', emoji: '🐾',
+        description: 'Unsichtbar im Schneesturm.',
+        effectType: 'item_discount', effectValues: [5, 10, 15], effectText: '{val}% Rabatt auf Shop-Items.'
+    },
+    {
+        id: 'w3_r5', world: 'mountains', rarity: 'rare', name: 'Gipfelwächter', emoji: '⚔️',
+        description: 'Bewacht den höchsten Pass.',
+        effectType: 'bonus_xp', effectValues: [12, 18, 25], effectText: '+{val}% XP nach dem Level.'
+    },
+
+    // -- Epic (3) --
+    {
+        id: 'w3_e1', world: 'mountains', rarity: 'epic', name: 'Eisriese', emoji: '🏔️',
+        description: 'Ein Berg, der zum Leben erwacht ist.',
+        effectType: 'forgive_error', effectValues: [1, 2, 4], effectText: 'Ignoriert {val} Tippfehler pro Level.'
+    },
+    {
+        id: 'w3_e2', world: 'mountains', rarity: 'epic', name: 'Nordlicht-Geist', emoji: '🌌',
+        description: 'Tanzt am Himmel über den Gipfeln.',
+        effectType: 'combo_shield', effectValues: [1, 2, 3], effectText: 'Schützt deine Combo {val}-mal vor Abbruch.'
+    },
+    {
+        id: 'w3_e3', world: 'mountains', rarity: 'epic', name: 'Frostdrache', emoji: '🐲',
+        description: 'Sein Atem verwandelt alles in Eis.',
+        effectType: 'castle_hp_percent', effectValues: [12, 24, 35], effectText: 'Burg hat +{val}% maximale HP.'
+    },
+
+    // -- Legendary (2) --
+    {
+        id: 'w3_l1', world: 'mountains', rarity: 'legendary', name: 'Yeti-König', emoji: '🦍',
+        description: 'Der Herrscher der ewigen Gletscher. Furchteinflößend.',
+        effectType: 'bonus_coins_xp', effectValues: [25, 40, 60], effectText: '+{val}% auf Münzen UND XP!'
+    },
+    {
+        id: 'w3_l2', world: 'mountains', rarity: 'legendary', name: 'Diamantherz', emoji: '💠',
+        description: 'Ein Kristall aus dem Kern des Berges. Unzerstörbar.',
+        effectType: 'card_drop_chance', effectValues: [7, 13, 20], effectText: '+{val}% Chance auf Karten-Drops.'
+    },
+
+    // ==========================================
+    // World 4: Feuervulkan (20 Cards)
+    // ==========================================
+
+    // -- Common (10) --
+    {
+        id: 'w4_c1', world: 'volcano', rarity: 'common', name: 'Magmawurm', emoji: '🪱',
+        description: 'Lebt in glühender Lava.',
+        effectType: 'bonus_coins', effectValues: [4, 7, 10], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w4_c2', world: 'volcano', rarity: 'common', name: 'Aschevogel', emoji: '🐦',
+        description: 'Fliegt durch Rauchwolken.',
+        effectType: 'bonus_xp', effectValues: [4, 7, 10], effectText: '+{val}% XP nach dem Level.'
+    },
+    {
+        id: 'w4_c3', world: 'volcano', rarity: 'common', name: 'Feuergeist', emoji: '🔥',
+        description: 'Eine tanzende Flamme mit eigenem Willen.',
+        effectType: 'boss_slow', effectValues: [2, 3, 5], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w4_c4', world: 'volcano', rarity: 'common', name: 'Obsidian-Skorpion', emoji: '🦂',
+        description: 'Sein Stachel glüht in der Hitze.',
+        effectType: 'monster_slow', effectValues: [2, 4, 5], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w4_c5', world: 'volcano', rarity: 'common', name: 'Lavaschleimer', emoji: '🫠',
+        description: 'Glibbert und glüht zugleich.',
+        effectType: 'bonus_coins', effectValues: [4, 7, 10], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w4_c6', world: 'volcano', rarity: 'common', name: 'Feuerkäfer', emoji: '🐞',
+        description: 'Sein Panzer ist feuerrot und heiß.',
+        effectType: 'bonus_xp', effectValues: [4, 7, 10], effectText: '+{val}% XP nach dem Level.'
+    },
+    {
+        id: 'w4_c7', world: 'volcano', rarity: 'common', name: 'Rauchschlange', emoji: '🐍',
+        description: 'Schlängelt sich durch heißen Dampf.',
+        effectType: 'monster_slow', effectValues: [2, 4, 5], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w4_c8', world: 'volcano', rarity: 'common', name: 'Glutstein', emoji: '🪨',
+        description: 'Ein Stein, der niemals abkühlt.',
+        effectType: 'castle_hp_flat', effectValues: [8, 14, 20], effectText: 'Burg hat +{val} HP.'
+    },
+    {
+        id: 'w4_c9', world: 'volcano', rarity: 'common', name: 'Flammensalamander', emoji: '🦎',
+        description: 'Badet zum Spaß in Lava.',
+        effectType: 'boss_slow', effectValues: [2, 3, 5], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w4_c10', world: 'volcano', rarity: 'common', name: 'Vulkankröte', emoji: '🐸',
+        description: 'Springt über Lavabäche.',
+        effectType: 'bonus_coins', effectValues: [4, 7, 10], effectText: '+{val}% Münzen nach dem Level.'
+    },
+
+    // -- Rare (5) --
+    {
+        id: 'w4_r1', world: 'volcano', rarity: 'rare', name: 'Lavabiest', emoji: '👹',
+        description: 'Aus dem Krater geboren, aus Wut geformt.',
+        effectType: 'bonus_coins', effectValues: [14, 20, 28], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w4_r2', world: 'volcano', rarity: 'rare', name: 'Feuerschmied', emoji: '⚒️',
+        description: 'Schmiedet Waffen in der Glut des Vulkans.',
+        effectType: 'item_discount', effectValues: [6, 12, 18], effectText: '{val}% Rabatt auf Shop-Items.'
+    },
+    {
+        id: 'w4_r3', world: 'volcano', rarity: 'rare', name: 'Magmagolem', emoji: '🗿',
+        description: 'Ein wandelnder Berg aus flüssigem Gestein.',
+        effectType: 'castle_hp_flat', effectValues: [25, 42, 60], effectText: 'Burg hat +{val} HP.'
+    },
+    {
+        id: 'w4_r4', world: 'volcano', rarity: 'rare', name: 'Aschedrache', emoji: '🐉',
+        description: 'Spuckt Glutwolken statt Flammen.',
+        effectType: 'boss_slow', effectValues: [5, 8, 11], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w4_r5', world: 'volcano', rarity: 'rare', name: 'Eruptionselementar', emoji: '🌋',
+        description: 'Explodiert gerne – und oft.',
+        effectType: 'bonus_xp', effectValues: [14, 20, 28], effectText: '+{val}% XP nach dem Level.'
+    },
+
+    // -- Epic (3) --
+    {
+        id: 'w4_e1', world: 'volcano', rarity: 'epic', name: 'Phönix-Küken', emoji: '🐥',
+        description: 'Wird aus seiner eigenen Asche wiedergeboren.',
+        effectType: 'forgive_error', effectValues: [2, 3, 4], effectText: 'Ignoriert {val} Tippfehler pro Level.'
+    },
+    {
+        id: 'w4_e2', world: 'volcano', rarity: 'epic', name: 'Obsidian-Rüstung', emoji: '🛡️',
+        description: 'Geschmiedet im Herzen des Vulkans.',
+        effectType: 'castle_hp_percent', effectValues: [15, 25, 38], effectText: 'Burg hat +{val}% maximale HP.'
+    },
+    {
+        id: 'w4_e3', world: 'volcano', rarity: 'epic', name: 'Flammengeist', emoji: '👺',
+        description: 'Ein rachsüchtiger Geist aus purem Feuer.',
+        effectType: 'combo_shield', effectValues: [1, 2, 4], effectText: 'Schützt deine Combo {val}-mal vor Abbruch.'
+    },
+
+    // -- Legendary (2) --
+    {
+        id: 'w4_l1', world: 'volcano', rarity: 'legendary', name: 'Vulkan-Titan', emoji: '🌋',
+        description: 'Der Vulkan selbst hat ein Bewusstsein. Vernichtend.',
+        effectType: 'bonus_coins_xp', effectValues: [28, 45, 65], effectText: '+{val}% auf Münzen UND XP!'
+    },
+    {
+        id: 'w4_l2', world: 'volcano', rarity: 'legendary', name: 'Ewige Flamme', emoji: '🕯️',
+        description: 'Brennt seit Anbeginn der Zeit. Unauslöschlich.',
+        effectType: 'card_drop_chance', effectValues: [8, 14, 22], effectText: '+{val}% Chance auf Karten-Drops.'
+    },
+
+    // ==========================================
+    // World 5: Dunkle Burg (20 Cards)
+    // ==========================================
+
+    // -- Common (10) --
+    {
+        id: 'w5_c1', world: 'castle', rarity: 'common', name: 'Burgfledermaus', emoji: '🦇',
+        description: 'Hängt kopfüber im Thronsaal.',
+        effectType: 'bonus_coins', effectValues: [4, 8, 11], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w5_c2', world: 'castle', rarity: 'common', name: 'Knochenkrieger', emoji: '💀',
+        description: 'Klappern gehört zum Handwerk.',
+        effectType: 'bonus_xp', effectValues: [4, 8, 11], effectText: '+{val}% XP nach dem Level.'
+    },
+    {
+        id: 'w5_c3', world: 'castle', rarity: 'common', name: 'Kettengeist', emoji: '👻',
+        description: 'Rasselt nachts durch die Korridore.',
+        effectType: 'boss_slow', effectValues: [2, 4, 5], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w5_c4', world: 'castle', rarity: 'common', name: 'Giftige Ratte', emoji: '🐀',
+        description: 'Wuselt durch die dunklen Gänge.',
+        effectType: 'monster_slow', effectValues: [2, 4, 6], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w5_c5', world: 'castle', rarity: 'common', name: 'Steingargoyle', emoji: '🗿',
+        description: 'Tagsüber Stein, nachts lebendig.',
+        effectType: 'castle_hp_flat', effectValues: [8, 15, 22], effectText: 'Burg hat +{val} HP.'
+    },
+    {
+        id: 'w5_c6', world: 'castle', rarity: 'common', name: 'Kerzengeist', emoji: '🕯️',
+        description: 'Flackert unheimlich in den Hallen.',
+        effectType: 'bonus_coins', effectValues: [4, 8, 11], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w5_c7', world: 'castle', rarity: 'common', name: 'Burgspinne', emoji: '🕷️',
+        description: 'Webt riesige Netze in den Türmen.',
+        effectType: 'monster_slow', effectValues: [2, 4, 6], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w5_c8', world: 'castle', rarity: 'common', name: 'Rostiger Helm', emoji: '⛑️',
+        description: 'Gehörte einst einem tapferen Ritter.',
+        effectType: 'boss_slow', effectValues: [2, 4, 5], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w5_c9', world: 'castle', rarity: 'common', name: 'Irrwisch', emoji: '💫',
+        description: 'Ein verwirrender Lichtball in der Dunkelheit.',
+        effectType: 'bonus_xp', effectValues: [4, 8, 11], effectText: '+{val}% XP nach dem Level.'
+    },
+    {
+        id: 'w5_c10', world: 'castle', rarity: 'common', name: 'Schattenratte', emoji: '🐁',
+        description: 'Verschwindet im eigenen Schatten.',
+        effectType: 'bonus_coins', effectValues: [4, 8, 11], effectText: '+{val}% Münzen nach dem Level.'
+    },
+
+    // -- Rare (5) --
+    {
+        id: 'w5_r1', world: 'castle', rarity: 'rare', name: 'Geisterritter', emoji: '🤺',
+        description: 'Kämpft mit einem Schwert aus Mondlicht.',
+        effectType: 'bonus_coins', effectValues: [15, 22, 30], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w5_r2', world: 'castle', rarity: 'rare', name: 'Vampirfürst', emoji: '🧛',
+        description: 'Herrscht über die Nacht.',
+        effectType: 'castle_hp_flat', effectValues: [28, 45, 65], effectText: 'Burg hat +{val} HP.'
+    },
+    {
+        id: 'w5_r3', world: 'castle', rarity: 'rare', name: 'Schattendolch', emoji: '🗡️',
+        description: 'Sticht zu, bevor man ihn sieht.',
+        effectType: 'boss_slow', effectValues: [5, 9, 12], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w5_r4', world: 'castle', rarity: 'rare', name: 'Turm-Banshee', emoji: '😱',
+        description: 'Ihr Schrei lähmt die Feinde.',
+        effectType: 'monster_slow', effectValues: [6, 9, 13], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w5_r5', world: 'castle', rarity: 'rare', name: 'Nekromant', emoji: '🧙',
+        description: 'Erweckt Gefallene aus ihren Gräbern.',
+        effectType: 'bonus_xp', effectValues: [15, 22, 30], effectText: '+{val}% XP nach dem Level.'
+    },
+
+    // -- Epic (3) --
+    {
+        id: 'w5_e1', world: 'castle', rarity: 'epic', name: 'Schwarzer Ritter', emoji: '♟️',
+        description: 'Der gefürchtetste Krieger der Burg.',
+        effectType: 'forgive_error', effectValues: [2, 3, 5], effectText: 'Ignoriert {val} Tippfehler pro Level.'
+    },
+    {
+        id: 'w5_e2', world: 'castle', rarity: 'epic', name: 'Seelenspiegel', emoji: '🪞',
+        description: 'Zeigt die wahre Gestalt der Feinde.',
+        effectType: 'combo_shield', effectValues: [2, 3, 4], effectText: 'Schützt deine Combo {val}-mal vor Abbruch.'
+    },
+    {
+        id: 'w5_e3', world: 'castle', rarity: 'epic', name: 'Thronsaal-Golem', emoji: '🏰',
+        description: 'Die lebende Verteidigung der Burg.',
+        effectType: 'castle_hp_percent', effectValues: [15, 28, 40], effectText: 'Burg hat +{val}% maximale HP.'
+    },
+
+    // -- Legendary (2) --
+    {
+        id: 'w5_l1', world: 'castle', rarity: 'legendary', name: 'Ewiger König', emoji: '👑',
+        description: 'Herrscht seit tausend Jahren über die Dunkle Burg.',
+        effectType: 'bonus_coins_xp', effectValues: [30, 48, 70], effectText: '+{val}% auf Münzen UND XP!'
+    },
+    {
+        id: 'w5_l2', world: 'castle', rarity: 'legendary', name: 'Verderbtes Artefakt', emoji: '💍',
+        description: 'Ein Ring, der alles korrumpiert – außer dein Glück.',
+        effectType: 'card_drop_chance', effectValues: [9, 16, 24], effectText: '+{val}% Chance auf Karten-Drops.'
+    },
+
+    // ==========================================
+    // World 6: Drachenhöhle (20 Cards)
+    // ==========================================
+
+    // -- Common (10) --
+    {
+        id: 'w6_c1', world: 'dragon', rarity: 'common', name: 'Drachenbaby', emoji: '🐣',
+        description: 'Frisch geschlüpft und neugierig.',
+        effectType: 'bonus_coins', effectValues: [5, 9, 13], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w6_c2', world: 'dragon', rarity: 'common', name: 'Goldmünze', emoji: '🪙',
+        description: 'Aus dem Hort des Drachen gestohlen.',
+        effectType: 'bonus_coins', effectValues: [5, 9, 13], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w6_c3', world: 'dragon', rarity: 'common', name: 'Drachenschuppe', emoji: '🛡️',
+        description: 'Härter als Stahl.',
+        effectType: 'castle_hp_flat', effectValues: [10, 18, 25], effectText: 'Burg hat +{val} HP.'
+    },
+    {
+        id: 'w6_c4', world: 'dragon', rarity: 'common', name: 'Höhlenkobold', emoji: '👺',
+        description: 'Klaut gerne glänzende Dinge.',
+        effectType: 'bonus_xp', effectValues: [5, 9, 13], effectText: '+{val}% XP nach dem Level.'
+    },
+    {
+        id: 'w6_c5', world: 'dragon', rarity: 'common', name: 'Feuerechse', emoji: '🦎',
+        description: 'Ein kleiner Verwandter der Drachen.',
+        effectType: 'monster_slow', effectValues: [3, 5, 7], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w6_c6', world: 'dragon', rarity: 'common', name: 'Drachenei', emoji: '🥚',
+        description: 'Warm und vibrierend. Es rührt sich etwas.',
+        effectType: 'boss_slow', effectValues: [3, 4, 6], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w6_c7', world: 'dragon', rarity: 'common', name: 'Schatztruhe', emoji: '🧳',
+        description: 'Enthält Goldmünzen und alte Relikte.',
+        effectType: 'bonus_coins', effectValues: [5, 9, 13], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w6_c8', world: 'dragon', rarity: 'common', name: 'Höhlenfledermaus', emoji: '🦇',
+        description: 'Fliegt im Zickzack durch die Dunkelheit.',
+        effectType: 'bonus_xp', effectValues: [5, 9, 13], effectText: '+{val}% XP nach dem Level.'
+    },
+    {
+        id: 'w6_c9', world: 'dragon', rarity: 'common', name: 'Glühende Rune', emoji: '🔶',
+        description: 'Ein uraltes Symbol an der Höhlenwand.',
+        effectType: 'monster_slow', effectValues: [3, 5, 7], effectText: 'Normale Gegner {val}% langsamer.'
+    },
+    {
+        id: 'w6_c10', world: 'dragon', rarity: 'common', name: 'Stalaktit', emoji: '🪨',
+        description: 'Könnte jederzeit herunterfallen.',
+        effectType: 'boss_slow', effectValues: [3, 4, 6], effectText: 'Bosse sind {val}% langsamer.'
+    },
+
+    // -- Rare (5) --
+    {
+        id: 'w6_r1', world: 'dragon', rarity: 'rare', name: 'Drachenzähmer', emoji: '🧑‍🤝‍🧑',
+        description: 'Hat einen Pakt mit den Drachen geschlossen.',
+        effectType: 'bonus_coins', effectValues: [16, 24, 32], effectText: '+{val}% Münzen nach dem Level.'
+    },
+    {
+        id: 'w6_r2', world: 'dragon', rarity: 'rare', name: 'Hort-Wächter', emoji: '🐲',
+        description: 'Bewacht den Goldberg mit Feuer und Krallen.',
+        effectType: 'castle_hp_flat', effectValues: [30, 50, 70], effectText: 'Burg hat +{val} HP.'
+    },
+    {
+        id: 'w6_r3', world: 'dragon', rarity: 'rare', name: 'Drachenatem-Zauberstab', emoji: '🪄',
+        description: 'Kanalisiert die Macht der Drachen.',
+        effectType: 'boss_slow', effectValues: [6, 10, 14], effectText: 'Bosse sind {val}% langsamer.'
+    },
+    {
+        id: 'w6_r4', world: 'dragon', rarity: 'rare', name: 'Wyrmling', emoji: '🐍',
+        description: 'Ein junger Drache, der fliegen lernt.',
+        effectType: 'bonus_xp', effectValues: [16, 24, 32], effectText: '+{val}% XP nach dem Level.'
+    },
+    {
+        id: 'w6_r5', world: 'dragon', rarity: 'rare', name: 'Feuer-Opal', emoji: '💎',
+        description: 'Funkelt in allen Farben des Feuers.',
+        effectType: 'item_discount', effectValues: [7, 13, 20], effectText: '{val}% Rabatt auf Shop-Items.'
+    },
+
+    // -- Epic (3) --
+    {
+        id: 'w6_e1', world: 'dragon', rarity: 'epic', name: 'Drachenrüstung', emoji: '⚔️',
+        description: 'Aus den Schuppen eines uralten Drachen geschmiedet.',
+        effectType: 'castle_hp_percent', effectValues: [18, 30, 45], effectText: 'Burg hat +{val}% maximale HP.'
+    },
+    {
+        id: 'w6_e2', world: 'dragon', rarity: 'epic', name: 'Zeitdrache', emoji: '⏳',
+        description: 'Kann die Zeit verlangsamen.',
+        effectType: 'combo_shield', effectValues: [2, 3, 5], effectText: 'Schützt deine Combo {val}-mal vor Abbruch.'
+    },
+    {
+        id: 'w6_e3', world: 'dragon', rarity: 'epic', name: 'Drachenkrone', emoji: '👑',
+        description: 'Verleiht dem Träger die Aura eines Drachen.',
+        effectType: 'forgive_error', effectValues: [2, 4, 6], effectText: 'Ignoriert {val} Tippfehler pro Level.'
+    },
+
+    // -- Legendary (2) --
+    {
+        id: 'w6_l1', world: 'dragon', rarity: 'legendary', name: 'Uralter Drache', emoji: '🐉',
+        description: 'Der mächtigste aller Drachen. Tausend Jahre alt.',
+        effectType: 'bonus_coins_xp', effectValues: [35, 55, 80], effectText: '+{val}% auf Münzen UND XP!'
+    },
+    {
+        id: 'w6_l2', world: 'dragon', rarity: 'legendary', name: 'Drachenherz', emoji: '❤️‍🔥',
+        description: 'Das schlagende Herz des letzten Drachen. Pures Glück.',
+        effectType: 'card_drop_chance', effectValues: [10, 18, 28], effectText: '+{val}% Chance auf Karten-Drops.'
     }
 ];
 

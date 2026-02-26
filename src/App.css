@@ -3121,6 +3121,65 @@
     margin-top: var(--space-md);
 }
 
+/* World Tabs */
+.collection-world-tabs {
+    display: flex;
+    gap: var(--space-sm);
+    overflow-x: auto;
+    padding: var(--space-xs) 0;
+    flex-wrap: wrap;
+}
+
+.collection-world-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    min-width: 90px;
+    color: var(--text-secondary);
+    font-family: inherit;
+}
+
+.collection-world-tab:hover {
+    border-color: var(--tab-color, var(--color-gold-dim));
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+.collection-world-tab.active {
+    border-color: var(--tab-color, var(--color-gold));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.collection-world-tab .tab-emoji {
+    font-size: 22px;
+}
+
+.collection-world-tab .tab-name {
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.collection-world-tab .tab-count {
+    font-size: 10px;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+.collection-world-tab.active .tab-count {
+    opacity: 1;
+    color: var(--tab-color, var(--color-gold));
+}
+
 /* Collection Grid */
 .collection-grid-section {
     margin-top: var(--space-md);

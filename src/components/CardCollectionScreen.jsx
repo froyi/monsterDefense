@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import useCardStore from '../stores/useCardStore';
 import { CARDS, RARITIES } from '../utils/tradingCards';
+import { WORLDS } from '../utils/campaignData';
 import Card from './Card';
 
 export default function CardCollectionScreen({ onBack }) {
     const { ownedCards, equippedCards, equipCard, unequipCard } = useCardStore();
-    const [selectedWorld] = useState('village'); // Only World 1 for MVP
+    const [selectedWorld, setSelectedWorld] = useState('village');
+
+    const world = WORLDS.find(w => w.id === selectedWorld);
 
     // Sort cards by rarity, then name
     const worldCards = CARDS.filter(c => c.world === selectedWorld).sort((a, b) => {
@@ -17,6 +20,8 @@ export default function CardCollectionScreen({ onBack }) {
     // Statistics
     const totalWorldCards = worldCards.length;
     const ownedWorldCards = worldCards.filter(c => ownedCards[c.id]).length;
+    const totalAllCards = CARDS.length;
+    const ownedAllCards = CARDS.filter(c => ownedCards[c.id]).length;
 
     // Loadout logic
     const handleCardClick = (cardId) => {
@@ -41,7 +46,9 @@ export default function CardCollectionScreen({ onBack }) {
             <div className="collection-header">
                 <div>
                     <h1 className="collection-title">🃏 Kartensammlung</h1>
-                    <p className="collection-subtitle">Welt 1: {ownedWorldCards} / {totalWorldCards} gesammelt</p>
+                    <p className="collection-subtitle">
+                        Gesamt: {ownedAllCards} / {totalAllCards} gesammelt
+                    </p>
                 </div>
                 <button className="btn-back" onClick={onBack}>← Zurück</button>
             </div>
@@ -78,9 +85,31 @@ export default function CardCollectionScreen({ onBack }) {
                 </p>
             </div>
 
+            {/* World Tabs */}
+            <div className="collection-world-tabs">
+                {WORLDS.map(w => {
+                    const wCards = CARDS.filter(c => c.world === w.id);
+                    const wOwned = wCards.filter(c => ownedCards[c.id]).length;
+                    return (
+                        <button
+                            key={w.id}
+                            className={`collection-world-tab ${selectedWorld === w.id ? 'active' : ''}`}
+                            style={{ '--tab-color': w.color }}
+                            onClick={() => setSelectedWorld(w.id)}
+                        >
+                            <span className="tab-emoji">{w.emoji}</span>
+                            <span className="tab-name">{w.name}</span>
+                            <span className="tab-count">{wOwned}/{wCards.length}</span>
+                        </button>
+                    );
+                })}
+            </div>
+
             {/* Collection Grid */}
             <div className="collection-grid-section">
-                <h2 className="collection-world-title">Welt 1: Friedliches Dorf</h2>
+                <h2 className="collection-world-title">
+                    {world?.emoji} {world?.name}: {ownedWorldCards} / {totalWorldCards}
+                </h2>
 
                 <div className="collection-grid">
                     {worldCards.map(cardDef => {
