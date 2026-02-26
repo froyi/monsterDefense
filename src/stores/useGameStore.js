@@ -155,9 +155,18 @@ const useGameStore = create((set, get) => ({
             const newTimer = Math.max(0, s.timer - 0.05);
             const newElapsed = s.elapsed + 0.05;
 
+            // Boss gate: only spawn boss after all other monsters are defeated
+            const allNonBossDefeated = s.monsters
+                .filter(m => !m.isBoss)
+                .every(m => m.defeated || m.reachedCastle);
+
             // Move monsters
             const newMonsters = s.monsters.map(m => {
                 if (m.defeated || m.reachedCastle) return m;
+
+                // Boss waits until all minions are cleared
+                if (m.isBoss && !m.spawned && !allNonBossDefeated) return m;
+
                 if (!m.spawned && newElapsed < m.spawnDelay) return m;
                 if (!m.spawned) return { ...m, spawned: true };
 
@@ -321,7 +330,14 @@ const useGameStore = create((set, get) => ({
             }
 
             // Incorrect character typed (but not shielded by error shield)
+            // Punishment: double the active monster's speed
+            monsters[s.activeMonsterIndex] = {
+                ...activeMonster,
+                speed: activeMonster.speed * 2,
+            };
+
             return {
+                monsters,
                 combo: newCombo,
                 totalCharsTyped: newTotalChars,
                 errorChars: newErrors,
