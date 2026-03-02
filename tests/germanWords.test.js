@@ -15,8 +15,8 @@ describe('levelCharacters', () => {
         expect(Object.keys(levelCharacters)).toHaveLength(5);
     });
 
-    it('level 1 is home row (a s d f g h j k l ö)', () => {
-        const expected = 'asdfghjklö '.split('');
+    it('level 1 is home row (a s d f g h j k l) — NO ö', () => {
+        const expected = 'asdfghjkl '.split('');
         expect(levelCharacters[1]).toEqual(expected);
     });
 
@@ -108,13 +108,13 @@ describe('Word-character correctness per level', () => {
         }
     });
 
-    it('Level 1 words use ONLY home row letters (a s d f g h j k l ö)', () => {
-        const allowed = new Set('asdfghjklö'.split(''));
+    it('Level 1 words use ONLY home row letters (a s d f g h j k l — NO ö)', () => {
+        const allowed = new Set('asdfghjkl'.split(''));
         for (const word of wordsByLevel[1]) {
             for (const char of word) {
                 if (!allowed.has(char)) {
                     expect.fail(
-                        `Level 1 word "${word}" has '${char}' — only asdfghjklö allowed`
+                        `Level 1 word "${word}" has '${char}' — only asdfghjkl allowed (no ö in level 1)`
                     );
                 }
             }
@@ -134,13 +134,13 @@ describe('Word-character correctness per level', () => {
         }
     });
 
-    it('Level 3 words use no umlauts (ä ü ß, but ö is allowed from level 1)', () => {
-        const forbidden = new Set('äüßÄÜ'.split(''));
+    it('Level 3 words use no umlauts (ä ö ü ß all belong to level 4)', () => {
+        const forbidden = new Set('äöüßÄÖÜ'.split(''));
         for (const word of wordsByLevel[3]) {
             for (const char of word) {
                 if (forbidden.has(char)) {
                     expect.fail(
-                        `Level 3 word "${word}" has '${char}' — umlauts ä/ü/ß only at Level 4+`
+                        `Level 3 word "${word}" has '${char}' — umlauts ä/ö/ü/ß only at Level 4+`
                     );
                 }
             }
@@ -202,11 +202,12 @@ describe('getWordsForLevel', () => {
 // getAllowedCharsForLevel
 // ============================================================
 describe('getAllowedCharsForLevel', () => {
-    it('level 1 allows only home row + space', () => {
+    it('level 1 allows only home row + space (no ö)', () => {
         const chars = getAllowedCharsForLevel(1);
         expect(chars.has('a')).toBe(true);
         expect(chars.has('s')).toBe(true);
-        expect(chars.has('ö')).toBe(true);
+        expect(chars.has('l')).toBe(true);
+        expect(chars.has('ö')).toBe(false); // ö is level 4 (umlauts)
         expect(chars.has('e')).toBe(false); // upper row
         expect(chars.has('b')).toBe(false); // lower row
     });

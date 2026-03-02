@@ -74,12 +74,12 @@ export const WORLDS = [
 // DE = German QWERTZ, EN = English QWERTY
 export const WORLD_CHARS = {
     de: {
-        village: 'asdfghjklö',
-        forest: 'asdfghjklöqwertzuiop',
-        mountains: 'asdfghjklöqwertzuiopyxcvbnm',
-        volcano: 'asdfghjklöqwertzuiopyxcvbnmäüß',
-        castle: 'asdfghjklöqwertzuiopyxcvbnmäüßABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ',
-        dragon: 'asdfghjklöqwertzuiopyxcvbnmäüßABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ.,!? ',
+        village: 'asdfghjkl',
+        forest: 'asdfghjklqwertzuiop',
+        mountains: 'asdfghjklqwertzuiopyxcvbnm',
+        volcano: 'asdfghjklqwertzuiopyxcvbnmäöüß',
+        castle: 'asdfghjklqwertzuiopyxcvbnmäöüßABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ',
+        dragon: 'asdfghjklqwertzuiopyxcvbnmäöüßABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ.,!? ',
     },
     en: {
         village: 'asdfghjkl',

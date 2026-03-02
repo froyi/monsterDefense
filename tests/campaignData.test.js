@@ -165,8 +165,8 @@ describe('WORLD_CHARS', () => {
         }
     });
 
-    it('village (DE) only has home row chars', () => {
-        const homeRow = new Set('asdfghjklö');
+    it('village (DE) only has home row chars (no ö)', () => {
+        const homeRow = new Set('asdfghjkl');
         for (const char of WORLD_CHARS.de.village) {
             expect(homeRow.has(char), `Village char '${char}' not in home row`).toBe(true);
         }
@@ -207,11 +207,11 @@ describe('helper functions', () => {
     });
 
     it('getWorldChars returns chars for valid world and layout', () => {
-        expect(getWorldChars('village', 'de')).toBe('asdfghjklö');
+        expect(getWorldChars('village', 'de')).toBe('asdfghjkl');
         expect(getWorldChars('village', 'en')).toBe('asdfghjkl');
     });
 
     it('getWorldChars falls back to DE for unknown layout', () => {
-        expect(getWorldChars('village', 'fr')).toBe('asdfghjklö');
+        expect(getWorldChars('village', 'fr')).toBe('asdfghjkl');
     });
 });

@@ -1,5 +1,5 @@
 // German words organized by difficulty level for typing practice
-// Level 1: Home row only (a s d f g h j k l ö)         → lowercase only
+// Level 1: Home row only (a s d f g h j k l)            → lowercase only, NO ö
 // Level 2: + Upper row (q w e r t z u i o p)            → lowercase only
 // Level 3: + Lower row (y x c v b n m)                  → lowercase only
 // Level 4: + Umlauts (ä ö ü ß)                          → lowercase only
@@ -7,8 +7,8 @@
 
 export const wordsByLevel = {
     // ═════════════════════════════════════════════════════════
-    // Level 1: ONLY home row chars: a s d f g h j k l ö
-    // All lowercase. No: e,r,t,z,u,i,o,p,q,w,y,x,c,v,b,n,m
+    // Level 1: ONLY home row chars: a s d f g h j k l  (NO ö!)
+    // All lowercase. No: ö,e,r,t,z,u,i,o,p,q,w,y,x,c,v,b,n,m
     // ═════════════════════════════════════════════════════════
     1: [
         // Real German words (lowercase only, home row only: a s d f g h j k l ö)
@@ -21,7 +21,7 @@ export const wordsByLevel = {
         'fgh', 'shd', 'adj', 'kfd', 'ghl', 'jds', 'slk', 'dhf',
         'ksd', 'lhg', 'fjk', 'gds', 'hkl', 'jfg', 'dkl', 'sha',
         // Home-row patterns (4 char)
-        'asdf', 'fdsa', 'ghjk', 'dfgh', 'lkjh', 'jklö', 'jkds',
+        'asdf', 'fdsa', 'ghjk', 'dfgh', 'lkjh', 'jkds',
         'fghj', 'dfjk', 'slkd', 'ghsl', 'ajsl', 'ghal', 'fjds',
         'jfds', 'klsa', 'asjl', 'dkfh', 'glsa', 'fhal', 'dgsa',
         'sdlk', 'fghd', 'jkal', 'salg', 'dakl', 'lasd', 'hfgd',
@@ -34,12 +34,12 @@ export const wordsByLevel = {
         'lahgs', 'jfalk', 'ghasd', 'kdsla', 'sfgla', 'dkhla',
         'fjdks', 'slahg', 'ghfad', 'dhfka', 'jlsak', 'flaks',
         'asjkl', 'dfghj', 'sdklh', 'fghjk', 'asdfl', 'ghjds',
-        'lkghd', 'jsdfa', 'hgfds', 'kljhg', 'dsfgh', 'hjklö',
+        'lkghd', 'jsdfa', 'hgfds', 'kljhg', 'dsfgh', 'hjkls',
         'sdfhg', 'jklas', 'ghdsf', 'flghd', 'sdajk', 'hfkdl',
         // Home-row patterns (6-7 char)
         'khalsg', 'sldhfg', 'fjkalg', 'dslakh', 'ghjkls', 'asdfjk',
         'fghdsl', 'jklghd', 'sdafgh', 'lkjhgf', 'dfjkls', 'ghasdl',
-        'hgfdsa', 'jklöas', 'dfghjs', 'slkjhg', 'aghfds', 'kdsflg',
+        'hgfdsa', 'jklsda', 'dfghjs', 'slkjhg', 'aghfds', 'kdsflg',
         'jfghkl', 'sdlkhg', 'fjasdl', 'ghklad', 'djfkls', 'alsgfd',
         'hfjdks', 'gkladf', 'sfdjkl', 'kjghds', 'dflkjh', 'asghfl',
     ],
@@ -305,7 +305,7 @@ export function getWordsForLevel(maxLevel) {
 
 // Characters associated with each skill level
 export const levelCharacters = {
-    1: 'asdfghjklö '.split(''),
+    1: 'asdfghjkl '.split(''),
     2: 'qwertzuiop'.split(''),
     3: 'yxcvbnm'.split(''),
     4: 'äöüß'.split(''),
