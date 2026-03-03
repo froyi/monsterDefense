@@ -5,6 +5,7 @@ import useRewardStore from '../stores/useRewardStore';
 import useAchievementStore from '../stores/useAchievementStore';
 import useCampaignStore from '../stores/useCampaignStore';
 import useCardStore from '../stores/useCardStore';
+import useDailyChallengeStore from '../stores/useDailyChallengeStore';
 import { getWorld, getLevel, WORLDS } from '../utils/campaignData';
 import { rollCard, RARITIES, getCardById } from '../utils/tradingCards';
 import { playLevelComplete, playLevelFail } from '../utils/soundEngine';
@@ -35,6 +36,7 @@ function ResultsScreen() {
     const getNextLevel = useCampaignStore(s => s.getNextLevel);
     const getTotalStars = useCampaignStore(s => s.getTotalStars);
     const receiveCard = useCardStore(s => s.receiveCard);
+    const updateDailyProgress = useDailyChallengeStore(s => s.updateProgress);
 
     const setHighlightedCardId = useCardStore(s => s.setHighlightedCardId);
 
@@ -98,6 +100,21 @@ function ResultsScreen() {
                 }
             }
         }
+
+        // Update daily challenge progress
+        const avgWPM = useStatsStore.getState().history.length > 0
+            ? useStatsStore.getState().history.reduce((sum, r) => sum + (r.wpm || 0), 0) / useStatsStore.getState().history.length
+            : 0;
+        updateDailyProgress({
+            wordsCompleted,
+            accuracy,
+            wpm,
+            maxCombo,
+            score,
+            castleHp,
+            wave: monsters.length === 0 && won ? 3 : 0,
+            averageWPM: avgWPM,
+        });
 
         // Check achievements
         const history = useStatsStore.getState().history;

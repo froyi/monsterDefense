@@ -30,10 +30,10 @@ function StartScreen() {
     const unlockedCount = useAchievementStore(s => s.getUnlockedCount);
     const totalCount = useAchievementStore(s => s.getTotalCount);
     const keyboardLayout = useRewardStore(s => s.keyboardLayout);
-    const dailyChallenge = useDailyChallengeStore(s => s.challenge);
-    const dailyCompleted = useDailyChallengeStore(s => s.completed);
-    const dailyRewardClaimed = useDailyChallengeStore(s => s.rewardClaimed);
-    const dailyCanClaim = useDailyChallengeStore(s => s.canClaimReward);
+    const dailyChallenges = useDailyChallengeStore(s => s.challenges);
+    const dailyCompletedKeys = useDailyChallengeStore(s => s.completedKeys);
+    const dailyBonusClaimed = useDailyChallengeStore(s => s.bonusClaimed);
+    const dailyCanClaimBonus = useDailyChallengeStore(s => s.canClaimAllBonus);
 
     const handleStart = () => {
         const level = getCurrentLevel();
@@ -91,19 +91,22 @@ function StartScreen() {
                         Tägliche Truhe
                     </button>
                 )}
-                {dailyChallenge && (
-                    <button
-                        className={`btn-nav${dailyCanClaim() ? ' dc-glow' : ''}`}
-                        onClick={() => setShowChallenge(true)}
-                        id="daily-challenge-btn"
-                        style={dailyCanClaim() ? { borderColor: 'var(--color-gold-dim)', animation: 'pulseGlow 2s infinite' } : {}}
-                    >
-                        <span className="nav-icon">📋</span>
-                        Tagesaufgabe
-                        {dailyCompleted && dailyRewardClaimed && <span className="dc-done-badge">✅</span>}
-                        {dailyCanClaim() && <span className="dc-reward-badge">🎁</span>}
-                    </button>
-                )}
+                <button
+                    className={`btn-nav${dailyCanClaimBonus?.() ? ' dc-glow' : ''}`}
+                    onClick={() => setShowChallenge(true)}
+                    id="daily-challenge-btn"
+                    style={dailyCanClaimBonus?.() ? { borderColor: 'var(--color-gold-dim)', animation: 'pulseGlow 2s infinite' } : {}}
+                >
+                    <span className="nav-icon">📋</span>
+                    Tagesaufgaben
+                    {dailyChallenges.length > 0 && (
+                        <span className="dc-progress-badge">
+                            {dailyCompletedKeys.length}/{dailyChallenges.length}
+                        </span>
+                    )}
+                    {dailyBonusClaimed && <span className="dc-done-badge">✅</span>}
+                    {dailyCanClaimBonus?.() && <span className="dc-reward-badge">🎁</span>}
+                </button>
                 <button className="btn-nav" onClick={() => setShowSettings(true)} id="settings-btn">
                     <span className="nav-icon">⚙️</span>
                     Einstellungen
