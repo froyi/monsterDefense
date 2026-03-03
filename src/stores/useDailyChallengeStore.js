@@ -1,131 +1,163 @@
 // Daily Challenge store (Zustand + Supabase)
+// Manages 3 simultaneous challenges per day: easy / medium / hard
 import { create } from 'zustand';
-import { getTodaysChallenge, getTodayDateString, DAILY_CHALLENGES } from '../utils/dailyChallenges';
+import { getTodaysChallenges, getTodayDateString, DAILY_CHALLENGES, ALL_COMPLETE_BONUS } from '../utils/dailyChallenges';
 import { loadDailyChallenge, saveDailyChallenge, countCompletedChallenges } from '../utils/storage';
 
 const useDailyChallengeStore = create((set, get) => ({
-    // Today's challenge state
-    challenge: null,        // The challenge definition
-    progress: 0,
-    target: 0,
-    completed: false,
-    rewardClaimed: false,
-    totalCompleted: 0,      // All-time completed count
+    // Array of the 3 today's challenge definitions
+    challenges: [],         // [easy, medium, hard]
+    progresses: {},         // { [key]: number }
+    completedKeys: [],      // keys of completed challenges
+    claimedKeys: [],        // keys where reward was already claimed
+    bonusClaimed: false,    // true when the all-3 bonus was claimed
+    totalCompleted: 0,      // all-time completed count
     loading: false,
 
-    // Load today's challenge for the active profile
+    // Load today's 3 challenges for the active profile
     reload: async () => {
         set({ loading: true });
         const todayStr = getTodayDateString();
-        const todayChallenge = getTodaysChallenge();
+        const todaySet = getTodaysChallenges(); // { easy, medium, hard }
+        const dailyThree = [todaySet.easy, todaySet.medium, todaySet.hard];
 
-        // Load existing progress from DB
-        const existing = await loadDailyChallenge(todayStr);
         const total = await countCompletedChallenges();
 
-        if (existing) {
-            // Resume today's challenge
-            const challengeDef = DAILY_CHALLENGES.find(c => c.key === existing.challenge_key) || todayChallenge;
-            set({
-                challenge: challengeDef,
-                progress: existing.progress || 0,
-                target: existing.target || challengeDef.target,
-                completed: existing.completed || false,
-                rewardClaimed: existing.reward_claimed || false,
-                totalCompleted: total,
-                loading: false,
-            });
-        } else {
-            // Fresh day — initialize with today's challenge
-            set({
-                challenge: todayChallenge,
-                progress: 0,
-                target: todayChallenge.target,
-                completed: false,
-                rewardClaimed: false,
-                totalCompleted: total,
-                loading: false,
-            });
-            // Save initial state so the challenge is locked in for today
-            saveDailyChallenge(todayStr, todayChallenge.key, 0, todayChallenge.target, false, false);
-        }
-    },
+        // Try to restore each challenge's progress from storage
+        const progresses = {};
+        const completedKeys = [];
+        const claimedKeys = [];
 
-    // Update progress after a round
-    updateProgress: (roundStats) => {
-        const state = get();
-        if (!state.challenge || state.completed) return;
-
-        const challenge = state.challenge;
-        const progressIncrement = challenge.getProgress(roundStats);
-
-        let newProgress;
-        if (challenge.type === 'cumulative') {
-            newProgress = state.progress + progressIncrement;
-        } else if (challenge.type === 'threshold') {
-            // For threshold: take the max (best attempt)
-            newProgress = Math.max(state.progress, progressIncrement);
-        } else if (challenge.type === 'single_round') {
-            // Single round: take the best single-round value
-            newProgress = Math.max(state.progress, progressIncrement);
-        } else {
-            newProgress = state.progress + progressIncrement;
+        for (const challenge of dailyThree) {
+            const existing = await loadDailyChallenge(`${todayStr}_${challenge.key}`);
+            if (existing) {
+                progresses[challenge.key] = existing.progress || 0;
+                if (existing.completed) completedKeys.push(challenge.key);
+                if (existing.reward_claimed) claimedKeys.push(challenge.key);
+            } else {
+                progresses[challenge.key] = 0;
+                // Save initial entry so it's locked in for today
+                saveDailyChallenge(`${todayStr}_${challenge.key}`, challenge.key, 0, challenge.target, false, false);
+            }
         }
 
-        const isCompleted = newProgress >= state.target;
+        // Check if all-3 bonus was claimed
+        const bonusEntry = await loadDailyChallenge(`${todayStr}_bonus`);
+        const bonusClaimed = bonusEntry?.reward_claimed || false;
 
         set({
-            progress: Math.min(newProgress, state.target),
-            completed: isCompleted,
+            challenges: dailyThree,
+            progresses,
+            completedKeys,
+            claimedKeys,
+            bonusClaimed,
+            totalCompleted: total,
+            loading: false,
         });
-
-        // Persist to Supabase
-        const todayStr = getTodayDateString();
-        saveDailyChallenge(
-            todayStr,
-            challenge.key,
-            Math.min(newProgress, state.target),
-            state.target,
-            isCompleted,
-            state.rewardClaimed
-        );
     },
 
-    // Claim reward after completing the challenge
-    claimReward: () => {
+    // Update progress after a round — applied to all 3 active challenges
+    updateProgress: (roundStats) => {
         const state = get();
-        if (!state.completed || state.rewardClaimed) return 0;
+        if (!state.challenges.length) return;
 
-        const reward = state.challenge?.reward || 0;
-        set(s => ({
-            rewardClaimed: true,
-            totalCompleted: s.totalCompleted + 1,
-        }));
-
-        // Persist
         const todayStr = getTodayDateString();
+        const newProgresses = { ...state.progresses };
+        const newCompleted = [...state.completedKeys];
+
+        for (const challenge of state.challenges) {
+            // Skip already-completed challenges
+            if (state.completedKeys.includes(challenge.key)) continue;
+
+            const increment = challenge.getProgress(roundStats);
+            let newProgress;
+
+            if (challenge.type === 'cumulative') {
+                newProgress = (newProgresses[challenge.key] || 0) + increment;
+            } else {
+                // threshold / single_round: take the best value
+                newProgress = Math.max(newProgresses[challenge.key] || 0, increment);
+            }
+
+            newProgress = Math.min(newProgress, challenge.target);
+            newProgresses[challenge.key] = newProgress;
+
+            const isCompleted = newProgress >= challenge.target;
+            if (isCompleted && !newCompleted.includes(challenge.key)) {
+                newCompleted.push(challenge.key);
+            }
+
+            // Persist
+            saveDailyChallenge(
+                `${todayStr}_${challenge.key}`,
+                challenge.key,
+                newProgress,
+                challenge.target,
+                isCompleted,
+                state.claimedKeys.includes(challenge.key)
+            );
+        }
+
+        set({ progresses: newProgresses, completedKeys: newCompleted });
+    },
+
+    // Claim the reward for one specific challenge key; returns coins amount
+    claimReward: (key) => {
+        const state = get();
+        if (!state.completedKeys.includes(key)) return 0;
+        if (state.claimedKeys.includes(key)) return 0;
+
+        const challenge = state.challenges.find(c => c.key === key);
+        if (!challenge) return 0;
+
+        const reward = challenge.reward;
+        const todayStr = getTodayDateString();
+        const newClaimedKeys = [...state.claimedKeys, key];
+
+        set({ claimedKeys: newClaimedKeys });
+
+        // Persist reward_claimed = true
         saveDailyChallenge(
-            todayStr,
-            state.challenge.key,
-            state.progress,
-            state.target,
+            `${todayStr}_${key}`,
+            key,
+            state.progresses[key] || challenge.target,
+            challenge.target,
             true,
             true
         );
 
+        // Increment all-time counter
+        set(s => ({ totalCompleted: s.totalCompleted + 1 }));
+
         return reward;
     },
 
-    // Check if today's challenge is active (not yet completed)
-    isActive: () => {
-        const s = get();
-        return s.challenge && !s.completed;
+    // Claim the bonus for completing all 3 challenges;
+    // Returns { coins, card: true } or null if not eligible
+    claimAllBonus: () => {
+        const state = get();
+        if (state.bonusClaimed) return null;
+
+        const allCompleted = state.challenges.every(c => state.completedKeys.includes(c.key));
+        if (!allCompleted) return null;
+
+        const todayStr = getTodayDateString();
+        set({ bonusClaimed: true });
+        saveDailyChallenge(`${todayStr}_bonus`, 'bonus', 1, 1, true, true);
+
+        return { coins: ALL_COMPLETE_BONUS.coins, card: ALL_COMPLETE_BONUS.card };
     },
 
-    // Check if reward is available to claim
-    canClaimReward: () => {
+    // True if all 3 challenges are completed but bonus not yet claimed
+    canClaimAllBonus: () => {
         const s = get();
-        return s.completed && !s.rewardClaimed;
+        if (s.bonusClaimed) return false;
+        return s.challenges.every(c => s.completedKeys.includes(c.key));
+    },
+
+    // Legacy helper: returns the first (easy) challenge
+    get challenge() {
+        return get().challenges[0] || null;
     },
 }));
 
