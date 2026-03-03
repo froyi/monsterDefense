@@ -1,10 +1,19 @@
 // Storage layer – Supabase backend with localStorage fallback
 import { supabase } from './supabaseClient';
 
-let _profileId = null;
+const ACTIVE_PROFILE_KEY = 'md_activeProfileId';
+
+let _profileId = (() => {
+    try { return localStorage.getItem(ACTIVE_PROFILE_KEY) || null; }
+    catch { return null; }
+})();
 
 export function setActiveProfile(profileId) {
     _profileId = profileId;
+    try {
+        if (profileId) localStorage.setItem(ACTIVE_PROFILE_KEY, profileId);
+        else localStorage.removeItem(ACTIVE_PROFILE_KEY);
+    } catch { /* ignore */ }
 }
 
 export function getActiveProfile() {

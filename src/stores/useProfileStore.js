@@ -6,13 +6,14 @@ import {
     verifyPin,
     deleteProfileFromDB,
     setActiveProfile,
+    getActiveProfile,
 } from '../utils/storage';
 
 const AVATARS = ['🧒', '👧', '🦊', '🐱', '🐶', '🐸', '🦄', '🐼', '🐵', '🐰', '🦁', '🐲'];
 
 const useProfileStore = create((set, get) => ({
     profiles: [],
-    activeProfileId: null,
+    activeProfileId: getActiveProfile(),
     avatars: AVATARS,
     loading: false,
     error: null,
