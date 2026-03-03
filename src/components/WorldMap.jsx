@@ -3,10 +3,17 @@ import { WORLDS } from '../utils/campaignData';
 import useCampaignStore from '../stores/useCampaignStore';
 import useProfileStore from '../stores/useProfileStore';
 import useRewardStore from '../stores/useRewardStore';
+import useDailyChallengeStore from '../stores/useDailyChallengeStore';
 import LevelSelect from './LevelSelect';
+import DailyChallengePanel from './DailyChallengePanel';
 
 function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, onOpenSettings, onOpenCards }) {
     const [selectedWorld, setSelectedWorld] = useState(null);
+    const [showDailyChallenge, setShowDailyChallenge] = useState(false);
+    const dailyChallenges = useDailyChallengeStore(s => s.challenges);
+    const dailyCompletedKeys = useDailyChallengeStore(s => s.completedKeys);
+    const dailyBonusClaimed = useDailyChallengeStore(s => s.bonusClaimed);
+    const dailyCanClaimBonus = useDailyChallengeStore(s => s.canClaimAllBonus);
     // Subscribe to progress state directly so component re-renders when data loads
     const progress = useCampaignStore(s => s.progress);
     const isWorldUnlocked = useCampaignStore(s => s.isWorldUnlocked);
@@ -93,11 +100,27 @@ function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, o
             <div className="world-map-nav">
                 <button className="btn-nav-sm" onClick={onOpenCards}>🃏 Karten</button>
                 <button className="btn-nav-sm" onClick={onOpenShop}>🛍️ Shop</button>
+                <button
+                    className={`btn-nav-sm${dailyCanClaimBonus?.() ? ' dc-glow' : ''}`}
+                    onClick={() => setShowDailyChallenge(true)}
+                    id="daily-challenge-btn"
+                    style={dailyCanClaimBonus?.() ? { borderColor: 'var(--color-gold-dim)', animation: 'pulseGlow 2s infinite' } : {}}
+                >
+                    📋 Aufgaben
+                    {dailyChallenges.length > 0 && (
+                        <span className="dc-progress-badge">
+                            {dailyCompletedKeys.length}/{dailyChallenges.length}
+                        </span>
+                    )}
+                    {dailyBonusClaimed && <span className="dc-done-badge">✅</span>}
+                </button>
                 <button className="btn-nav-sm" onClick={onOpenStats}>📊 Statistik</button>
                 <button className="btn-nav-sm" onClick={onOpenAchievements}>🏆 Abzeichen</button>
                 <button className="btn-nav-sm" onClick={onOpenSettings}>⚙️</button>
                 <button className="btn-nav-sm" onClick={logout}>👤 Wechseln</button>
             </div>
+
+            {showDailyChallenge && <DailyChallengePanel onClose={() => setShowDailyChallenge(false)} />}
         </div>
     );
 }

@@ -135,3 +135,30 @@ describe('App – daily challenge initialization', () => {
         expect(app).toContain('reloadDailyChallenge');
     });
 });
+
+// ============================================================
+// WorldMap: daily challenge button in bottom nav
+// ============================================================
+describe('WorldMap – daily challenge entry point', () => {
+    const worldMap = readSrc('components/WorldMap.jsx');
+
+    it('imports DailyChallengePanel', () => {
+        expect(worldMap).toContain("import DailyChallengePanel");
+    });
+
+    it('imports useDailyChallengeStore', () => {
+        expect(worldMap).toContain("useDailyChallengeStore");
+    });
+
+    it('has a daily-challenge-btn in the bottom nav', () => {
+        expect(worldMap).toContain('id="daily-challenge-btn"');
+    });
+
+    it('renders DailyChallengePanel overlay', () => {
+        expect(worldMap).toContain('<DailyChallengePanel');
+    });
+
+    it('button shows progress badge', () => {
+        expect(worldMap).toContain('dc-progress-badge');
+    });
+});
