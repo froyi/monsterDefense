@@ -10,6 +10,8 @@ export const WORLDS = [
         color: '#4ade80', // green
         requiredStars: 0, // first world, always open
         coinMultiplier: 1.0,
+        monsterDamage: 20,
+        spawnInterval: 1.8,
         bossName: 'Ratten-König',
         bossEmoji: '🐀',
     },
@@ -21,6 +23,8 @@ export const WORLDS = [
         color: '#22c55e', // dark green
         requiredStars: 15,
         coinMultiplier: 1.2,
+        monsterDamage: 24,
+        spawnInterval: 1.6,
         bossName: 'Waldgeist',
         bossEmoji: '👻',
     },
@@ -32,6 +36,8 @@ export const WORLDS = [
         color: '#60a5fa', // blue
         requiredStars: 15,
         coinMultiplier: 1.5,
+        monsterDamage: 28,
+        spawnInterval: 1.4,
         bossName: 'Eisriese',
         bossEmoji: '🧊',
     },
@@ -43,6 +49,8 @@ export const WORLDS = [
         color: '#f97316', // orange
         requiredStars: 15,
         coinMultiplier: 2.0,
+        monsterDamage: 32,
+        spawnInterval: 1.3,
         bossName: 'Lavabiest',
         bossEmoji: '🔥',
     },
@@ -54,6 +62,8 @@ export const WORLDS = [
         color: '#8b5cf6', // purple
         requiredStars: 15,
         coinMultiplier: 2.5,
+        monsterDamage: 36,
+        spawnInterval: 1.2,
         bossName: 'Schwarzer Ritter',
         bossEmoji: '⚔️',
     },
@@ -65,6 +75,8 @@ export const WORLDS = [
         color: '#ef4444', // red
         requiredStars: 15,
         coinMultiplier: 3.0,
+        monsterDamage: 40,
+        spawnInterval: 1.0,
         bossName: 'Drache',
         bossEmoji: '🐉',
     },

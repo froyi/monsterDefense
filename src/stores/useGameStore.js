@@ -9,7 +9,7 @@ const MONSTER_BASE_HP = 100;
 const CASTLE_MAX_HP = 100;
 const MONSTER_BASE_SPEED = 0.25;
 
-function createMonster(id, word, speed) {
+function createMonster(id, word, speed, damage, spawnDelay) {
     return {
         id,
         word,
@@ -19,9 +19,10 @@ function createMonster(id, word, speed) {
         typed: 0,
         defeated: false,
         reachedCastle: false,
-        spawnDelay: id * 2.0, // stagger spawns further apart in campaign
+        spawnDelay,
         spawned: false,
         speed, // per-monster speed (scaled by level)
+        damage, // damage dealt to castle when reaching it
     };
 }
 
@@ -92,6 +93,10 @@ const useGameStore = create((set, get) => ({
         const monsterSlow = cardStore.getEffectValue('monster_slow');
         const bossSlow = cardStore.getEffectValue('boss_slow');
 
+        // World-specific balancing values
+        const monsterDamage = world.monsterDamage || 20;
+        const spawnInterval = world.spawnInterval || 1.8;
+
         let monsters;
         let usedWords;
 
@@ -103,17 +108,16 @@ const useGameStore = create((set, get) => ({
 
             // Create minion monsters with staggered spawns
             const currentSpeed = Math.max(0.01, monsterSpeed * (1 - monsterSlow / 100));
-            monsters = minionWords.map((word, i) => createMonster(i, word, currentSpeed));
+            monsters = minionWords.map((word, i) => createMonster(i, word, currentSpeed, monsterDamage, i * spawnInterval));
 
             // Generate a long boss word and create the boss as the LAST monster
             const bossWord = generateBossWord(worldId, layout, worldIndex);
             const bossId = monsters.length;
-            const lastMinionDelay = (minionCount - 1) * 2.0;
+            const lastMinionDelay = (minionCount - 1) * spawnInterval;
             const bSpeed = Math.max(0.01, monsterSpeed * 0.8 * (1 - bossSlow / 100)); // boss slightly slower but tankier
-            const bossMonster = createMonster(bossId, bossWord, bSpeed);
+            const bossMonster = createMonster(bossId, bossWord, bSpeed, monsterDamage * 2, lastMinionDelay + 1);
             bossMonster.hp = MONSTER_BASE_HP * 3;
             bossMonster.maxHp = MONSTER_BASE_HP * 3;
-            bossMonster.spawnDelay = lastMinionDelay + 1; // spawns with last group, but boss-gate ensures fought last
             bossMonster.isBoss = true;
             bossMonster.enraged = false;
             monsters.push(bossMonster);
@@ -121,7 +125,7 @@ const useGameStore = create((set, get) => ({
             // Normal level
             const words = generateCampaignWords(levelConfig.monsterCount, worldId, layout, levelConfig.wordLength);
             const currentSpeed = Math.max(0.01, monsterSpeed * (1 - monsterSlow / 100));
-            monsters = words.map((word, i) => createMonster(i, word, currentSpeed));
+            monsters = words.map((word, i) => createMonster(i, word, currentSpeed, monsterDamage, i * spawnInterval));
             usedWords = new Set(words);
         }
 
@@ -183,11 +187,11 @@ const useGameStore = create((set, get) => ({
                 return { ...m, position: newPos };
             });
 
-            // Check castle damage
+            // Check castle damage – each monster deals its own damage value
             let castleDmg = 0;
             newMonsters.forEach(m => {
                 if (m.reachedCastle && !m.defeated) {
-                    castleDmg += 10;
+                    castleDmg += m.damage;
                     m.defeated = true;
                 }
             });
