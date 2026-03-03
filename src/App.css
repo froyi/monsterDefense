@@ -2209,7 +2209,7 @@
 
 .world-map {
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 20px;
     display: flex;
@@ -2385,22 +2385,24 @@
 
 .world-map-nav {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     justify-content: center;
+    flex-wrap: wrap;
     padding: 12px 0;
     flex-shrink: 0;
 }
 
 .btn-nav-sm {
-    padding: 10px 16px;
+    padding: 8px 12px;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 12px;
     color: var(--text-primary);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
 }
 
 .btn-nav-sm:hover {
