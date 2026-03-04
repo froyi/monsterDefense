@@ -88,17 +88,38 @@ describe('useGameStore – Campaign Mode', () => {
             expect(boss.maxHp).toBe(300); // 3x normal
         });
 
-        it('boss spawns last (after all minions)', () => {
+        it('boss uses boss-gate instead of spawnDelay', () => {
             useGameStore.getState().startLevel('village', 10, 'de');
             const monsters = useGameStore.getState().monsters;
             const boss = monsters.find(m => m.isBoss);
-            const lastMinion = monsters.filter(m => !m.isBoss).pop();
-            expect(boss.spawnDelay).toBeGreaterThan(lastMinion.spawnDelay);
+            // Boss spawnDelay should be 0 — boss gate controls timing, not spawnDelay
+            expect(boss.spawnDelay).toBe(0);
         });
 
         it('level config has isBoss flag', () => {
             useGameStore.getState().startLevel('village', 10, 'de');
             expect(useGameStore.getState().levelConfig.isBoss).toBe(true);
+        });
+
+        it('boss spawns immediately after all minions defeated (regression: no artificial delay)', () => {
+            useGameStore.getState().startLevel('village', 10, 'de');
+            const state = useGameStore.getState();
+            const minions = state.monsters.filter(m => !m.isBoss);
+            const boss = state.monsters.find(m => m.isBoss);
+
+            // Simulate: all minions defeated, very little time elapsed
+            useGameStore.setState({
+                elapsed: 2.0, // only 2 seconds passed
+                monsters: state.monsters.map(m =>
+                    m.isBoss ? m : { ...m, spawned: true, defeated: true }
+                ),
+            });
+
+            // Tick should spawn the boss even though elapsed (2s) is much less
+            // than what the old spawnDelay would have been (20+ seconds)
+            useGameStore.getState().tick();
+            const bossAfterTick = useGameStore.getState().monsters.find(m => m.isBoss);
+            expect(bossAfterTick.spawned).toBe(true);
         });
     });
 

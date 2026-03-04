@@ -115,7 +115,7 @@ const useGameStore = create((set, get) => ({
             const bossId = monsters.length;
             const lastMinionDelay = (minionCount - 1) * spawnInterval;
             const bSpeed = Math.max(0.01, monsterSpeed * 0.8 * (1 - bossSlow / 100)); // boss slightly slower but tankier
-            const bossMonster = createMonster(bossId, bossWord, bSpeed, monsterDamage * 2, lastMinionDelay + 1);
+            const bossMonster = createMonster(bossId, bossWord, bSpeed, monsterDamage * 2, 0); // spawnDelay=0: boss gate handles timing
             bossMonster.hp = MONSTER_BASE_HP * 3;
             bossMonster.maxHp = MONSTER_BASE_HP * 3;
             bossMonster.isBoss = true;
