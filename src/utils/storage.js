@@ -318,13 +318,14 @@ export async function unlockAchievement(achievementKey) {
 // Daily Challenges (Supabase)
 // ==========================================
 
-export async function loadDailyChallenge(dateStr) {
+export async function loadDailyChallenge(dateStr, challengeKey) {
     if (!_profileId) return null;
     const { data, error } = await supabase
         .from('daily_challenges')
         .select('*')
         .eq('profile_id', _profileId)
         .eq('challenge_date', dateStr)
+        .eq('challenge_key', challengeKey)
         .maybeSingle();
     if (error) {
         console.warn('Failed to load daily challenge:', error);
@@ -347,7 +348,7 @@ export async function saveDailyChallenge(dateStr, challengeKey, progress, target
                 completed,
                 reward_claimed: rewardClaimed,
             },
-            { onConflict: 'profile_id,challenge_date' }
+            { onConflict: 'profile_id,challenge_date,challenge_key' }
         );
     if (error) console.warn('Failed to save daily challenge:', error);
 }
