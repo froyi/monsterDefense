@@ -36,8 +36,9 @@ const useDailyChallengeStore = create((set, get) => ({
                 if (existing.reward_claimed) claimedKeys.push(challenge.key);
             } else {
                 progresses[challenge.key] = 0;
-                // Save initial entry so it's locked in for today
-                saveDailyChallenge(`${todayStr}_${challenge.key}`, challenge.key, 0, challenge.target, false, false);
+                // Don't save to Supabase here — upsert would overwrite existing progress
+                // with 0 if load failed (e.g. network error). New entries are created
+                // on first real progress via updateProgress().
             }
         }
 

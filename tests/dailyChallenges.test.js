@@ -193,3 +193,30 @@ describe('getTodayDateString', () => {
         expect(getTodayDateString()).toBe(expected);
     });
 });
+
+// ============================================================
+// Store: reload does NOT overwrite progress (regression)
+// ============================================================
+describe('useDailyChallengeStore reload safety (regression)', () => {
+    it('reload does not call saveDailyChallenge when load returns null', async () => {
+        // This test ensures that if loadDailyChallenge returns null
+        // (e.g. network error), reload() does NOT upsert progress=0
+        // which would overwrite existing Supabase data.
+
+        const { saveDailyChallenge } = await import('../src/utils/storage');
+        const saveSpy = vi.spyOn(
+            await import('../src/utils/storage'),
+            'saveDailyChallenge'
+        );
+
+        const { default: useDailyChallengeStore } = await import('../src/stores/useDailyChallengeStore');
+
+        await useDailyChallengeStore.getState().reload();
+
+        // saveDailyChallenge should NOT have been called during reload
+        // (it was previously called with progress=0 in the fallback branch)
+        expect(saveSpy).not.toHaveBeenCalled();
+        saveSpy.mockRestore();
+    });
+});
+
