@@ -29,7 +29,7 @@ const useDailyChallengeStore = create((set, get) => ({
         const claimedKeys = [];
 
         for (const challenge of dailyThree) {
-            const existing = await loadDailyChallenge(`${todayStr}_${challenge.key}`);
+            const existing = await loadDailyChallenge(todayStr, challenge.key);
             if (existing) {
                 progresses[challenge.key] = existing.progress || 0;
                 if (existing.completed) completedKeys.push(challenge.key);
@@ -43,7 +43,7 @@ const useDailyChallengeStore = create((set, get) => ({
         }
 
         // Check if all-3 bonus was claimed
-        const bonusEntry = await loadDailyChallenge(`${todayStr}_bonus`);
+        const bonusEntry = await loadDailyChallenge(todayStr, 'bonus');
         const bonusClaimed = bonusEntry?.reward_claimed || false;
 
         set({
@@ -90,7 +90,7 @@ const useDailyChallengeStore = create((set, get) => ({
 
             // Persist
             saveDailyChallenge(
-                `${todayStr}_${challenge.key}`,
+                todayStr,
                 challenge.key,
                 newProgress,
                 challenge.target,
@@ -119,7 +119,7 @@ const useDailyChallengeStore = create((set, get) => ({
 
         // Persist reward_claimed = true
         saveDailyChallenge(
-            `${todayStr}_${key}`,
+            todayStr,
             key,
             state.progresses[key] || challenge.target,
             challenge.target,
@@ -144,7 +144,7 @@ const useDailyChallengeStore = create((set, get) => ({
 
         const todayStr = getTodayDateString();
         set({ bonusClaimed: true });
-        saveDailyChallenge(`${todayStr}_bonus`, 'bonus', 1, 1, true, true);
+        saveDailyChallenge(todayStr, 'bonus', 1, 1, true, true);
 
         return { coins: ALL_COMPLETE_BONUS.coins, card: ALL_COMPLETE_BONUS.card };
     },
