@@ -30,6 +30,7 @@ const useCardStore = create((set, get) => ({
             if (owned.level === 0) {
                 owned.level = 1;
                 owned.duplicates = 0;
+                owned.isNew = true;
                 result.isNew = true;
             } else {
                 // Already owned, add duplicate
@@ -57,6 +58,29 @@ const useCardStore = create((set, get) => ({
 
         get().saveCards();
         return result;
+    },
+
+    clearNewFlagsForWorlds: (worldIdsArray) => {
+        set(s => {
+            const newOwned = { ...s.ownedCards };
+            let changed = false;
+
+            for (const [cardId, data] of Object.entries(newOwned)) {
+                if (data.isNew) {
+                    const cardDef = CARDS.find(c => c.id === cardId);
+                    if (cardDef && worldIdsArray.includes(cardDef.world)) {
+                        newOwned[cardId] = { ...data, isNew: false };
+                        changed = true;
+                    }
+                }
+            }
+
+            if (changed) {
+                setTimeout(() => get().saveCards(), 0);
+                return { ownedCards: newOwned };
+            }
+            return s;
+        });
     },
 
     // Receive multiple cards (e.g. from a booster)

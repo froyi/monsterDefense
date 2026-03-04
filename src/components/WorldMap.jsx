@@ -4,6 +4,7 @@ import useCampaignStore from '../stores/useCampaignStore';
 import useProfileStore from '../stores/useProfileStore';
 import useRewardStore from '../stores/useRewardStore';
 import useDailyChallengeStore from '../stores/useDailyChallengeStore';
+import useCardStore from '../stores/useCardStore';
 import LevelSelect from './LevelSelect';
 import DailyChallengePanel from './DailyChallengePanel';
 
@@ -23,6 +24,7 @@ function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, o
     const getNextLevel = useCampaignStore(s => s.getNextLevel);
     const logout = useProfileStore(s => s.logout);
     const coins = useRewardStore(s => s.coins);
+    const hasNewCards = useCardStore(s => Object.values(s.ownedCards).some(c => c.isNew));
 
     const totalStars = getTotalStars();
     const completion = getCompletionPercent();
@@ -98,7 +100,10 @@ function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, o
             </div>
 
             <div className="world-map-nav">
-                <button className="btn-nav-sm" onClick={onOpenCards}>🃏 Karten</button>
+                <button className="btn-nav-sm" onClick={onOpenCards} style={{ position: 'relative' }}>
+                    🃏 Karten
+                    {hasNewCards && <span className="notification-dot"></span>}
+                </button>
                 <button className="btn-nav-sm" onClick={onOpenShop}>🛍️ Shop</button>
                 <button
                     className={`btn-nav-sm${dailyCanClaimBonus?.() ? ' dc-glow' : ''}`}

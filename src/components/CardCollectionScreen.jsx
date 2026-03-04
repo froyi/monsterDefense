@@ -5,8 +5,23 @@ import { WORLDS } from '../utils/campaignData';
 import Card from './Card';
 
 export default function CardCollectionScreen({ onBack }) {
-    const { ownedCards, equippedCards, equipCard, unequipCard, highlightedCardId, setHighlightedCardId } = useCardStore();
-    const [selectedWorld, setSelectedWorld] = useState('village');
+    const { ownedCards, equippedCards, equipCard, unequipCard, highlightedCardId, setHighlightedCardId, clearNewFlagsForWorlds } = useCardStore();
+
+    const [selectedWorld, setSelectedWorld] = useState(() => {
+        for (const [id, data] of Object.entries(ownedCards)) {
+            if (data.isNew) {
+                const cardDef = CARDS.find(c => c.id === id);
+                if (cardDef) return cardDef.world;
+            }
+        }
+        return 'village';
+    });
+
+    const [viewedWorlds, setViewedWorlds] = useState(new Set([selectedWorld]));
+
+    React.useEffect(() => {
+        setViewedWorlds(prev => new Set(prev).add(selectedWorld));
+    }, [selectedWorld]);
 
     // Handle automated world switching and highlight clearing
     React.useEffect(() => {
@@ -56,6 +71,11 @@ export default function CardCollectionScreen({ onBack }) {
         }
     };
 
+    const handleBack = () => {
+        clearNewFlagsForWorlds(Array.from(viewedWorlds));
+        onBack();
+    };
+
     return (
         <div className="collection-screen">
             {/* Header */}
@@ -66,7 +86,7 @@ export default function CardCollectionScreen({ onBack }) {
                         Gesamt: {ownedAllCards} / {totalAllCards} gesammelt
                     </p>
                 </div>
-                <button className="btn-back" onClick={onBack}>← Zurück</button>
+                <button className="btn-back" onClick={handleBack}>← Zurück</button>
             </div>
 
             {/* Loadout Section */}
@@ -106,16 +126,19 @@ export default function CardCollectionScreen({ onBack }) {
                 {WORLDS.map(w => {
                     const wCards = CARDS.filter(c => c.world === w.id);
                     const wOwned = wCards.filter(c => ownedCards[c.id]).length;
+                    const hasNew = wCards.some(c => ownedCards[c.id]?.isNew);
+
                     return (
                         <button
                             key={w.id}
                             className={`collection-world-tab ${selectedWorld === w.id ? 'active' : ''}`}
-                            style={{ '--tab-color': w.color }}
+                            style={{ '--tab-color': w.color, position: 'relative' }}
                             onClick={() => setSelectedWorld(w.id)}
                         >
                             <span className="tab-emoji">{w.emoji}</span>
                             <span className="tab-name">{w.name}</span>
                             <span className="tab-count">{wOwned}/{wCards.length}</span>
+                            {hasNew && <span className="tab-notification-dot"></span>}
                         </button>
                     );
                 })}
@@ -144,6 +167,7 @@ export default function CardCollectionScreen({ onBack }) {
                                         cardId={cardDef.id}
                                         level={ownedData.level}
                                         duplicates={ownedData.duplicates}
+                                        isNew={ownedData.isNew}
                                         onClick={() => handleCardClick(cardDef.id)}
                                         className={isEquipped ? 'card-equipped-ring' : ''}
                                         isHighlighted={highlightedCardId === cardDef.id}
