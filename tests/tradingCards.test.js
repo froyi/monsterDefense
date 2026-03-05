@@ -239,7 +239,7 @@ describe('tradingCards', () => {
         it('should return formatted effect text for level 1', () => {
             const desc = getEffectDescription('w1_c1', 1);
             expect(desc).toContain('2'); // effectValues[0] = 2
-            expect(desc).toContain('Münzen');
+            expect(desc).toContain('Zeit'); // spawn_delay effect
         });
 
         it('should return formatted effect text for level 3', () => {
