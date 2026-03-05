@@ -1,7 +1,7 @@
 // Campaign progress store – tracks stars, world unlocks, current position
 import { create } from 'zustand';
 import { WORLDS, TOTAL_LEVELS, getWorldIndex } from '../utils/campaignData';
-import { getActiveProfile } from '../utils/storage';
+import { getActiveProfile, updateLeaderboardStats } from '../utils/storage';
 
 // Progress shape: { [worldId]: { [levelNum]: { stars: 0-5, completed: bool } } }
 function createEmptyProgress() {
@@ -134,6 +134,25 @@ const useCampaignStore = create((set, get) => ({
         try {
             localStorage.setItem(`campaign_progress_${profileId}`, JSON.stringify(get().progress));
         } catch { /* ignore */ }
+
+        // Fire-and-forget: sync leaderboard stats to Supabase
+        const totalStars = get().getTotalStars();
+        // Find the highest world/level the player has reached
+        let maxWorld = 'village';
+        let maxLevel = 0;
+        for (const world of WORLDS) {
+            for (let lvl = 10; lvl >= 1; lvl--) {
+                if (get().isLevelCompleted(world.id, lvl)) {
+                    const worldIdx = getWorldIndex(world.id);
+                    const currentMaxIdx = getWorldIndex(maxWorld);
+                    if (worldIdx > currentMaxIdx || (worldIdx === currentMaxIdx && lvl > maxLevel)) {
+                        maxWorld = world.id;
+                        maxLevel = lvl;
+                    }
+                }
+            }
+        }
+        updateLeaderboardStats({ totalStars, maxWorld, maxLevel });
     },
 
     loadProgress: () => {
