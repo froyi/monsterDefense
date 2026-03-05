@@ -180,7 +180,7 @@ function ResultsScreen() {
                     style={{ '--rarity-color': rarityInfo?.color || '#94a3b8' }}
                     onClick={() => {
                         setHighlightedCardId(cardDef.id);
-                        setPhase('collection');
+                        setPhase('cards');
                     }}
                 >
                     <span className="card-drop-toast-emoji">{cardDef.emoji}</span>
