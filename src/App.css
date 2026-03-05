@@ -2648,12 +2648,12 @@
 }
 
 .level-stars .star {
-    font-size: 10px;
+    font-size: 8px;
 }
 
 .level-stars .star.empty {
     opacity: 0.3;
-    font-size: 11px;
+    font-size: 9px;
 }
 
 .level-lock {
