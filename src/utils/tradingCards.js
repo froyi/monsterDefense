@@ -37,13 +37,13 @@ export const CARDS = [
     // -- Common (10) --
     {
         id: 'w1_c1', world: 'village', rarity: 'common', name: 'Heugabel', emoji: '🔱',
-        description: 'Ein einfaches Werkzeug.',
-        effectType: 'bonus_coins', effectValues: [2, 4, 6], effectText: '+{val}% Münzen nach dem Level.'
+        description: 'Weiß alles über die Burg.',
+        effectType: 'spawn_delay', effectValues: [2, 4, 6], effectText: '+{val}% mehr Zeit zwischen Monstern.'
     },
     {
         id: 'w1_c2', world: 'village', rarity: 'common', name: 'Dorfköter', emoji: '🐕',
         description: 'Bellt laut, beißt aber nicht.',
-        effectType: 'bonus_coins', effectValues: [2, 4, 6], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'extra_time', effectValues: [3, 5, 8], effectText: '+{val} Sekunden Levelzeit.'
     },
     {
         id: 'w1_c3', world: 'village', rarity: 'common', name: 'Kürbismonster', emoji: '🎃',
@@ -53,7 +53,7 @@ export const CARDS = [
     {
         id: 'w1_c4', world: 'village', rarity: 'common', name: 'Gartenzwerg', emoji: '🧙‍♂️',
         description: 'Steht einfach nur da.',
-        effectType: 'bonus_coins', effectValues: [2, 4, 6], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'spawn_delay', effectValues: [2, 4, 6], effectText: '+{val}% mehr Zeit zwischen Monstern.'
     },
     {
         id: 'w1_c5', world: 'village', rarity: 'common', name: 'Wildschwein', emoji: '🐗',
@@ -63,12 +63,12 @@ export const CARDS = [
     {
         id: 'w1_c6', world: 'village', rarity: 'common', name: 'Feldmaus', emoji: '🐭',
         description: 'Huscht schnell vorbei.',
-        effectType: 'bonus_coins', effectValues: [2, 4, 6], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'bonus_score', effectValues: [2, 4, 6], effectText: '+{val}% mehr Score.'
     },
     {
         id: 'w1_c7', world: 'village', rarity: 'common', name: 'Wütendes Huhn', emoji: '🐔',
         description: 'Pickt dich, wenn du nicht aufpasst.',
-        effectType: 'bonus_coins', effectValues: [2, 4, 6], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'bonus_score', effectValues: [2, 4, 6], effectText: '+{val}% mehr Score.'
     },
     {
         id: 'w1_c8', world: 'village', rarity: 'common', name: 'Vogelscheuche', emoji: '🕴️',
@@ -89,8 +89,8 @@ export const CARDS = [
     // -- Rare (5) --
     {
         id: 'w1_r1', world: 'village', rarity: 'rare', name: 'Troll der Brücke', emoji: '🧌',
-        description: 'Will Wegzoll haben.',
-        effectType: 'bonus_coins', effectValues: [10, 15, 20], effectText: '+{val}% Münzen nach dem Level.'
+        description: 'Uralte Waffe der Riesen.',
+        effectType: 'extra_time', effectValues: [8, 12, 18], effectText: '+{val} Sekunden Levelzeit.'
     },
     {
         id: 'w1_r2', world: 'village', rarity: 'rare', name: 'Goblin-Dieb', emoji: '🦹',
@@ -105,7 +105,7 @@ export const CARDS = [
     {
         id: 'w1_r4', world: 'village', rarity: 'rare', name: 'Windmühlen-Rad', emoji: '🎡',
         description: 'Dreht sich unaufhörlich.',
-        effectType: 'bonus_coins', effectValues: [10, 15, 20], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'extra_time', effectValues: [8, 12, 18], effectText: '+{val} Sekunden Levelzeit.'
     },
     {
         id: 'w1_r5', world: 'village', rarity: 'rare', name: 'Dorfgarde', emoji: '💂',
@@ -150,7 +150,7 @@ export const CARDS = [
     {
         id: 'w2_c1', world: 'forest', rarity: 'common', name: 'Glühwürmchen', emoji: '✨',
         description: 'Tanzt im Mondlicht zwischen den Bäumen.',
-        effectType: 'bonus_coins', effectValues: [3, 5, 8], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'spawn_delay', effectValues: [2, 4, 6], effectText: '+{val}% mehr Zeit zwischen Monstern.'
     },
     {
         id: 'w2_c2', world: 'forest', rarity: 'common', name: 'Waldpilz', emoji: '🍄',
@@ -164,8 +164,8 @@ export const CARDS = [
     },
     {
         id: 'w2_c4', world: 'forest', rarity: 'common', name: 'Eichhörnchen', emoji: '🐿️',
-        description: 'Sammelt Nüsse für den Winter.',
-        effectType: 'bonus_coins', effectValues: [3, 5, 8], effectText: '+{val}% Münzen nach dem Level.'
+        description: 'Schmilzt nie, brennt immer.',
+        effectType: 'spawn_delay', effectValues: [5, 8, 12], effectText: '+{val}% mehr Zeit zwischen Monstern.'
     },
     {
         id: 'w2_c5', world: 'forest', rarity: 'common', name: 'Baumgeist', emoji: '🌲',
@@ -175,7 +175,7 @@ export const CARDS = [
     {
         id: 'w2_c6', world: 'forest', rarity: 'common', name: 'Feenstaub', emoji: '🧚',
         description: 'Glitzert und kitzelt in der Nase.',
-        effectType: 'bonus_coins', effectValues: [3, 5, 8], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'extra_time', effectValues: [3, 5, 8], effectText: '+{val} Sekunden Levelzeit.'
     },
     {
         id: 'w2_c7', world: 'forest', rarity: 'common', name: 'Giftranke', emoji: '🕸️',
@@ -194,15 +194,15 @@ export const CARDS = [
     },
     {
         id: 'w2_c10', world: 'forest', rarity: 'common', name: 'Zauberrabe', emoji: '🐦‍⬛',
-        description: 'Beobachtet alles von oben.',
-        effectType: 'bonus_coins', effectValues: [3, 5, 8], effectText: '+{val}% Münzen nach dem Level.'
+        description: 'Zauberhafter Waldbewohner.',
+        effectType: 'bonus_score', effectValues: [2, 4, 6], effectText: '+{val}% mehr Score.'
     },
 
     // -- Rare (5) --
     {
         id: 'w2_r1', world: 'forest', rarity: 'rare', name: 'Elfenkriegerin', emoji: '🧝‍♀️',
         description: 'Beschützt den Wald mit ihrem Bogen.',
-        effectType: 'bonus_coins', effectValues: [12, 18, 24], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'spawn_delay', effectValues: [5, 8, 12], effectText: '+{val}% mehr Zeit zwischen Monstern.'
     },
     {
         id: 'w2_r2', world: 'forest', rarity: 'rare', name: 'Rankenwächter', emoji: '🌱',
@@ -271,8 +271,8 @@ export const CARDS = [
     },
     {
         id: 'w3_c3', world: 'mountains', rarity: 'common', name: 'Schnee-Eule', emoji: '🦉',
-        description: 'Lautlos und weise.',
-        effectType: 'bonus_coins', effectValues: [3, 6, 9], effectText: '+{val}% Münzen nach dem Level.'
+        description: 'Schützt vor der Kälte.',
+        effectType: 'bonus_score', effectValues: [3, 6, 9], effectText: '+{val}% mehr Score.'
     },
     {
         id: 'w3_c4', world: 'mountains', rarity: 'common', name: 'Gletscherkäfer', emoji: '🪲',
@@ -323,8 +323,8 @@ export const CARDS = [
     },
     {
         id: 'w3_r3', world: 'mountains', rarity: 'rare', name: 'Lawinenläufer', emoji: '🏔️',
-        description: 'Reitet die Lawine wie eine Welle.',
-        effectType: 'bonus_coins', effectValues: [12, 18, 25], effectText: '+{val}% Münzen nach dem Level.'
+        description: 'Magisches Holz aus der Tiefe des Waldes.',
+        effectType: 'spawn_delay', effectValues: [5, 8, 12], effectText: '+{val}% mehr Zeit zwischen Monstern.'
     },
     {
         id: 'w3_r4', world: 'mountains', rarity: 'rare', name: 'Polarfuchs', emoji: '🐾',
@@ -333,8 +333,8 @@ export const CARDS = [
     },
     {
         id: 'w3_r5', world: 'mountains', rarity: 'rare', name: 'Gipfelwächter', emoji: '⚔️',
-        description: 'Bewacht den höchsten Pass.',
-        effectType: 'bonus_coins', effectValues: [12, 18, 25], effectText: '+{val}% Münzen nach dem Level.'
+        description: 'Enthält die Macht eines Drachen.',
+        effectType: 'spawn_delay', effectValues: [5, 8, 12], effectText: '+{val}% mehr Zeit zwischen Monstern.'
     },
 
     // -- Epic (3) --
@@ -378,8 +378,8 @@ export const CARDS = [
     },
     {
         id: 'w4_c2', world: 'volcano', rarity: 'common', name: 'Aschevogel', emoji: '🐦',
-        description: 'Fliegt durch Rauchwolken.',
-        effectType: 'bonus_coins', effectValues: [4, 7, 10], effectText: '+{val}% Münzen nach dem Level.'
+        description: 'Pirscht durch das Unterholz.',
+        effectType: 'spawn_delay', effectValues: [2, 4, 6], effectText: '+{val}% mehr Zeit zwischen Monstern.'
     },
     {
         id: 'w4_c3', world: 'volcano', rarity: 'common', name: 'Feuergeist', emoji: '🔥',
@@ -394,12 +394,12 @@ export const CARDS = [
     {
         id: 'w4_c5', world: 'volcano', rarity: 'common', name: 'Lavaschleimer', emoji: '🫠',
         description: 'Glibbert und glüht zugleich.',
-        effectType: 'bonus_coins', effectValues: [4, 7, 10], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'spawn_delay', effectValues: [2, 4, 6], effectText: '+{val}% mehr Zeit zwischen Monstern.'
     },
     {
         id: 'w4_c6', world: 'volcano', rarity: 'common', name: 'Feuerkäfer', emoji: '🐞',
         description: 'Sein Panzer ist feuerrot und heiß.',
-        effectType: 'bonus_coins', effectValues: [4, 7, 10], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'extra_time', effectValues: [3, 5, 8], effectText: '+{val} Sekunden Levelzeit.'
     },
     {
         id: 'w4_c7', world: 'volcano', rarity: 'common', name: 'Rauchschlange', emoji: '🐍',
@@ -418,8 +418,8 @@ export const CARDS = [
     },
     {
         id: 'w4_c10', world: 'volcano', rarity: 'common', name: 'Vulkankröte', emoji: '🐸',
-        description: 'Springt über Lavabäche.',
-        effectType: 'bonus_coins', effectValues: [4, 7, 10], effectText: '+{val}% Münzen nach dem Level.'
+        description: 'Wacht über die Mauern.',
+        effectType: 'extra_time', effectValues: [3, 5, 8], effectText: '+{val} Sekunden Levelzeit.'
     },
 
     // -- Rare (5) --
@@ -485,13 +485,13 @@ export const CARDS = [
     // -- Common (10) --
     {
         id: 'w5_c1', world: 'castle', rarity: 'common', name: 'Burgfledermaus', emoji: '🦇',
-        description: 'Hängt kopfüber im Thronsaal.',
-        effectType: 'bonus_coins', effectValues: [4, 8, 11], effectText: '+{val}% Münzen nach dem Level.'
+        description: 'Ein mysteriöser Schlüssel.',
+        effectType: 'bonus_score', effectValues: [4, 8, 11], effectText: '+{val}% mehr Score.'
     },
     {
         id: 'w5_c2', world: 'castle', rarity: 'common', name: 'Knochenkrieger', emoji: '💀',
         description: 'Klappern gehört zum Handwerk.',
-        effectType: 'bonus_coins', effectValues: [4, 8, 11], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'extra_time', effectValues: [3, 5, 8], effectText: '+{val} Sekunden Levelzeit.'
     },
     {
         id: 'w5_c3', world: 'castle', rarity: 'common', name: 'Kettengeist', emoji: '👻',
@@ -511,7 +511,7 @@ export const CARDS = [
     {
         id: 'w5_c6', world: 'castle', rarity: 'common', name: 'Kerzengeist', emoji: '🕯️',
         description: 'Flackert unheimlich in den Hallen.',
-        effectType: 'bonus_coins', effectValues: [4, 8, 11], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'bonus_score', effectValues: [4, 8, 11], effectText: '+{val}% mehr Score.'
     },
     {
         id: 'w5_c7', world: 'castle', rarity: 'common', name: 'Burgspinne', emoji: '🕷️',
@@ -537,8 +537,8 @@ export const CARDS = [
     // -- Rare (5) --
     {
         id: 'w5_r1', world: 'castle', rarity: 'rare', name: 'Geisterritter', emoji: '🤺',
-        description: 'Kämpft mit einem Schwert aus Mondlicht.',
-        effectType: 'bonus_coins', effectValues: [15, 22, 30], effectText: '+{val}% Münzen nach dem Level.'
+        description: 'Rüstung aus einem anderen Zeitalter.',
+        effectType: 'extra_time', effectValues: [8, 12, 18], effectText: '+{val} Sekunden Levelzeit.'
     },
     {
         id: 'w5_r2', world: 'castle', rarity: 'rare', name: 'Vampirfürst', emoji: '🧛',
@@ -603,7 +603,7 @@ export const CARDS = [
     {
         id: 'w6_c2', world: 'dragon', rarity: 'common', name: 'Goldmünze', emoji: '🪙',
         description: 'Aus dem Hort des Drachen gestohlen.',
-        effectType: 'bonus_coins', effectValues: [5, 9, 13], effectText: '+{val}% Münzen nach dem Level.'
+        effectType: 'bonus_score', effectValues: [5, 9, 13], effectText: '+{val}% mehr Score.'
     },
     {
         id: 'w6_c3', world: 'dragon', rarity: 'common', name: 'Drachenschuppe', emoji: '🛡️',

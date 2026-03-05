@@ -92,10 +92,13 @@ const useGameStore = create((set, get) => ({
 
         const monsterSlow = cardStore.getEffectValue('monster_slow');
         const bossSlow = cardStore.getEffectValue('boss_slow');
+        const spawnDelayBonus = cardStore.getEffectValue('spawn_delay'); // +X% spawn interval
+        const extraTime = cardStore.getEffectValue('extra_time'); // +X seconds
 
         // World-specific balancing values
         const monsterDamage = world.monsterDamage || 20;
-        const spawnInterval = world.spawnInterval || 1.8;
+        const baseSpawnInterval = world.spawnInterval || 1.8;
+        const spawnInterval = baseSpawnInterval * (1 + spawnDelayBonus / 100);
 
         let monsters;
         let usedWords;
@@ -136,7 +139,7 @@ const useGameStore = create((set, get) => ({
             levelConfig,
             monsters,
             activeMonsterIndex: 0,
-            timer: ROUND_DURATION,
+            timer: ROUND_DURATION + extraTime,
             elapsed: 0,
             castleHp: finalMaxHp, // Set to modified max HP
             maxCastleHp: finalMaxHp, // Store max for UI bar percentage
@@ -407,9 +410,11 @@ const useGameStore = create((set, get) => ({
         // Apply card bonus effects
         const cardStore = useCardStore.getState();
         const bonusCoins = cardStore.getEffectValue('bonus_coins');       // e.g. +10%
+        const bonusScore = cardStore.getEffectValue('bonus_score');       // e.g. +10%
 
         const totalBonus = 1 + bonusCoins / 100;
-        return Math.round(baseCoins * multiplier * totalBonus);
+        const scoreMultiplier = 1 + bonusScore / 100;
+        return Math.round(baseCoins * multiplier * totalBonus * scoreMultiplier);
     }
 }));
 
