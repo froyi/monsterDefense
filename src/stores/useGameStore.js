@@ -371,25 +371,23 @@ const useGameStore = create((set, get) => ({
         return m;
     },
 
-    // Calculate stars earned for the current level
+    // Calculate stars earned for the current level (5 independent stars)
     // ⭐ = all monsters defeated (survived)
-    // ⭐⭐ = survived + accuracy >= 90%
-    // ⭐⭐⭐ = survived + accuracy >= 90% + no castle damage (respects max HP boost)
+    // ⭐ = 100% accuracy (no errors)
+    // ⭐ = no castle damage taken
+    // ⭐ = speed: WPM >= 30
+    // ⭐ = combo: max combo >= 50% of words completed
     getStars: () => {
         const s = get();
         const allDefeated = s.monsters.every(m => m.defeated);
-        const accuracy = s.getAccuracy();
         if (!allDefeated || s.castleHp <= 0) return 0; // lost
 
-        let stars = 1; // survived
-        if (accuracy >= 90) {
-            stars = 2; // good accuracy
-            // Check against dynamic max HP from card buffs
-            if (s.castleHp >= s.maxCastleHp) {
-                stars = 3; // perfect: high accuracy AND no damage
-            }
-        }
-
+        let stars = 1; // ⭐ Bestanden (survived)
+        if (s.getAccuracy() >= 100) stars++;                              // ⭐ 100% Genauigkeit
+        if (s.castleHp >= s.maxCastleHp) stars++;                         // ⭐ Kein Burgschaden
+        if (s.getWPM() >= 30) stars++;                                    // ⭐ Speed
+        const comboThreshold = Math.max(1, Math.ceil(s.wordsCompleted * 0.5));
+        if (s.maxCombo >= comboThreshold) stars++;                        // ⭐ Combo
         return stars;
     },
 

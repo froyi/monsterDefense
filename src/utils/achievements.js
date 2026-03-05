@@ -387,24 +387,24 @@ export const ACHIEVEMENTS = {
     stars_30: {
         category: 'campaign',
         name: 'Sternsammler',
-        description: '30 Sterne gesammelt',
+        description: '50 Sterne gesammelt',
         icon: '⭐',
-        check: (stats) => stats.totalStars >= 30,
+        check: (stats) => stats.totalStars >= 50,
     },
     stars_90: {
         category: 'campaign',
         name: 'Sternenjäger',
-        description: '90 Sterne gesammelt',
+        description: '150 Sterne gesammelt',
         icon: '🌟',
-        check: (stats) => stats.totalStars >= 90,
+        check: (stats) => stats.totalStars >= 150,
     },
     stars_180: {
         category: 'campaign',
         name: 'Perfekter Held',
-        description: 'Alle 180 Sterne gesammelt',
+        description: 'Alle 300 Sterne gesammelt',
         icon: '💫',
         secret: true,
-        check: (stats) => stats.totalStars >= 180,
+        check: (stats) => stats.totalStars >= 300,
     },
     first_boss: {
         category: 'campaign',
@@ -424,13 +424,13 @@ export const ACHIEVEMENTS = {
     world_3_stars: {
         category: 'campaign',
         name: 'Perfektion',
-        description: 'Eine komplette Welt mit 3 Sternen abschließen',
+        description: 'Eine komplette Welt mit 5 Sternen pro Level abschließen',
         icon: '✨',
         secret: true,
         check: (stats) => {
-            // Check if any world has all 30 stars
+            // Check if any world has all 50 stars
             if (!stats.worldsCompleted) return false;
-            return stats.totalStars >= 30; // simplified: at least one world at 30 stars
+            return stats.totalStars >= 50; // simplified: at least one world at 50 stars
         },
     },
 };

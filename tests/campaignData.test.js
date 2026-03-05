@@ -59,8 +59,8 @@ describe('ALL_LEVELS', () => {
         expect(TOTAL_LEVELS).toBe(60);
     });
 
-    it('TOTAL_STARS is 180 (60 × 3)', () => {
-        expect(TOTAL_STARS).toBe(180);
+    it('TOTAL_STARS is 300 (60 × 5)', () => {
+        expect(TOTAL_STARS).toBe(300);
     });
 
     it('every level has required fields', () => {

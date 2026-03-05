@@ -19,7 +19,7 @@ function LevelSelect({ worldId, onBack, onStartLevel }) {
                     <span className="level-world-emoji">{world.emoji}</span>
                     <h2>{world.name}</h2>
                 </div>
-                <div className="level-select-stars">⭐ {worldStars} / 30</div>
+                <div className="level-select-stars">⭐ {worldStars} / 50</div>
             </div>
 
             <div className="level-grid">

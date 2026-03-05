@@ -21,7 +21,7 @@ export const WORLDS = [
         emoji: '🌳',
         description: 'Die obere Tastenreihe erwacht zum Leben!',
         color: '#22c55e', // dark green
-        requiredStars: 15,
+        requiredStars: 25,
         coinMultiplier: 1.2,
         monsterDamage: 24,
         spawnInterval: 1.6,
@@ -34,7 +34,7 @@ export const WORLDS = [
         emoji: '⛰️',
         description: 'Die untere Reihe – jetzt nutzt du die ganze Tastatur!',
         color: '#60a5fa', // blue
-        requiredStars: 15,
+        requiredStars: 25,
         coinMultiplier: 1.5,
         monsterDamage: 28,
         spawnInterval: 1.4,
@@ -47,7 +47,7 @@ export const WORLDS = [
         emoji: '🌋',
         description: 'Umlaute und Sonderzeichen fordern dich heraus!',
         color: '#f97316', // orange
-        requiredStars: 15,
+        requiredStars: 25,
         coinMultiplier: 2.0,
         monsterDamage: 32,
         spawnInterval: 1.3,
@@ -60,7 +60,7 @@ export const WORLDS = [
         emoji: '🏰',
         description: 'Groß- und Kleinschreibung – die Shift-Taste wird dein Freund.',
         color: '#8b5cf6', // purple
-        requiredStars: 15,
+        requiredStars: 25,
         coinMultiplier: 2.5,
         monsterDamage: 36,
         spawnInterval: 1.2,
@@ -73,7 +73,7 @@ export const WORLDS = [
         emoji: '🐉',
         description: 'Satzzeichen und ganze Sätze – die ultimative Prüfung!',
         color: '#ef4444', // red
-        requiredStars: 15,
+        requiredStars: 25,
         coinMultiplier: 3.0,
         monsterDamage: 40,
         spawnInterval: 1.0,
@@ -170,4 +170,4 @@ export function getWorldChars(worldId, layout = 'de') {
 }
 
 export const TOTAL_LEVELS = ALL_LEVELS.length;
-export const TOTAL_STARS = TOTAL_LEVELS * 3;
+export const TOTAL_STARS = TOTAL_LEVELS * 5;
