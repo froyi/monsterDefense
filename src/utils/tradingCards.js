@@ -711,13 +711,19 @@ export function getCardsByWorld(worldId) {
     return CARDS.filter(c => c.world === worldId);
 }
 
+// worldId can be: a single world string, an array of world strings, or null (all worlds)
 export function rollCard(worldId, forcedRarity = null) {
     const rarity = forcedRarity || rollRarity();
-    const pool = CARDS.filter(c => (worldId ? c.world === worldId : true) && c.rarity === rarity);
+    const matchesWorld = (c) => {
+        if (Array.isArray(worldId)) return worldId.includes(c.world);
+        if (worldId) return c.world === worldId;
+        return true;
+    };
+    const pool = CARDS.filter(c => matchesWorld(c) && c.rarity === rarity);
 
     // If pool is empty (e.g. asking for legendary when none exists yet), fallback
     if (pool.length === 0) {
-        const anyPool = CARDS.filter(c => worldId ? c.world === worldId : true);
+        const anyPool = CARDS.filter(matchesWorld);
         return anyPool[Math.floor(Math.random() * anyPool.length)];
     }
 
@@ -726,27 +732,29 @@ export function rollCard(worldId, forcedRarity = null) {
 
 // Generates a Pack of 3 cards. 
 // At least one card is guaranteed to be 'rare' or better.
-export function openBoosterPack() {
+// allowedWorlds: array of unlocked world IDs (null = all worlds)
+export function openBoosterPack(allowedWorlds = null) {
     const cards = [];
     // Card 1: Guaranteed rare+
-    cards.push(rollCard(null, rollRarity(true)));
+    cards.push(rollCard(allowedWorlds, rollRarity(true)));
     // Card 2 & 3: Normal odds
-    cards.push(rollCard(null, rollRarity(false)));
-    cards.push(rollCard(null, rollRarity(false)));
+    cards.push(rollCard(allowedWorlds, rollRarity(false)));
+    cards.push(rollCard(allowedWorlds, rollRarity(false)));
     return cards;
 }
 
 // Generates a Mega Pack of 4 cards.
 // At least one card is guaranteed to be 'rare' or better.
 // Epic and legendary odds are doubled (2×) for non-guaranteed cards.
-export function openMegaPack() {
+// allowedWorlds: array of unlocked world IDs (null = all worlds)
+export function openMegaPack(allowedWorlds = null) {
     const cards = [];
     // Card 1: Guaranteed rare+
-    cards.push(rollCard(null, rollRarity(true)));
+    cards.push(rollCard(allowedWorlds, rollRarity(true)));
     // Cards 2–4: 2× epic/legendary odds
-    cards.push(rollCard(null, rollRarity(false, true)));
-    cards.push(rollCard(null, rollRarity(false, true)));
-    cards.push(rollCard(null, rollRarity(false, true)));
+    cards.push(rollCard(allowedWorlds, rollRarity(false, true)));
+    cards.push(rollCard(allowedWorlds, rollRarity(false, true)));
+    cards.push(rollCard(allowedWorlds, rollRarity(false, true)));
     return cards;
 }
 
