@@ -39,7 +39,7 @@ function LevelSelect({ worldId, onBack, onStartLevel }) {
                                 {level.isBoss ? world.bossEmoji || '🐉' : level.level}
                             </span>
                             <div className="level-stars">
-                                {[1, 2, 3].map(s => (
+                                {[1, 2, 3, 4, 5].map(s => (
                                     <span key={s} className={`star ${s <= stars ? 'earned' : 'empty'}`}>
                                         {s <= stars ? '⭐' : '☆'}
                                     </span>
