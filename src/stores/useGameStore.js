@@ -406,9 +406,8 @@ const useGameStore = create((set, get) => ({
         // Apply card bonus effects
         const cardStore = useCardStore.getState();
         const bonusCoins = cardStore.getEffectValue('bonus_coins');       // e.g. +10%
-        const bonusBoth = cardStore.getEffectValue('bonus_coins_xp');     // e.g. +20% on both
 
-        const totalBonus = 1 + (bonusCoins + bonusBoth) / 100;
+        const totalBonus = 1 + bonusCoins / 100;
         return Math.round(baseCoins * multiplier * totalBonus);
     }
 }));
