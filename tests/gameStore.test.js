@@ -201,57 +201,73 @@ describe('useGameStore – Campaign Mode', () => {
             expect(useGameStore.getState().getStars()).toBe(0);
         });
 
-        it('returns 1 star for basic completion (low accuracy, took damage)', () => {
+        it('returns 1 star for basic completion (low accuracy, took damage, slow, low combo)', () => {
             useGameStore.setState({
                 monsters: [
                     { word: 'test', hp: 0, maxHp: 100, defeated: true, reachedCastle: false, spawned: true, typed: 4 },
                 ],
                 castleHp: 50, // took damage
+                maxCastleHp: 100,
                 correctChars: 7,
                 errorChars: 3, // 70% accuracy
                 totalCharsTyped: 10,
+                wordsCompleted: 10,
+                maxCombo: 2, // low combo
+                elapsed: 120, // slow
             });
             expect(useGameStore.getState().getStars()).toBe(1);
         });
 
-        it('returns 2 stars for >=90% accuracy', () => {
+        it('returns 2 stars for 100% accuracy (took damage, slow, low combo)', () => {
             useGameStore.setState({
                 monsters: [
                     { word: 'test', hp: 0, maxHp: 100, defeated: true, reachedCastle: false, spawned: true, typed: 4 },
                 ],
-                castleHp: 80, // took some damage
-                correctChars: 9,
-                errorChars: 1,
+                castleHp: 50, // took damage
+                maxCastleHp: 100,
+                correctChars: 10,
+                errorChars: 0, // 100% accuracy
                 totalCharsTyped: 10,
+                wordsCompleted: 10,
+                maxCombo: 2, // low combo
+                elapsed: 120, // slow
             });
             expect(useGameStore.getState().getStars()).toBe(2);
         });
 
-        it('returns 3 stars for >=90% accuracy AND no castle damage', () => {
+        it('returns 2 stars for no damage but low accuracy (independent stars)', () => {
             useGameStore.setState({
                 monsters: [
                     { word: 'test', hp: 0, maxHp: 100, defeated: true, reachedCastle: false, spawned: true, typed: 4 },
                 ],
                 castleHp: 100, // no damage
-                correctChars: 9,
-                errorChars: 1,
+                maxCastleHp: 100,
+                correctChars: 7,
+                errorChars: 3, // 70% accuracy
                 totalCharsTyped: 10,
+                wordsCompleted: 10,
+                maxCombo: 2,
+                elapsed: 120,
             });
-            expect(useGameStore.getState().getStars()).toBe(3);
+            // 1 (survived) + 1 (no damage) = 2 stars
+            expect(useGameStore.getState().getStars()).toBe(2);
         });
 
-        it('returns 1 star for no castle damage but low accuracy (regression)', () => {
+        it('returns 5 stars for perfect run (100% accuracy, no damage, fast, high combo)', () => {
             useGameStore.setState({
                 monsters: [
                     { word: 'test', hp: 0, maxHp: 100, defeated: true, reachedCastle: false, spawned: true, typed: 4 },
                 ],
-                castleHp: 100, // no damage
-                correctChars: 7,
-                errorChars: 3, // 70% accuracy < 90%
-                totalCharsTyped: 10,
+                castleHp: 100,
+                maxCastleHp: 100,
+                correctChars: 40,
+                errorChars: 0, // 100%
+                totalCharsTyped: 40,
+                wordsCompleted: 10,
+                maxCombo: 8, // >= 50% of 10
+                elapsed: 15, // 40 chars / (15/60) = 160 CPM = 32 WPM
             });
-            // Full HP but low accuracy = only 1 star (accuracy gate blocks 2 and 3)
-            expect(useGameStore.getState().getStars()).toBe(1);
+            expect(useGameStore.getState().getStars()).toBe(5);
         });
     });
 

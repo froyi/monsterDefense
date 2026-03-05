@@ -133,23 +133,23 @@ describe('useCampaignStore', () => {
             expect(useCampaignStore.getState().isWorldUnlocked('village')).toBe(true);
         });
 
-        it('forest is locked by default (needs 15 stars in village)', () => {
+        it('forest is locked by default (needs 25 stars in village)', () => {
             expect(useCampaignStore.getState().isWorldUnlocked('forest')).toBe(false);
         });
 
-        it('forest unlocks with 15 stars in village', () => {
-            // Complete 5 levels with 3 stars each = 15 stars
+        it('forest unlocks with 25 stars in village', () => {
+            // Complete 5 levels with 5 stars each = 25 stars
             for (let i = 1; i <= 5; i++) {
-                useCampaignStore.getState().completeLevel('village', i, 3);
+                useCampaignStore.getState().completeLevel('village', i, 5);
             }
             expect(useCampaignStore.getState().isWorldUnlocked('forest')).toBe(true);
         });
 
-        it('forest stays locked with 14 stars in village', () => {
+        it('forest stays locked with 24 stars in village', () => {
             for (let i = 1; i <= 4; i++) {
-                useCampaignStore.getState().completeLevel('village', i, 3);
+                useCampaignStore.getState().completeLevel('village', i, 5);
             }
-            useCampaignStore.getState().completeLevel('village', 5, 2); // 14 total
+            useCampaignStore.getState().completeLevel('village', 5, 4); // 24 total
             expect(useCampaignStore.getState().isWorldUnlocked('forest')).toBe(false);
         });
     });

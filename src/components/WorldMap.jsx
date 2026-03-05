@@ -82,9 +82,9 @@ function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, o
                                 <p className="world-card-desc">{world.description}</p>
                                 {unlocked ? (
                                     <div className="world-card-stars">
-                                        ⭐ {stars} / 30
+                                        ⭐ {stars} / 50
                                         <div className="star-bar">
-                                            <div className="star-bar-fill" style={{ width: `${(stars / 30) * 100}%` }} />
+                                            <div className="star-bar-fill" style={{ width: `${(stars / 50) * 100}%` }} />
                                         </div>
                                     </div>
                                 ) : (

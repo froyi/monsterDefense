@@ -85,7 +85,7 @@ function ResultsScreen() {
         // Card drop logic (only on win)
         if (won) {
             const cardDropBonus = useCardStore.getState().getEffectValue('card_drop_chance');
-            const dropChance = 15 + (stars * 5) + cardDropBonus;
+            const dropChance = 15 + (stars * 3) + cardDropBonus;
             const roll = Math.random() * 100;
 
             if (roll < dropChance) {
@@ -213,7 +213,7 @@ function ResultsScreen() {
 
                 {/* Stars */}
                 <div className="results-stars">
-                    {[1, 2, 3].map(s => (
+                    {[1, 2, 3, 4, 5].map(s => (
                         <span key={s} className={`result-star ${s <= stars ? 'earned' : 'empty'}`}>
                             {s <= stars ? '⭐' : '☆'}
                         </span>
@@ -221,8 +221,10 @@ function ResultsScreen() {
                 </div>
                 <div className="star-criteria">
                     <span className={stars >= 1 ? 'met' : ''}>⭐ Bestanden</span>
-                    <span className={stars >= 2 ? 'met' : ''}>⭐ ≥90% Genauigkeit</span>
-                    <span className={stars >= 3 ? 'met' : ''}>⭐ Kein Burgschaden</span>
+                    <span className={accuracy >= 100 ? 'met' : ''}>⭐ 100% Genauigkeit</span>
+                    <span className={castleHp >= (useGameStore.getState().maxCastleHp || 100) ? 'met' : ''}>⭐ Kein Burgschaden</span>
+                    <span className={wpm >= 30 ? 'met' : ''}>⭐ ≥30 WPM</span>
+                    <span className={maxCombo >= Math.max(1, Math.ceil(wordsCompleted * 0.5)) ? 'met' : ''}>⭐ Combo ≥50% der Wörter</span>
                 </div>
 
                 {/* Stats Grid */}

@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { WORLDS, TOTAL_LEVELS, getWorldIndex } from '../utils/campaignData';
 import { getActiveProfile } from '../utils/storage';
 
-// Progress shape: { [worldId]: { [levelNum]: { stars: 0-3, completed: bool } } }
+// Progress shape: { [worldId]: { [levelNum]: { stars: 0-5, completed: bool } } }
 function createEmptyProgress() {
     const progress = {};
     for (const world of WORLDS) {
