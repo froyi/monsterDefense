@@ -123,6 +123,7 @@ const useGameStore = create((set, get) => ({
             bossMonster.maxHp = MONSTER_BASE_HP * 3;
             bossMonster.isBoss = true;
             bossMonster.enraged = false;
+            bossMonster.bossEmoji = world.bossEmoji || '🐉';
             monsters.push(bossMonster);
         } else {
             // Normal level

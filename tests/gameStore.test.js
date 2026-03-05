@@ -121,6 +121,18 @@ describe('useGameStore – Campaign Mode', () => {
             const bossAfterTick = useGameStore.getState().monsters.find(m => m.isBoss);
             expect(bossAfterTick.spawned).toBe(true);
         });
+
+        it('boss monster has world-specific bossEmoji', () => {
+            // Zauberwald (forest) boss should be 👻 (Waldgeist)
+            useGameStore.getState().startLevel('forest', 10, 'de');
+            const forestBoss = useGameStore.getState().monsters.find(m => m.isBoss);
+            expect(forestBoss.bossEmoji).toBe('👻');
+
+            // Dorf (village) boss should be 🐀 (Ratten-König)
+            useGameStore.getState().startLevel('village', 10, 'de');
+            const villageBoss = useGameStore.getState().monsters.find(m => m.isBoss);
+            expect(villageBoss.bossEmoji).toBe('🐀');
+        });
     });
 
     describe('tick', () => {
