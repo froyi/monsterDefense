@@ -284,6 +284,13 @@ export async function saveRoundResult(result) {
             wave: result.wave || 1,
         });
     if (error) console.warn('Failed to save round result:', error);
+
+    // Fire-and-forget: update leaderboard best values
+    updateLeaderboardStats({
+        wpm: result.wpm || 0,
+        accuracy: result.accuracy || 0,
+        score: result.score || 0,
+    });
 }
 
 // ==========================================
@@ -365,5 +372,55 @@ export async function countCompletedChallenges() {
         return 0;
     }
     return count || 0;
+}
+
+// ==========================================
+// Leaderboard (Supabase)
+// ==========================================
+
+export async function getLeaderboard(limit = 50) {
+    const { data, error } = await supabase
+        .from('profiles')
+        .select('id, name, avatar, highest_wpm, highest_accuracy, highest_score, total_stars, max_world, max_level')
+        .order('total_stars', { ascending: false })
+        .order('highest_wpm', { ascending: false })
+        .limit(limit);
+    if (error) {
+        console.warn('Failed to load leaderboard:', error);
+        return [];
+    }
+    return data || [];
+}
+
+export async function updateLeaderboardStats({ wpm, accuracy, score, totalStars, maxWorld, maxLevel }) {
+    if (!_profileId) return;
+    // First load current best values
+    const { data: current, error: loadErr } = await supabase
+        .from('profiles')
+        .select('highest_wpm, highest_accuracy, highest_score, total_stars, max_world, max_level')
+        .eq('id', _profileId)
+        .single();
+
+    if (loadErr) {
+        console.warn('Failed to load current leaderboard stats:', loadErr);
+        return;
+    }
+
+    // Only update if new values are better
+    const updates = {};
+    if (wpm > (current?.highest_wpm || 0)) updates.highest_wpm = wpm;
+    if (accuracy > (current?.highest_accuracy || 0)) updates.highest_accuracy = accuracy;
+    if (score > (current?.highest_score || 0)) updates.highest_score = score;
+    if (totalStars > (current?.total_stars || 0)) updates.total_stars = totalStars;
+    if (maxWorld !== undefined) updates.max_world = maxWorld;
+    if (maxLevel !== undefined && maxLevel > (current?.max_level || 0)) updates.max_level = maxLevel;
+
+    if (Object.keys(updates).length === 0) return; // nothing to update
+
+    const { error } = await supabase
+        .from('profiles')
+        .update(updates)
+        .eq('id', _profileId);
+    if (error) console.warn('Failed to update leaderboard stats:', error);
 }
 

@@ -19,6 +19,7 @@ import SettingsPanel from './components/SettingsPanel';
 import DailyChallengePanel from './components/DailyChallengePanel';
 import DailyChest from './components/DailyChest';
 import CardCollectionScreen from './components/CardCollectionScreen';
+import LeaderboardScreen from './components/LeaderboardScreen';
 import './App.css';
 
 // Generate background stars
@@ -119,6 +120,7 @@ function App() {
                         onOpenAchievements={() => setPhase('achievements')}
                         onOpenSettings={() => setPhase('settings')}
                         onOpenCards={() => setPhase('cards')}
+                        onOpenLeaderboard={() => setPhase('leaderboard')}
                     />
                 );
             case 'playing':
@@ -133,6 +135,8 @@ function App() {
                 return <StatsScreen />;
             case 'achievements':
                 return <AchievementWall onClose={() => setPhase('menu')} />;
+            case 'leaderboard':
+                return <LeaderboardScreen onClose={() => setPhase('menu')} />;
             case 'settings':
                 return <SettingsPanel onClose={() => setPhase('menu')} />;
             default:
@@ -144,6 +148,7 @@ function App() {
                         onOpenAchievements={() => setPhase('achievements')}
                         onOpenSettings={() => setPhase('settings')}
                         onOpenCards={() => setPhase('cards')}
+                        onOpenLeaderboard={() => setPhase('leaderboard')}
                     />
                 );
         }

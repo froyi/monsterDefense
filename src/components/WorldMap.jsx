@@ -8,7 +8,7 @@ import useCardStore from '../stores/useCardStore';
 import LevelSelect from './LevelSelect';
 import DailyChallengePanel from './DailyChallengePanel';
 
-function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, onOpenSettings, onOpenCards }) {
+function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, onOpenSettings, onOpenCards, onOpenLeaderboard }) {
     const [selectedWorld, setSelectedWorld] = useState(null);
     const [showDailyChallenge, setShowDailyChallenge] = useState(false);
     const dailyChallenges = useDailyChallengeStore(s => s.challenges);
@@ -120,6 +120,7 @@ function WorldMap({ onStartLevel, onOpenShop, onOpenStats, onOpenAchievements, o
                     {dailyBonusClaimed && <span className="dc-done-badge">✅</span>}
                 </button>
                 <button className="btn-nav-sm" onClick={onOpenStats}>📊 Statistik</button>
+                <button className="btn-nav-sm" onClick={onOpenLeaderboard}>🏅 Rangliste</button>
                 <button className="btn-nav-sm" onClick={onOpenAchievements}>🏆 Abzeichen</button>
                 <button className="btn-nav-sm" onClick={onOpenSettings}>⚙️</button>
                 <button className="btn-nav-sm" onClick={logout}>👤 Wechseln</button>
