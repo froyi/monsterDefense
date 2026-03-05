@@ -375,17 +375,20 @@ const useGameStore = create((set, get) => ({
     // ⭐ = all monsters defeated (survived)
     // ⭐ = 100% accuracy (no errors)
     // ⭐ = no castle damage taken
-    // ⭐ = speed: WPM >= 30
+    // ⭐ = speed: WPM >= world-specific threshold
     // ⭐ = combo: max combo >= 50% of words completed
     getStars: () => {
         const s = get();
         const allDefeated = s.monsters.every(m => m.defeated);
         if (!allDefeated || s.castleHp <= 0) return 0; // lost
 
+        const world = getWorld(s.worldId);
+        const speedThreshold = world?.speedStarWPM || 30;
+
         let stars = 1; // ⭐ Bestanden (survived)
         if (s.getAccuracy() >= 100) stars++;                              // ⭐ 100% Genauigkeit
         if (s.castleHp >= s.maxCastleHp) stars++;                         // ⭐ Kein Burgschaden
-        if (s.getWPM() >= 30) stars++;                                    // ⭐ Speed
+        if (s.getWPM() >= speedThreshold) stars++;                        // ⭐ Speed
         const comboThreshold = Math.max(1, Math.ceil(s.wordsCompleted * 0.5));
         if (s.maxCombo >= comboThreshold) stars++;                        // ⭐ Combo
         return stars;

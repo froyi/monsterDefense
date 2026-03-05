@@ -14,6 +14,7 @@ export const WORLDS = [
         spawnInterval: 1.8,
         bossName: 'Ratten-König',
         bossEmoji: '🐀',
+        speedStarWPM: 15,
     },
     {
         id: 'forest',
@@ -27,6 +28,7 @@ export const WORLDS = [
         spawnInterval: 1.6,
         bossName: 'Waldgeist',
         bossEmoji: '👻',
+        speedStarWPM: 18,
     },
     {
         id: 'mountains',
@@ -40,6 +42,7 @@ export const WORLDS = [
         spawnInterval: 1.4,
         bossName: 'Eisriese',
         bossEmoji: '🧊',
+        speedStarWPM: 22,
     },
     {
         id: 'volcano',
@@ -53,6 +56,7 @@ export const WORLDS = [
         spawnInterval: 1.3,
         bossName: 'Lavabiest',
         bossEmoji: '🔥',
+        speedStarWPM: 25,
     },
     {
         id: 'castle',
@@ -66,6 +70,7 @@ export const WORLDS = [
         spawnInterval: 1.2,
         bossName: 'Schwarzer Ritter',
         bossEmoji: '⚔️',
+        speedStarWPM: 28,
     },
     {
         id: 'dragon',
@@ -79,6 +84,7 @@ export const WORLDS = [
         spawnInterval: 1.0,
         bossName: 'Drache',
         bossEmoji: '🐉',
+        speedStarWPM: 35,
     },
 ];
 
