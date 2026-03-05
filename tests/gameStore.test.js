@@ -203,6 +203,7 @@ describe('useGameStore – Campaign Mode', () => {
 
         it('returns 1 star for basic completion (low accuracy, took damage, slow, low combo)', () => {
             useGameStore.setState({
+                worldId: 'village',
                 monsters: [
                     { word: 'test', hp: 0, maxHp: 100, defeated: true, reachedCastle: false, spawned: true, typed: 4 },
                 ],
@@ -213,13 +214,14 @@ describe('useGameStore – Campaign Mode', () => {
                 totalCharsTyped: 10,
                 wordsCompleted: 10,
                 maxCombo: 2, // low combo
-                elapsed: 120, // slow
+                elapsed: 120, // slow → ~0.7 WPM (well under 15)
             });
             expect(useGameStore.getState().getStars()).toBe(1);
         });
 
         it('returns 2 stars for 100% accuracy (took damage, slow, low combo)', () => {
             useGameStore.setState({
+                worldId: 'village',
                 monsters: [
                     { word: 'test', hp: 0, maxHp: 100, defeated: true, reachedCastle: false, spawned: true, typed: 4 },
                 ],
@@ -230,13 +232,14 @@ describe('useGameStore – Campaign Mode', () => {
                 totalCharsTyped: 10,
                 wordsCompleted: 10,
                 maxCombo: 2, // low combo
-                elapsed: 120, // slow
+                elapsed: 120, // slow → ~1 WPM (well under 15)
             });
             expect(useGameStore.getState().getStars()).toBe(2);
         });
 
         it('returns 2 stars for no damage but low accuracy (independent stars)', () => {
             useGameStore.setState({
+                worldId: 'village',
                 monsters: [
                     { word: 'test', hp: 0, maxHp: 100, defeated: true, reachedCastle: false, spawned: true, typed: 4 },
                 ],
@@ -255,6 +258,7 @@ describe('useGameStore – Campaign Mode', () => {
 
         it('returns 5 stars for perfect run (100% accuracy, no damage, fast, high combo)', () => {
             useGameStore.setState({
+                worldId: 'village', // speedStarWPM = 15
                 monsters: [
                     { word: 'test', hp: 0, maxHp: 100, defeated: true, reachedCastle: false, spawned: true, typed: 4 },
                 ],
@@ -265,7 +269,7 @@ describe('useGameStore – Campaign Mode', () => {
                 totalCharsTyped: 40,
                 wordsCompleted: 10,
                 maxCombo: 8, // >= 50% of 10
-                elapsed: 15, // 40 chars / (15/60) = 160 CPM = 32 WPM
+                elapsed: 15, // 40/5 / (15/60) = 32 WPM > 15
             });
             expect(useGameStore.getState().getStars()).toBe(5);
         });

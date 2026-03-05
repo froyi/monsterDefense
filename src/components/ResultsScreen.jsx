@@ -223,7 +223,7 @@ function ResultsScreen() {
                     <span className={stars >= 1 ? 'met' : ''}>⭐ Bestanden</span>
                     <span className={accuracy >= 100 ? 'met' : ''}>⭐ 100% Genauigkeit</span>
                     <span className={castleHp >= (useGameStore.getState().maxCastleHp || 100) ? 'met' : ''}>⭐ Kein Burgschaden</span>
-                    <span className={wpm >= 30 ? 'met' : ''}>⭐ ≥30 WPM</span>
+                    <span className={wpm >= (getWorld(worldId)?.speedStarWPM || 30) ? 'met' : ''}>⭐ ≥{getWorld(worldId)?.speedStarWPM || 30} WPM</span>
                     <span className={maxCombo >= Math.max(1, Math.ceil(wordsCompleted * 0.5)) ? 'met' : ''}>⭐ Combo ≥50% der Wörter</span>
                 </div>
 
