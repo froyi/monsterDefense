@@ -43,7 +43,7 @@ export const CARDS = [
     {
         id: 'w1_c2', world: 'village', rarity: 'common', name: 'Dorfköter', emoji: '🐕',
         description: 'Bellt laut, beißt aber nicht.',
-        effectType: 'bonus_xp', effectValues: [2, 4, 6], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [2, 4, 6], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w1_c3', world: 'village', rarity: 'common', name: 'Kürbismonster', emoji: '🎃',
@@ -63,7 +63,7 @@ export const CARDS = [
     {
         id: 'w1_c6', world: 'village', rarity: 'common', name: 'Feldmaus', emoji: '🐭',
         description: 'Huscht schnell vorbei.',
-        effectType: 'bonus_xp', effectValues: [2, 4, 6], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [2, 4, 6], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w1_c7', world: 'village', rarity: 'common', name: 'Wütendes Huhn', emoji: '🐔',
@@ -105,7 +105,7 @@ export const CARDS = [
     {
         id: 'w1_r4', world: 'village', rarity: 'rare', name: 'Windmühlen-Rad', emoji: '🎡',
         description: 'Dreht sich unaufhörlich.',
-        effectType: 'bonus_xp', effectValues: [10, 15, 20], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [10, 15, 20], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w1_r5', world: 'village', rarity: 'rare', name: 'Dorfgarde', emoji: '💂',
@@ -134,7 +134,7 @@ export const CARDS = [
     {
         id: 'w1_l1', world: 'village', rarity: 'legendary', name: 'Ratten-König', emoji: '🐀',
         description: 'Der Herrscher der Kanalisation. Gierig und listig.',
-        effectType: 'bonus_coins_xp', effectValues: [20, 35, 50], effectText: '+{val}% auf Münzen UND XP!'
+        effectType: 'bonus_coins', effectValues: [20, 35, 50], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w1_l2', world: 'village', rarity: 'legendary', name: 'Goldenes Hufeisen', emoji: '🧲',
@@ -155,7 +155,7 @@ export const CARDS = [
     {
         id: 'w2_c2', world: 'forest', rarity: 'common', name: 'Waldpilz', emoji: '🍄',
         description: 'Giftig oder heilsam? Wer weiß...',
-        effectType: 'bonus_xp', effectValues: [3, 5, 8], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [3, 5, 8], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w2_c3', world: 'forest', rarity: 'common', name: 'Moosgolem', emoji: '🌿',
@@ -175,7 +175,7 @@ export const CARDS = [
     {
         id: 'w2_c6', world: 'forest', rarity: 'common', name: 'Feenstaub', emoji: '🧚',
         description: 'Glitzert und kitzelt in der Nase.',
-        effectType: 'bonus_xp', effectValues: [3, 5, 8], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [3, 5, 8], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w2_c7', world: 'forest', rarity: 'common', name: 'Giftranke', emoji: '🕸️',
@@ -222,7 +222,7 @@ export const CARDS = [
     {
         id: 'w2_r5', world: 'forest', rarity: 'rare', name: 'Einhorn-Fohlen', emoji: '🦄',
         description: 'Sein Horn leuchtet sanft im Dunkel.',
-        effectType: 'bonus_xp', effectValues: [12, 18, 24], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [12, 18, 24], effectText: '+{val}% Münzen nach dem Level.'
     },
 
     // -- Epic (3) --
@@ -246,7 +246,7 @@ export const CARDS = [
     {
         id: 'w2_l1', world: 'forest', rarity: 'legendary', name: 'Weltenesche', emoji: '🌳',
         description: 'Der Baum, der alles verbindet. Uralt und mächtig.',
-        effectType: 'bonus_coins_xp', effectValues: [22, 38, 55], effectText: '+{val}% auf Münzen UND XP!'
+        effectType: 'bonus_coins', effectValues: [22, 38, 55], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w2_l2', world: 'forest', rarity: 'legendary', name: 'Smaragd-Phönix', emoji: '🦚',
@@ -272,7 +272,7 @@ export const CARDS = [
     {
         id: 'w3_c3', world: 'mountains', rarity: 'common', name: 'Schnee-Eule', emoji: '🦉',
         description: 'Lautlos und weise.',
-        effectType: 'bonus_xp', effectValues: [3, 6, 9], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [3, 6, 9], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w3_c4', world: 'mountains', rarity: 'common', name: 'Gletscherkäfer', emoji: '🪲',
@@ -287,7 +287,7 @@ export const CARDS = [
     {
         id: 'w3_c6', world: 'mountains', rarity: 'common', name: 'Frostfledermaus', emoji: '🦇',
         description: 'Jagt Insekten in eisigen Höhlen.',
-        effectType: 'bonus_xp', effectValues: [3, 6, 9], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [3, 6, 9], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w3_c7', world: 'mountains', rarity: 'common', name: 'Schneeball-Geist', emoji: '⛄',
@@ -334,7 +334,7 @@ export const CARDS = [
     {
         id: 'w3_r5', world: 'mountains', rarity: 'rare', name: 'Gipfelwächter', emoji: '⚔️',
         description: 'Bewacht den höchsten Pass.',
-        effectType: 'bonus_xp', effectValues: [12, 18, 25], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [12, 18, 25], effectText: '+{val}% Münzen nach dem Level.'
     },
 
     // -- Epic (3) --
@@ -358,7 +358,7 @@ export const CARDS = [
     {
         id: 'w3_l1', world: 'mountains', rarity: 'legendary', name: 'Yeti-König', emoji: '🦍',
         description: 'Der Herrscher der ewigen Gletscher. Furchteinflößend.',
-        effectType: 'bonus_coins_xp', effectValues: [25, 40, 60], effectText: '+{val}% auf Münzen UND XP!'
+        effectType: 'bonus_coins', effectValues: [25, 40, 60], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w3_l2', world: 'mountains', rarity: 'legendary', name: 'Diamantherz', emoji: '💠',
@@ -379,7 +379,7 @@ export const CARDS = [
     {
         id: 'w4_c2', world: 'volcano', rarity: 'common', name: 'Aschevogel', emoji: '🐦',
         description: 'Fliegt durch Rauchwolken.',
-        effectType: 'bonus_xp', effectValues: [4, 7, 10], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [4, 7, 10], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w4_c3', world: 'volcano', rarity: 'common', name: 'Feuergeist', emoji: '🔥',
@@ -399,7 +399,7 @@ export const CARDS = [
     {
         id: 'w4_c6', world: 'volcano', rarity: 'common', name: 'Feuerkäfer', emoji: '🐞',
         description: 'Sein Panzer ist feuerrot und heiß.',
-        effectType: 'bonus_xp', effectValues: [4, 7, 10], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [4, 7, 10], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w4_c7', world: 'volcano', rarity: 'common', name: 'Rauchschlange', emoji: '🐍',
@@ -446,7 +446,7 @@ export const CARDS = [
     {
         id: 'w4_r5', world: 'volcano', rarity: 'rare', name: 'Eruptionselementar', emoji: '🌋',
         description: 'Explodiert gerne – und oft.',
-        effectType: 'bonus_xp', effectValues: [14, 20, 28], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [14, 20, 28], effectText: '+{val}% Münzen nach dem Level.'
     },
 
     // -- Epic (3) --
@@ -470,7 +470,7 @@ export const CARDS = [
     {
         id: 'w4_l1', world: 'volcano', rarity: 'legendary', name: 'Vulkan-Titan', emoji: '🌋',
         description: 'Der Vulkan selbst hat ein Bewusstsein. Vernichtend.',
-        effectType: 'bonus_coins_xp', effectValues: [28, 45, 65], effectText: '+{val}% auf Münzen UND XP!'
+        effectType: 'bonus_coins', effectValues: [28, 45, 65], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w4_l2', world: 'volcano', rarity: 'legendary', name: 'Ewige Flamme', emoji: '🕯️',
@@ -491,7 +491,7 @@ export const CARDS = [
     {
         id: 'w5_c2', world: 'castle', rarity: 'common', name: 'Knochenkrieger', emoji: '💀',
         description: 'Klappern gehört zum Handwerk.',
-        effectType: 'bonus_xp', effectValues: [4, 8, 11], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [4, 8, 11], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w5_c3', world: 'castle', rarity: 'common', name: 'Kettengeist', emoji: '👻',
@@ -526,7 +526,7 @@ export const CARDS = [
     {
         id: 'w5_c9', world: 'castle', rarity: 'common', name: 'Irrwisch', emoji: '💫',
         description: 'Ein verwirrender Lichtball in der Dunkelheit.',
-        effectType: 'bonus_xp', effectValues: [4, 8, 11], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [4, 8, 11], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w5_c10', world: 'castle', rarity: 'common', name: 'Schattenratte', emoji: '🐁',
@@ -558,7 +558,7 @@ export const CARDS = [
     {
         id: 'w5_r5', world: 'castle', rarity: 'rare', name: 'Nekromant', emoji: '🧙',
         description: 'Erweckt Gefallene aus ihren Gräbern.',
-        effectType: 'bonus_xp', effectValues: [15, 22, 30], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [15, 22, 30], effectText: '+{val}% Münzen nach dem Level.'
     },
 
     // -- Epic (3) --
@@ -582,7 +582,7 @@ export const CARDS = [
     {
         id: 'w5_l1', world: 'castle', rarity: 'legendary', name: 'Ewiger König', emoji: '👑',
         description: 'Herrscht seit tausend Jahren über die Dunkle Burg.',
-        effectType: 'bonus_coins_xp', effectValues: [30, 48, 70], effectText: '+{val}% auf Münzen UND XP!'
+        effectType: 'bonus_coins', effectValues: [30, 48, 70], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w5_l2', world: 'castle', rarity: 'legendary', name: 'Verderbtes Artefakt', emoji: '💍',
@@ -613,7 +613,7 @@ export const CARDS = [
     {
         id: 'w6_c4', world: 'dragon', rarity: 'common', name: 'Höhlenkobold', emoji: '👺',
         description: 'Klaut gerne glänzende Dinge.',
-        effectType: 'bonus_xp', effectValues: [5, 9, 13], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [5, 9, 13], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w6_c5', world: 'dragon', rarity: 'common', name: 'Feuerechse', emoji: '🦎',
@@ -633,7 +633,7 @@ export const CARDS = [
     {
         id: 'w6_c8', world: 'dragon', rarity: 'common', name: 'Höhlenfledermaus', emoji: '🦇',
         description: 'Fliegt im Zickzack durch die Dunkelheit.',
-        effectType: 'bonus_xp', effectValues: [5, 9, 13], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [5, 9, 13], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w6_c9', world: 'dragon', rarity: 'common', name: 'Glühende Rune', emoji: '🔶',
@@ -665,7 +665,7 @@ export const CARDS = [
     {
         id: 'w6_r4', world: 'dragon', rarity: 'rare', name: 'Wyrmling', emoji: '🐍',
         description: 'Ein junger Drache, der fliegen lernt.',
-        effectType: 'bonus_xp', effectValues: [16, 24, 32], effectText: '+{val}% XP nach dem Level.'
+        effectType: 'bonus_coins', effectValues: [16, 24, 32], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w6_r5', world: 'dragon', rarity: 'rare', name: 'Feuer-Opal', emoji: '💎',
@@ -694,7 +694,7 @@ export const CARDS = [
     {
         id: 'w6_l1', world: 'dragon', rarity: 'legendary', name: 'Uralter Drache', emoji: '🐉',
         description: 'Der mächtigste aller Drachen. Tausend Jahre alt.',
-        effectType: 'bonus_coins_xp', effectValues: [35, 55, 80], effectText: '+{val}% auf Münzen UND XP!'
+        effectType: 'bonus_coins', effectValues: [35, 55, 80], effectText: '+{val}% Münzen nach dem Level.'
     },
     {
         id: 'w6_l2', world: 'dragon', rarity: 'legendary', name: 'Drachenherz', emoji: '❤️‍🔥',
