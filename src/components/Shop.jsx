@@ -2,7 +2,9 @@ import { useState } from 'react';
 import useGameStore from '../stores/useGameStore';
 import useRewardStore from '../stores/useRewardStore';
 import useCardStore from '../stores/useCardStore';
+import useCampaignStore from '../stores/useCampaignStore';
 import { openBoosterPack, openMegaPack, rollCard, RARITIES } from '../utils/tradingCards';
+import { WORLDS } from '../utils/campaignData';
 import Card from './Card';
 
 const CATEGORY_LABELS = {
@@ -32,6 +34,8 @@ function Shop() {
     const equipItem = useRewardStore(s => s.equipItem);
     const spendCoins = useRewardStore(s => s.spendCoins);
     const receiveCards = useCardStore(s => s.receiveCards);
+    const isWorldUnlocked = useCampaignStore(s => s.isWorldUnlocked);
+    const unlockedWorlds = WORLDS.filter(w => isWorldUnlocked(w.id)).map(w => w.id);
 
     const [activeTab, setActiveTab] = useState('boosters');
     const [revealedCards, setRevealedCards] = useState(null); // Array of { card, result }
@@ -58,14 +62,14 @@ function Shop() {
         spendCoins(pack.price);
 
         // Generate cards from the pack
-        const droppedCards = pack.packType === 'mega' ? openMegaPack() : openBoosterPack();
+        const droppedCards = pack.packType === 'mega' ? openMegaPack(unlockedWorlds) : openBoosterPack(unlockedWorlds);
 
         // If premium pack, force first card to be epic+
         if (pack.packType === 'premium') {
             const epicOrBetter = ['epic', 'legendary'];
             if (!epicOrBetter.includes(droppedCards[0].rarity)) {
                 // Re-roll the guaranteed card to be epic
-                droppedCards[0] = rollCard(null, 'epic');
+                droppedCards[0] = rollCard(unlockedWorlds, 'epic');
             }
         }
 

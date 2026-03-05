@@ -2,7 +2,9 @@ import { useState } from 'react';
 import useDailyChallengeStore from '../stores/useDailyChallengeStore';
 import useRewardStore from '../stores/useRewardStore';
 import useCardStore from '../stores/useCardStore';
+import useCampaignStore from '../stores/useCampaignStore';
 import { rollCard, rollRarity } from '../utils/tradingCards';
+import { WORLDS } from '../utils/campaignData';
 
 const DIFFICULTY_LABELS = {
     easy: { label: 'Leicht', badge: '🟢', color: '#22c55e' },
@@ -71,6 +73,8 @@ function DailyChallengePanel({ onClose }) {
 
     const addCoins = useRewardStore(s => s.addCoins);
     const receiveCard = useCardStore(s => s.receiveCard);
+    const isWorldUnlocked = useCampaignStore(s => s.isWorldUnlocked);
+    const unlockedWorlds = WORLDS.filter(w => isWorldUnlocked(w.id)).map(w => w.id);
 
     const [toast, setToast] = useState(null); // { text }
     const [bonusCard, setBonusCard] = useState(null); // card definition
@@ -96,7 +100,7 @@ function DailyChallengePanel({ onClose }) {
         addCoins(bonus.coins);
 
         // Award a random card
-        const card = rollCard(null, rollRarity());
+        const card = rollCard(unlockedWorlds, rollRarity());
         receiveCard(card.id);
         setBonusCard(card);
 
