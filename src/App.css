@@ -2923,8 +2923,7 @@
 
 /* Boss attack: dimmed characters */
 .char-dimmed {
-    opacity: 0.12 !important;
-    filter: blur(1px);
+    opacity: 0.35 !important;
     transition: opacity 0.3s;
 }
 
