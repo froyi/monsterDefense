@@ -133,6 +133,72 @@ describe('useGameStore – Campaign Mode', () => {
             const villageBoss = useGameStore.getState().monsters.find(m => m.isBoss);
             expect(villageBoss.bossEmoji).toBe('🐀');
         });
+
+        it('boss spawns after 60% of minions are cleared (not all)', () => {
+            useGameStore.getState().startLevel('village', 10, 'de');
+            const state = useGameStore.getState();
+            const minions = state.monsters.filter(m => !m.isBoss);
+            const threshold = Math.ceil(minions.length * 0.6);
+
+            // Defeat exactly 60% of minions, rest still alive and spawned
+            useGameStore.setState({
+                elapsed: 30,
+                monsters: state.monsters.map((m, i) => {
+                    if (m.isBoss) return m;
+                    if (i < threshold) return { ...m, spawned: true, defeated: true };
+                    return { ...m, spawned: true }; // alive minions
+                }),
+            });
+
+            useGameStore.getState().tick();
+            const boss = useGameStore.getState().monsters.find(m => m.isBoss);
+            expect(boss.spawned).toBe(true);
+        });
+
+        it('boss does NOT spawn before 60% of minions are cleared', () => {
+            useGameStore.getState().startLevel('village', 10, 'de');
+            const state = useGameStore.getState();
+            const minions = state.monsters.filter(m => !m.isBoss);
+            const belowThreshold = Math.ceil(minions.length * 0.6) - 1;
+
+            // Defeat just under 60%
+            useGameStore.setState({
+                elapsed: 30,
+                monsters: state.monsters.map((m, i) => {
+                    if (m.isBoss) return m;
+                    if (i < belowThreshold) return { ...m, spawned: true, defeated: true };
+                    return { ...m, spawned: true };
+                }),
+            });
+
+            useGameStore.getState().tick();
+            const boss = useGameStore.getState().monsters.find(m => m.isBoss);
+            expect(boss.spawned).toBe(false);
+        });
+
+        it('fast-spawns remaining unspawned minions when boss gate opens', () => {
+            useGameStore.getState().startLevel('village', 10, 'de');
+            const state = useGameStore.getState();
+            const minions = state.monsters.filter(m => !m.isBoss);
+            const threshold = Math.ceil(minions.length * 0.6);
+
+            // 60% defeated, but some minions still unspawned
+            useGameStore.setState({
+                elapsed: 5.0,
+                monsters: state.monsters.map((m, i) => {
+                    if (m.isBoss) return m;
+                    if (i < threshold) return { ...m, spawned: true, defeated: true };
+                    return m; // unspawned minions (spawnDelay not reached)
+                }),
+            });
+
+            useGameStore.getState().tick();
+
+            // All minions should now be spawned (fast-spawned by boss gate)
+            const unspawnedMinions = useGameStore.getState().monsters
+                .filter(m => !m.isBoss && !m.spawned && !m.defeated);
+            expect(unspawnedMinions).toHaveLength(0);
+        });
     });
 
     describe('tick', () => {
