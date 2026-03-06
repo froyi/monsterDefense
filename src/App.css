@@ -2921,10 +2921,10 @@
     animation: wordShake 0.3s ease-in-out infinite;
 }
 
-/* Boss attack: dimmed characters */
+/* Boss attack: dimmed characters – color-based instead of opacity for dark backgrounds */
 .char-dimmed {
-    opacity: 0.35 !important;
-    transition: opacity 0.3s;
+    color: rgba(150, 140, 170, 0.45) !important;
+    transition: color 0.3s;
 }
 
 /* Boss attack: scrambled word shake on enrage */
