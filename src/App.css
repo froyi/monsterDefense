@@ -2870,13 +2870,13 @@
 }
 
 .monster.boss-monster .monster-word {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 800;
     border: 2px solid rgba(255, 100, 50, 0.5);
     background: rgba(20, 10, 30, 0.95);
     padding: 5px 14px;
-    max-width: 280px;
     letter-spacing: 1px;
+    overflow: visible;
 }
 
 .monster.boss-monster .monster-hp-bar {
@@ -3628,6 +3628,7 @@
         box-shadow: 0 0 30px var(--color-gold);
     }
 }
+
 /* ==========================================
    Leaderboard Screen
    ========================================== */
@@ -3681,7 +3682,9 @@
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .leaderboard-table-wrapper {
